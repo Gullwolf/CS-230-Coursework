@@ -1,0 +1,27 @@
+import java.util.HashMap;
+
+public class exisitingProfile extends Profile {
+    
+	public exisitingProfile(String name, int Score) {
+		super(name, Score);
+		
+	}
+	static HashMap<String, Integer>playerprofile = new HashMap<>();
+     
+	
+	public static void add(String name, int Score) {
+		playerprofile.put(name,Score);
+	    
+	}
+	public static int load(String name){
+		
+		return playerprofile.get(name);
+	}
+	public static void gone(String poorname){
+		playerprofile.remove(poorname);
+	}
+	public static void restart(){
+		playerprofile.clear();
+}
+
+}
