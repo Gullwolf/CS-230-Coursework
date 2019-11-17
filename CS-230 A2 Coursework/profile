@@ -1,0 +1,40 @@
+public class Profile {
+
+	
+		private String playername ;
+		private String highestLevel ;
+		private int currentScore;
+		private int highestScore;
+		
+		
+    public Profile (String name ,int Score)
+    {
+    	this.playername = name;
+    	this.currentScore = Score;
+    	
+    }
+    public void saveProfile (String playername,int currentScore){
+    	exisitingProfile.add(playername,currentScore);
+    	
+    }
+    public int loadProfile(String newname){
+    	return exisitingProfile.load(newname);
+    }
+    public void changeName(String oldname,String changename){
+    	int r;
+    	r = exisitingProfile.load(oldname);
+    	exisitingProfile.gone(oldname);
+    	exisitingProfile.add(changename, r);
+    	
+    }
+    public void deleteProfile(String deadname){
+    	exisitingProfile.gone(deadname);
+    }
+    public void reset(){
+    	exisitingProfile.restart();
+    }
+    public void newhighestScore(int number){
+    	number=highestScore;
+    }
+    
+	}
