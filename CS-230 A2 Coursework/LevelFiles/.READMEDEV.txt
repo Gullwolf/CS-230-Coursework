@@ -1,0 +1,17 @@
+For level files:
+Line 1: Amount of tiles going downwards the map is in length
+Line 2: Detailed information about items, doors and enemies. Read left to right then down a line, the same way the level is generated. Leave spaces between the integers.
+Onwards: The map layout, no spaces between characters. invalid characters will be skipped which will mess with the file format.
+# | Wall
+- | Floor
+G | End goal
+t | Token
+K | Key Door - type 1 = green, type 2 = red, type 3 = blue
+k | Key - type 1 = green, type 2 = red, type 3 = blu
+H | Enemy - type 1 = updown (extra int here, type 1 = up/down, type 2 = left/right) type 2 = wallHug, type 3 = dumb AI, type 4 = smart AI
+T | Token Door - extra info is how many tokens required
+F | Fire
+W | Water
+P | Player
+Z | Teleporter - two extra information bits, the linked teleporters x and y
+I | Item - type 1 = Flippers, type 2 = Fire Boots
