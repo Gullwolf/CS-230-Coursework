@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 /**
  * This is the superclass of all objects.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Object {
 	
@@ -14,8 +14,11 @@ public class Object {
 	protected GraphicsContext gc;
 	protected int TILE_SIZE;
 	
+	protected boolean isPlayerWalkable;
+	protected boolean isEnemyWalkable;
+	
 	//TODO change from COLOR to image, which will be gotten from subclass
-	private Color image;
+	protected Color image;
 	
 	
 	public Object(int x, int y, GraphicsContext gc, int TILE_SIZE) {
@@ -29,19 +32,33 @@ public class Object {
 	 * This method draws the wall object on the canvas. 
 	 * @param image
 	 */
-	protected void drawObject(Color image) {
-		this.image = image;
+	protected void drawObject() {
 		gc.setFill(image);
 		
 		//Draw a square at the set coordinates
 		gc.fillRect((x * TILE_SIZE), (y * TILE_SIZE), TILE_SIZE, TILE_SIZE);
 	}
+	
+	/**
+	 * This method returns the x position of the object.
+	 * @return x
+	 */
+	protected int getX() {
+		return this.x;
+	}
+	
+	/**
+	 * This method returns the y position of the object.
+	 * @return y
+	 */
+	protected int getY() {
+		return this.y;
+	}
 
 	/**
-	 * A method that is allows the object to change its position.
-	 * This method should be overwritten.
+	 * A method that is overwritten in its subclasses.
 	 */
 	public void move() {
-		System.out.println("THIS SHOULD NOT BE CALLED.");
+		System.out.println("THIS SHOULD BE OVERWRITTEN");
 	}
 }

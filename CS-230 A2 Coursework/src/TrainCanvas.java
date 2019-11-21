@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 /**
  * This class creates the game itself.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
@@ -42,6 +42,10 @@ public class TrainCanvas extends Application {
 	
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
+	private static ArrayList<Object> enemyList = new ArrayList<Object>();
+	
+	//Creating an empty player object.
+	private static Player player;
 	
 	/**
 	 * The startup method for the game.
@@ -50,7 +54,7 @@ public class TrainCanvas extends Application {
 	public void start(Stage primaryStage) {
 		//Building the game
 		Pane root = buildGame();
-		
+
 		//Creating a scene
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -63,12 +67,41 @@ public class TrainCanvas extends Application {
 		//Display the scene at the front of the stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
-	}
-
-	public static void drawGame() {
-		//TODO write a method to redraw the canvas with each move
+		
+		//This makes sure all objects have been drawn when the game starts.
+		drawGame();
+		
+		scene.setOnKeyPressed(event -> {
+			player.takeInput(event.getCode().toString());
+			drawGame();
+		});
+		
 	}
 	
+	/**
+	 * This method redraws every object in the object list,
+	 * and then the player object.
+	 */
+	public static void drawGame() {
+		//Iterating through each object in the list.
+		for (int i = 0; i < objectList.size(); i++) {
+			objectList.get(i).drawObject();
+		}
+		//Doing the same for the list of enemies.
+		for (int j = 0; j < enemyList.size(); j++) {
+			enemyList.get(j).move();
+			enemyList.get(j).drawObject();
+		}
+		player.drawObject();
+	}
+	
+	/**
+	 * This method allows any class to access the list of objects.
+	 * @return objectList
+	 */
+	public static ArrayList<Object> getObjects() {
+		return objectList;
+	}
 	
 	/**
 	 * The main method that starts up the program.
@@ -115,6 +148,15 @@ public class TrainCanvas extends Application {
 	}
 	
 	/**
+	 * A method for adding a water object to the game.
+	 * @param x
+	 * @param y
+	 */
+	public static void addWater(int x, int y) {
+		objectList.add(new Water(x, y, gc, TILE_SIZE));
+	}
+	
+	/**
 	 * A method for adding the goal object to the game.
 	 * @param x
 	 * @param y
@@ -138,6 +180,90 @@ public class TrainCanvas extends Application {
 	 * @param y
 	 */
 	public static void addPlayer(int x, int y) {
-		objectList.add(new Player(x, y, gc, TILE_SIZE));
+		objectList.add(new Floor(x, y, gc, TILE_SIZE));
+		player = new Player(x, y, gc, TILE_SIZE);
+	}
+	
+	/**
+	 * A method for adding the player object to the game.
+	 * @param x
+	 * @param y
+	 * @param type
+	 */
+	public static void addKeyDoor(int x, int y, int type) {
+		objectList.add(new KeyDoor(x, y, gc, TILE_SIZE, type));
+	}
+	
+	/**
+	 * A method for adding the key object to the game.
+	 * @param x
+	 * @param y
+	 * @param type
+	 */
+	public static void addKey(int x, int y, int type) {
+		objectList.add(new Key(x, y, gc, TILE_SIZE, type));
+	}
+	
+	/**
+	 * A method for adding the token object to the game.
+	 * @param x
+	 * @param y
+	 */
+	public static void addToken(int x, int y) {
+		objectList.add(new Token(x, y, gc, TILE_SIZE));
+	}
+	
+	/**
+	 * A method for adding the fire boots object to the game.
+	 * @param x
+	 * @param y
+	 */
+	public static void addFireBoots(int x, int y) {
+		objectList.add(new FireBoots(x, y, gc, TILE_SIZE));
+	}
+	
+	/**
+	 * A method for adding the flippers object to the game.
+	 * @param x
+	 * @param y
+	 */
+	public static void addFlippers(int x, int y) {
+		objectList.add(new Flippers(x, y, gc, TILE_SIZE));
+	}
+	
+	/**
+	 * A method for adding the flippers object to the game.
+	 * @param x
+	 * @param y
+	 * @param requirements
+	 */
+	public static void addTokenDoor(int x, int y, int requirements) {
+		objectList.add(new TokenDoor(x, y, gc, TILE_SIZE, requirements));
+	}
+	
+	/**
+	 * A method for adding the teleporter object to the game.
+	 * @param x
+	 * @param y
+	 * @param linkX
+	 * @param linkY
+	 */
+	public static void addTeleporter(int x, int y, int linkX, int linkY) {
+		objectList.add(new Teleporter(x, y, gc, TILE_SIZE, linkX, linkY));
+	}
+	
+	/**
+	 * A method for adding the enemy object to the game.
+	 * @param x
+	 * @param y
+	 * @param type
+	 */
+	public static void addEnemy(int x, int y, int type, int extra) {
+		objectList.add(new Floor(x, y, gc, TILE_SIZE));//Adding a floor below the enemy object
+		if (type == 1) {
+			enemyList.add(new BasicEnemy(x, y, gc, TILE_SIZE, extra));
+		} else {
+			enemyList.add(new Enemy(x, y, gc, TILE_SIZE));
+		}
 	}
 }

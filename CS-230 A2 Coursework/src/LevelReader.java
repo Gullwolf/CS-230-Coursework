@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
  * This class reads the level information from a text file and builds a 
  * level based on this.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  *
  */
 public class LevelReader {
@@ -109,9 +109,7 @@ public class LevelReader {
 				addItem(x, y, type);
 				break;
 				}
-				System.out.print(" ");
 			}
-			System.out.println("");
 		}
 	}
 	/**
@@ -144,7 +142,7 @@ public class LevelReader {
 	 */
 	
 	private static void addToken(int x, int y) {
-		System.out.print("Token");
+		TrainCanvas.addToken(x, y);
 	}
 	/**
 	 * @param x y requirements
@@ -152,7 +150,7 @@ public class LevelReader {
 	 */
 	
 	private static void addTokenDoor(int x, int y, int requirements) {
-		System.out.print("TokenDoor " + requirements);
+		TrainCanvas.addTokenDoor(x, y, requirements);
 	}
 	/**
 	 * @param x y type
@@ -161,11 +159,11 @@ public class LevelReader {
 	
 	private static void addKey(int x, int y, int type) {
 		if (type == 1) {
-			System.out.print("Green key");
+			TrainCanvas.addKey(x, y, type);
 		} else if (type == 2) {
-			System.out.print("Red key");
+			TrainCanvas.addKey(x, y, type);
 		} else if (type == 3) {
-			System.out.print("Blue key");
+			TrainCanvas.addKey(x, y, type);
 		} else { 
 			System.out.print("Error, invalid type");
 		}
@@ -178,11 +176,11 @@ public class LevelReader {
 	private static void addKeyDoor(int x, int y, int type) {
 
 		if (type == 1) {
-			System.out.print("Green door");
+			TrainCanvas.addKeyDoor(x, y, type);
 		} else if (type == 2) {
-			System.out.print("Red door");
+			TrainCanvas.addKeyDoor(x, y, type);
 		} else if (type == 3) {
-			System.out.print("Blue door");
+			TrainCanvas.addKeyDoor(x, y, type);
 		} else { 
 			System.out.print("Error, invalid type");
 		}
@@ -196,18 +194,18 @@ public class LevelReader {
 
 		if (type == 1) {
 			if (getExtraInfo() == 1) {
-				System.out.print("UpDown Enemy");
+				TrainCanvas.addEnemy(x, y, type, 1);
 			} else if (type == 2) {
-				System.out.print("LeftRight Enemy");
+				TrainCanvas.addEnemy(x, y, type, 2);
 			} else { 
 				System.out.print("Error, invalid type");
 			}
 		} else if (type == 2) {
-			System.out.print("Wall-hug Enemy");
+			TrainCanvas.addEnemy(x, y, type, 0);
 		} else if (type == 3) {
-			System.out.print("Dumb Enemy");
+			TrainCanvas.addEnemy(x, y, type, 0);
 		} else if (type == 4) {
-			System.out.print("Smart Enemy");
+			TrainCanvas.addEnemy(x, y, type, 0);
 		} else { 
 			System.out.print("Error, invalid type");
 		}
@@ -234,7 +232,7 @@ public class LevelReader {
 	 */
 	
 	private static void addWater(int x, int y) {
-		System.out.print("Water");
+		TrainCanvas.addWater(x, y);
 	}
 	/**
 	 * @param x y linkX linkY
@@ -242,7 +240,7 @@ public class LevelReader {
 	 */
 	
 	private static void addTeleporter(int x, int y, int linkX, int linkY) {
-		System.out.print("Teleporter, Link " + linkX + " " + linkY);
+		TrainCanvas.addTeleporter(x, y, linkX, linkY);
 	}
 	/**
 	 * @param x y type
@@ -251,9 +249,9 @@ public class LevelReader {
 	
 	private static void addItem(int x, int y, int type) {
 		if (type == 1) {
-			System.out.print("Flippers");
+			TrainCanvas.addFlippers(x, y);
 		} else if (type == 2) {
-			System.out.print("FireBoots");
+			TrainCanvas.addFireBoots(x, y);
 		} else { 
 			System.out.print("Error, invalid type");
 		}

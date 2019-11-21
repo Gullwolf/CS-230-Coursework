@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the goal object.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Goal extends Useable {
 	/**
@@ -16,7 +16,8 @@ public class Goal extends Useable {
 	 */
 	public Goal(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		drawObject(Color.GOLD);
+		this.image = Color.DARKGOLDENROD;
+		drawObject();
 	}
 
 }

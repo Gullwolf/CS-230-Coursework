@@ -16,6 +16,8 @@ public class Terrain extends Object {
 	 */
 	public Terrain(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
+		isPlayerWalkable = false;
+		isEnemyWalkable = false;
 	}
 
 }
