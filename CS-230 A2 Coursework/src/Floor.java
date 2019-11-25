@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the floor object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Floor extends Terrain {
 	/**
@@ -19,7 +19,6 @@ public class Floor extends Terrain {
 		isPlayerWalkable = true;
 		isEnemyWalkable = true;
 		this.image = Color.LIGHTGREY;
-		drawObject();
 	}
 
 }

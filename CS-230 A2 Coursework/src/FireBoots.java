@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the fire boots object.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class FireBoots extends Item {
 
@@ -14,11 +14,20 @@ public class FireBoots extends Item {
 	 * @param y
 	 * @param gc
 	 * @param TILE_SIZE
-	 * @param keyColour
 	 */
 	public FireBoots(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.MAROON;
+	}
+	
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		this.image = Color.LIGHTGREY;
+		TrainCanvas.getPlayer().pickupItem(6);		
 	}
 
 }

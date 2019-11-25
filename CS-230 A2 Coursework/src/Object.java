@@ -20,6 +20,8 @@ public class Object {
 	//TODO change from COLOR to image, which will be gotten from subclass
 	protected Color image;
 	
+	//Used for teleporter objects only
+	protected boolean isTeleporter = false;
 	
 	public Object(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		this.x = x;
@@ -29,7 +31,12 @@ public class Object {
 	}
 	
 	/**
-	 * This method draws the wall object on the canvas. 
+	 * A blank method that is overwritten only by teleporters.
+	 */
+	public void fixLinks() {	}
+	
+	/**
+	 * This method draws the object on the canvas. 
 	 * @param image
 	 */
 	protected void drawObject() {
@@ -59,6 +66,57 @@ public class Object {
 	 * A method that is overwritten in its subclasses.
 	 */
 	public void move() {
-		System.out.println("THIS SHOULD BE OVERWRITTEN");
+		System.out.println("THIS SHOULD BE OVERWRITTEN move");
+	}
+
+	/**
+	 * A method that is overwritten in its subclasses.
+	 */
+	public void interact() {
+		System.out.println("THIS SHOULD BE OVERWRITTEN interact");
+	}
+	
+	/**
+	 * Moves the object one spot left.
+	 */
+	public void goLeft() {
+		this.x++;
+	}
+	
+	/**
+	 * Moves the object one spot up.
+	 */
+	public void goUp() {
+		this.y++;
+	}
+	
+	/**
+	 * Moves the object one spot right.
+	 */
+	public void goRight() {
+		this.x--;
+	}
+	
+	/**
+	 * Moves the object one spot down.
+	 */
+	public void goDown() {
+		this.y--;
+	}
+	
+	/**
+	 * Sets the x value of the object.
+	 * @param newX
+	 */
+	public void setX(int newX) {
+		this.x = newX;
+	}
+	
+	/**
+	 * Sets the y value of the object.
+	 * @param newY
+	 */
+	public void setY(int newY) {
+		this.y = newY;
 	}
 }

@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * A general class for all terain objects.
@@ -19,5 +20,14 @@ public class Terrain extends Object {
 		isPlayerWalkable = false;
 		isEnemyWalkable = false;
 	}
-
+	
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted with.
+	 */
+	@Override
+	public void interact() {
+		//Does nothing, just here to override the method.
+	}
 }
+

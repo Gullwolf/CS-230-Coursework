@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * A general class for all items.
@@ -19,4 +20,10 @@ public class Item extends Object {
 		isPlayerWalkable = true;
 		isEnemyWalkable = false;
 	}
+	
+	/**
+	 * This method is empty as it is overwritten in its subclass.
+	 */
+	@Override
+	public void interact() { }
 }

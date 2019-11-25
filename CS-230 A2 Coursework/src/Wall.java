@@ -18,7 +18,6 @@ public class Wall extends Terrain {
 	public Wall(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.BLACK;
-		drawObject();
 	}
 
 }

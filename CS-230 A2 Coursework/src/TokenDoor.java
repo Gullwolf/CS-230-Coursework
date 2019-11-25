@@ -4,11 +4,12 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the key door object.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class TokenDoor extends Door {
 	
 	protected int requirements;
+	
 	/**
 	 * Creating a Key Door object.
 	 * @param x
@@ -21,8 +22,17 @@ public class TokenDoor extends Door {
 		super(x, y, gc, TILE_SIZE);
 		this.requirements = requirements;
 		this.image = Color.BROWN;
-
-		drawObject();
 	}
 
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		if (TrainCanvas.getPlayer().getTokens() >= this.requirements) {
+			this.image = Color.LIGHTGREY;
+			this.isPlayerWalkable = true;
+		}
+	}
 }

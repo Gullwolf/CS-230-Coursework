@@ -26,4 +26,10 @@ public class Body extends Object {
 	public void move() {
 		System.out.println("THIS SHOULD BE OVERWRITTEN");
 	}
+	
+	/**
+	 * A method that is overwritten in its subclasses.
+	 */
+	@Override
+	public void interact() {	}
 }

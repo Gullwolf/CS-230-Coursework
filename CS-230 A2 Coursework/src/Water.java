@@ -17,7 +17,16 @@ public class Water extends Terrain {
 	public Water(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.BLUE;
-		drawObject();
 	}
 
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		if (TrainCanvas.getPlayer().hasFlippers()) {
+			this.isPlayerWalkable = true;
+		}
+	}
 }

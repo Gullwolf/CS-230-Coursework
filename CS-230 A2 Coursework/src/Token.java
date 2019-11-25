@@ -14,11 +14,19 @@ public class Token extends Item {
 	 * @param y
 	 * @param gc
 	 * @param TILE_SIZE
-	 * @param keyColour
 	 */
 	public Token(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.GOLD;
 	}
 
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		this.image = Color.LIGHTGREY;
+		TrainCanvas.getPlayer().pickupItem(1);		
+	}
 }

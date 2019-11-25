@@ -17,7 +17,16 @@ public class Fire extends Terrain {
 	public Fire(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.ORANGE;
-		drawObject();
 	}
-
+	
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		if (TrainCanvas.getPlayer().hasFireBoots()) {
+			this.isPlayerWalkable = true;
+		}
+	}
 }

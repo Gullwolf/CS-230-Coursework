@@ -12,11 +12,11 @@ import javafx.stage.Stage;
 /**
  * This class creates the game itself.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
-	private static final int WINDOW_WIDTH = 1000;
+	private static final int WINDOW_WIDTH = 800;
 
 	private static final int WINDOW_HEIGHT = 800;
 
@@ -26,7 +26,7 @@ public class TrainCanvas extends Application {
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 
 	//The number of tiles along the screen at once
-	private final static int TILES_ON_SCREEN = 24;
+	private final static int TILES_ON_SCREEN = 7;
 	
 	//The size of the tiles
 	private static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
@@ -38,7 +38,7 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 	
 	//The current level the game is on
-	private int currentLevel = 1;
+	private static int currentLevel = 1;
 	
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
@@ -47,13 +47,15 @@ public class TrainCanvas extends Application {
 	//Creating an empty player object.
 	private static Player player;
 	
+	private static Pane root;
+	
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
 	 */
 	public void start(Stage primaryStage) {
 		//Building the game
-		Pane root = buildGame();
+		root = buildGame();
 
 		//Creating a scene
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -64,20 +66,84 @@ public class TrainCanvas extends Application {
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
 		
+		//Making a background for the canvas.
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		
 		//Display the scene at the front of the stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
+		centerPlayer();
+		
 		//This makes sure all objects have been drawn when the game starts.
 		drawGame();
 		
+		//When a button is pressed
 		scene.setOnKeyPressed(event -> {
 			player.takeInput(event.getCode().toString());
+			onItem();
 			drawGame();
 		});
-		
 	}
 	
+	/**
+	 * Checks if the player is standing on an item.
+	 */
+	public static void onItem() {
+		for (int i = 0; i < objectList.size(); i++) {
+			if ((objectList.get(i).getX() == player.getX()) && 
+					(objectList.get(i).getY() == player.getY())) {
+				objectList.get(i).interact();
+			}
+		}
+		for (int j = 0; j < enemyList.size(); j++) {
+			if ((enemyList.get(j).getX() == player.getX()) &&
+					(enemyList.get(j).getY() == player.getY())) {
+				enemyList.get(j).interact();
+			}
+		}
+	}
+	
+	/**
+	 * This method returns the player object when called.
+	 * @return player
+	 */
+	public static Player getPlayer() {
+		return player;
+	}
+	
+	/**
+	 * This method returns the value that allows the game to center the player.
+	 * @return
+	 */
+	public static int getCenter() {
+		return (int) TILES_ON_SCREEN / 2;
+	}
+	
+	/**
+	 * This method moves all objects so the player is in the 
+	 * center of the screen.
+	 */
+	public static void centerPlayer() {
+		int center = (int) TILES_ON_SCREEN / 2;
+		int playerX = player.getX();
+		int playerY = player.getY();
+		//Moving every object so the player is at the center
+		for (int i = 0; i < objectList.size(); i++) {
+			objectList.get(i).setX(objectList.get(i).getX() - playerX + center);
+			objectList.get(i).setY(objectList.get(i).getY() - playerY + center);
+		}
+		//Moving enemies with the map
+		for (int n = 0; n < enemyList.size(); n++) {
+			enemyList.get(n).setX(enemyList.get(n).getX() - playerX + center);
+			enemyList.get(n).setY(enemyList.get(n).getY() - playerY + center);
+		}
+		//Setting the player to be at the center of the screen
+		player.setX(center);
+		player.setY(center);
+	}
+
 	/**
 	 * This method redraws every object in the object list,
 	 * and then the player object.
@@ -86,6 +152,9 @@ public class TrainCanvas extends Application {
 		//Iterating through each object in the list.
 		for (int i = 0; i < objectList.size(); i++) {
 			objectList.get(i).drawObject();
+			if (objectList.get(i).isTeleporter) {
+				objectList.get(i).fixLinks();
+			}
 		}
 		//Doing the same for the list of enemies.
 		for (int j = 0; j < enemyList.size(); j++) {
@@ -104,6 +173,14 @@ public class TrainCanvas extends Application {
 	}
 	
 	/**
+	 * This method allows any class to access the list of objects.
+	 * @return enemyList
+	 */
+	public static ArrayList<Object> getEnemies() {
+		return enemyList;
+	}
+	
+	/**
 	 * The main method that starts up the program.
 	 * @param args
 	 */
@@ -115,7 +192,7 @@ public class TrainCanvas extends Application {
 	 * Building the game GUI.
 	 * @return Pane
 	 */
-	private Pane buildGame() {
+	private static Pane buildGame() {
 		//Creating a pane that will contain the game
 		BorderPane root = new BorderPane();
 
@@ -127,6 +204,33 @@ public class TrainCanvas extends Application {
 		gc = canvas.getGraphicsContext2D();
 		
 		return root;
+	}
+	
+	/**
+	 * This method redraws the level when called.
+	 */
+	public static void redrawLevel() {
+		objectList = new ArrayList<Object>();
+		enemyList = new ArrayList<Object>();
+		player = null;
+		
+		//Making a background for the canvas.
+				gc.setFill(Color.BLACK);
+				gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		
+		LevelReader.createLevel(currentLevel, root);
+		root = buildGame();
+		
+		centerPlayer();
+		drawGame();
+	}
+	
+	/**
+	 * This method starts the next level.
+	 */
+	public static void nextLevel() {
+		currentLevel++;
+		redrawLevel();
 	}
 	
 	/**

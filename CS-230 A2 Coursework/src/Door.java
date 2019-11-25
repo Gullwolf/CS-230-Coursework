@@ -1,9 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * A general class for all doors.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Door extends Object {
 
@@ -16,7 +17,13 @@ public class Door extends Object {
 	 */
 	public Door(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		isPlayerWalkable = true;
+		isPlayerWalkable = false;
 		isEnemyWalkable = false;
 	}
+	
+	/**
+	 * A blank method that is overwritten by subclasses.
+	 */
+	public void interact() { };
+	
 }

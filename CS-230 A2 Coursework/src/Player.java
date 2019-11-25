@@ -6,11 +6,26 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the player object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Player extends Body {
-	
+
 	private ArrayList<Object> objectList;
+	private ArrayList<Object> enemyList;
+	
+	private int tokens = 0;
+	private boolean blueKey = false;
+	private boolean redKey = false;
+	private boolean greenKey = false;
+	private boolean fireBoots = false;
+	private boolean flippers = false;
+	
+	//Holding a record of which direction the player is moving.
+	protected boolean moveXP = false;
+	protected boolean moveYP = false;
+	protected boolean moveXM = false;
+	protected boolean moveYM = false;
+	
 	/**
 	 * Creating a player object.
 	 * @param x
@@ -22,7 +37,93 @@ public class Player extends Body {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.MAGENTA;
 		this.objectList = TrainCanvas.getObjects();
-		drawObject();
+		this.enemyList = TrainCanvas.getEnemies();
+	}
+
+	/**
+	 * A getter for if the player has fire boots
+	 * @return fireBoots
+	 */
+	public boolean hasFireBoots() {
+		return this.fireBoots;
+	}
+	
+	/**
+	 * A getter for if the player has flippers
+	 * @return flippers
+	 */
+	public boolean hasFlippers() {
+		return this.flippers;
+	}
+	
+	/**
+	 * A getter for the number of tokens the player has.
+	 * @return tokens
+	 */
+	public int getTokens() {
+		return this.tokens;
+	}
+	
+	/**
+	 * A getter for if the player has the red key.
+	 * @return redKey
+	 */
+	public boolean hasRedKey() {
+		return this.redKey;
+	}
+	
+	/**
+	 * A getter for if the player has the blue key.
+	 * @return blueKey
+	 */
+	public boolean hasBlueKey() {
+		return this.blueKey;
+	}
+	
+	/**
+	 * A getter for if the player has the green key.
+	 * @return greenKey
+	 */
+	public boolean hasGreenKey() {
+		return this.greenKey;
+	}
+	
+	/**
+	 * A method that takes in an item type integer and adds the item to the player.
+	 * @param itemType
+	 */
+	public void pickupItem(int itemType) {//1 = token, 2 = red key, 3 = blue key, 4 = green key
+		if (itemType == 1) { //Pickup token
+			this.tokens++;
+		} else if (itemType == 2) { //Pickup red key
+			this.redKey = true;
+		} else if (itemType == 3) { //Pickup blue key
+			this.blueKey = true;
+		} else if (itemType == 4) { //Pickup green key
+			this.greenKey = true;
+		} else if (itemType == 5) { //Pickup flippers
+			this.flippers = true;
+		} else if (itemType == 6) { //Pickup fire boots
+			this.fireBoots = true;
+		}
+	}
+	
+	/**
+	 * This method teleports the player to specified coordinates
+	 * along the X axis.
+	 * @param newX
+	 */
+	public void teleportPlayerX(int newX) {
+		this.x = newX;
+	}
+	
+	/**
+	 * This method teleports the player to specified coordinates
+	 * along the Y axis.
+	 * @param newX
+	 */
+	public void teleportPlayerY(int newY) {
+		this.y = newY;
 	}
 	
 	/**
@@ -40,45 +141,51 @@ public class Player extends Body {
 			moveRight();
 		}
 	}
-	
+
 	/**
 	 * A method that attempts to move the player Up.
 	 */
 	private void moveUp() {
 		for (int i = 0; i < objectList.size(); i++) {
 			//This if looks to see if the object is in the position 
-			//the player is attempting to move into.
-			if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
-				//If the spot is walkable, move there.
-				if(objectList.get(i).isPlayerWalkable) {
-					this.y--;
-					//Without this return, the player would move as far 
-					//in that direction as possible
-					return;
-				} else {
-					//TODO add sound for failing to move into a spot.
+			//the player is attempting to move int, and that the spot is walkable
+			if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1 && objectList.get(i).isPlayerWalkable) {
+				for (int j = 0; j < objectList.size(); j++) {
+					objectList.get(j).goUp();
 				}
+				for (int n = 0; n < enemyList.size(); n++) {
+					enemyList.get(n).goUp();
+				}
+				return;
+			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
+				moveYM = true;
+				objectList.get(i).interact(); //Attempt to interact with the object
+				moveYM = false;
+				//TODO add sound for failing to move into a spot.
 			}
 		}
 	}
-	
+
 	/**
 	 * A method that attempts to move the player Down.
 	 */
 	private void moveDown() {
 		for (int i = 0; i < objectList.size(); i++) {
 			//This if looks to see if the object is in the position 
-			//the player is attempting to move into.
-			if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
-				//If the spot is walkable, move there.
-				if(objectList.get(i).isPlayerWalkable) {
-					this.y++;
-					//Without this return, the player would move as far 
-					//in that direction as possible
-					return;
-				} else {
-					//TODO add sound for failing to move into a spot.
+			//the player is attempting to move int, and that the spot is walkable
+			if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1 && objectList.get(i).isPlayerWalkable) {
+				for (int j = 0; j < objectList.size(); j++) {
+					objectList.get(j).goDown();
 				}
+				for (int n = 0; n < enemyList.size(); n++) {
+					enemyList.get(n).goDown();
+				}
+				return;
+			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
+				moveYP = true;
+				objectList.get(i).interact(); //Attempt to interact with the object
+				moveYP = false;
+				//TODO add sound for failing to move into a spot.
 			}
 		}
 	}
@@ -89,17 +196,20 @@ public class Player extends Body {
 	private void moveLeft() {
 		for (int i = 0; i < objectList.size(); i++) {
 			//This if looks to see if the object is in the position 
-			//the player is attempting to move into.
-			if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
-				//If the spot is walkable, move there.
-				if(objectList.get(i).isPlayerWalkable) {
-					this.x--;
-					//Without this return, the player would move as far 
-					//in that direction as possible
-					return; 
-				} else {
-					//TODO add sound for failing to move into a spot.
+			//the player is attempting to move int, and that the spot is walkable
+			if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y && objectList.get(i).isPlayerWalkable) {
+				for (int j = 0; j < objectList.size(); j++) {
+					objectList.get(j).goLeft();
 				}
+				for (int n = 0; n < enemyList.size(); n++) {
+					enemyList.get(n).goLeft();
+				}
+				return;
+			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
+				moveXM = true;
+				objectList.get(i).interact(); //Attempt to interact with the object
+				moveXM = false;
+				//TODO add sound for failing to move into a spot.
 			}
 		}
 	}
@@ -110,17 +220,20 @@ public class Player extends Body {
 	private void moveRight() {
 		for (int i = 0; i < objectList.size(); i++) {
 			//This if looks to see if the object is in the position 
-			//the player is attempting to move into.
-			if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
-				//If the spot is walkable, move there.
-				if(objectList.get(i).isPlayerWalkable) {
-					this.x++;
-					//Without this return, the player would move as far 
-					//in that direction as possible
-					return;
-				} else {
-					//TODO add sound for failing to move into a spot.
+			//the player is attempting to move int, and that the spot is walkable
+			if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y && objectList.get(i).isPlayerWalkable) {
+				for (int j = 0; j < objectList.size(); j++) {
+					objectList.get(j).goRight();
 				}
+				for (int n = 0; n < enemyList.size(); n++) {
+					enemyList.get(n).goRight();
+				}
+				return;
+			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
+				moveXP = true;
+				objectList.get(i).interact(); //Attempt to interact with the object
+				moveXP = false;
+				//TODO add sound for failing to move into a spot.
 			}
 		}
 	}

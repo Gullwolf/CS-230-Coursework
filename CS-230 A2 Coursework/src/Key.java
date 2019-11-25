@@ -4,9 +4,9 @@ import javafx.scene.paint.Color;
 /**
  * This class draws the key object.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
-public class Key extends Door {
+public class Key extends Item {
 	
 	protected int keyColour;
 	/**
@@ -27,7 +27,22 @@ public class Key extends Door {
 		} else if (keyColour == 3) {
 			this.image = Color.SADDLEBROWN; //Blue key
 		}
-		drawObject();
+	}
+	
+	/**
+	 * This method makes the object look like a floor tile 
+	 * when it has been interacted.
+	 */
+	@Override
+	public void interact() {
+		this.image = Color.LIGHTGREY;
+		if (keyColour == 1) {
+			TrainCanvas.getPlayer().pickupItem(4);//Green
+		} else if (keyColour == 2) {
+			TrainCanvas.getPlayer().pickupItem(2);//Red
+		} else if (keyColour == 3) {
+			TrainCanvas.getPlayer().pickupItem(3);//Blue
+		}		
 	}
 
 }

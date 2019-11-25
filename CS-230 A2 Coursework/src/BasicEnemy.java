@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-/**
- * Making the Basic Enemy Object
+ /**
+ * Making the Basic Enemy Object.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class BasicEnemy extends Body {
 
@@ -28,14 +28,21 @@ public class BasicEnemy extends Body {
 		//Getting the list of objects in the map
 		this.objectList = TrainCanvas.getObjects();
 		this.image = Color.RED;
-		drawObject();
 	}
 
+	/**
+	 * This method will detect if the enemy interacts with the player.
+	 */
+	@Override
+	public void interact() {
+		TrainCanvas.redrawLevel();
+	}
+	
 	/**
 	 * Making the enemy object move.
 	 */
 	public void move() {
-		if (direction == 1) {//UP
+		if (direction == 1) { //UP
 			for (int i = 0; i < objectList.size(); i++) {
 				//This if looks to see if the object is in the position 
 				//the enemy is attempting to move into.
@@ -51,7 +58,7 @@ public class BasicEnemy extends Body {
 					}
 				}
 			}
-		} else if (direction == 2) {//RIGHT
+		} else if (direction == 2) { //RIGHT
 			for (int i = 0; i < objectList.size(); i++) {
 				//This if looks to see if the object is in the position 
 				//the enemy is attempting to move into.
@@ -67,13 +74,14 @@ public class BasicEnemy extends Body {
 					}
 				}
 			}
-		} else if (direction == 3) {//DOWN
+		} else if (direction == 3) { //DOWN
 			for (int i = 0; i < objectList.size(); i++) {
 				//This if looks to see if the object is in the position 
 				//the enemy is attempting to move into.
-				if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
+				if  ((objectList.get(i).getX() == this.x) &&
+						objectList.get(i).getY() == this.y + 1) {
 					//If the spot is walkable, move there.
-					if(objectList.get(i).isEnemyWalkable) {
+					if (objectList.get(i).isEnemyWalkable) {
 						this.y++;
 						//Without this return, the enemy would move as far 
 						//in that direction as possible
@@ -83,7 +91,7 @@ public class BasicEnemy extends Body {
 					}
 				}
 			}
-		} else if (direction == 4) {//LEFT
+		} else if (direction == 4) { //LEFT
 			for (int i = 0; i < objectList.size(); i++) {
 				//This if looks to see if the object is in the position 
 				//the enemy is attempting to move into.

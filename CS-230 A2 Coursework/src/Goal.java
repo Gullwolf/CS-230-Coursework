@@ -17,7 +17,14 @@ public class Goal extends Useable {
 	public Goal(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = Color.DARKGOLDENROD;
-		drawObject();
 	}
 
+	/**
+	 * This method ends the level and goes to the next one.
+	 */
+	@Override
+	public void interact() {
+		TrainCanvas.nextLevel();
+	}
+	
 }
