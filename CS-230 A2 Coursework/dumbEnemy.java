@@ -30,7 +30,7 @@ public class dumbEnemy extends Body {
 			}
 		}
 		else if(player.getY()!=this.y){
-			if(this.x<player.getX()){
+			if(this.y<player.getY()){
 				this.y=y+1;
 			}
 			else{
