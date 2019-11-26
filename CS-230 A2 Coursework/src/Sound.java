@@ -23,7 +23,6 @@ public class Sound {
         if (file.canRead()) {url = file.toURI().toURL();} //Creating the file path to the sound file.
         System.out.println(url);
         AudioClip clip = Applet.newAudioClip(url);
-        clip.loop();
         clip.play();
         System.out.println("should've played by now");
     }
