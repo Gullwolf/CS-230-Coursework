@@ -25,7 +25,17 @@ public class Enemy extends Body {
 	/**
 	 * A method that is overwritten in its subclasses.
 	 */
+	@Override
 	public void move() {
-		System.out.println("THIS SHOULD BE OVERWRITTEN");
+		System.out.println("THIS SHOULD BE OVERWRITTEN move enemy");
 	}
+	
+	/**
+	 * This method will detect if the enemy interacts with the player.
+	 */
+	@Override
+	public void interact() {
+		TrainCanvas.redrawLevel();
+	}
+	
 }

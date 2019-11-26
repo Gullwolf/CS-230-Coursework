@@ -8,6 +8,9 @@ import javafx.scene.paint.Color;
  */
 public class Object {
 	
+	//Used by items
+	public boolean pickedUp;
+	
 	//Storing the coordinates of the object.
 	protected int x;
 	protected int y;

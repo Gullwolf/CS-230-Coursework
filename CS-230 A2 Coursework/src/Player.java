@@ -20,11 +20,8 @@ public class Player extends Body {
 	private boolean fireBoots = false;
 	private boolean flippers = false;
 	
-	//Holding a record of which direction the player is moving.
-	protected boolean moveXP = false;
-	protected boolean moveYP = false;
-	protected boolean moveXM = false;
-	protected boolean moveYM = false;
+	//Holding a record of the last key pressed by the player
+	protected String lastKey;
 	
 	/**
 	 * Creating a player object.
@@ -131,6 +128,7 @@ public class Player extends Body {
 	 * @param inputKey
 	 */
 	public void takeInput(String inputKey) {
+		lastKey = inputKey;
 		if (inputKey.equals("UP") || inputKey.equals("W")) {
 			moveUp();
 		}  else if (inputKey.equals("DOWN") || inputKey.equals("S")) {
@@ -158,9 +156,7 @@ public class Player extends Body {
 				}
 				return;
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
-				moveYM = true;
 				objectList.get(i).interact(); //Attempt to interact with the object
-				moveYM = false;
 				//TODO add sound for failing to move into a spot.
 			}
 		}
@@ -182,9 +178,7 @@ public class Player extends Body {
 				}
 				return;
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
-				moveYP = true;
 				objectList.get(i).interact(); //Attempt to interact with the object
-				moveYP = false;
 				//TODO add sound for failing to move into a spot.
 			}
 		}
@@ -206,9 +200,7 @@ public class Player extends Body {
 				}
 				return;
 			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
-				moveXM = true;
 				objectList.get(i).interact(); //Attempt to interact with the object
-				moveXM = false;
 				//TODO add sound for failing to move into a spot.
 			}
 		}
@@ -230,9 +222,7 @@ public class Player extends Body {
 				}
 				return;
 			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
-				moveXP = true;
 				objectList.get(i).interact(); //Attempt to interact with the object
-				moveXP = false;
 				//TODO add sound for failing to move into a spot.
 			}
 		}

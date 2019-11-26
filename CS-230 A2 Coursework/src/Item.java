@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
  */
 public class Item extends Object {
 
+	protected boolean pickedUp = false;
+	
 	/**
 	 * The constructor for the item class.
 	 * @param x

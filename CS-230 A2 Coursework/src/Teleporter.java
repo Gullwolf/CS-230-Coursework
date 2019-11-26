@@ -15,7 +15,6 @@ public class Teleporter extends Useable {
 	
 	private int linkX;
 	private int linkY;
-	private Object linkedTeleporter;
 	
 	/**
 	 * Creating a Teleporter object.
@@ -33,6 +32,7 @@ public class Teleporter extends Useable {
 		this.image = Color.CYAN;
 		this.objectList = TrainCanvas.getObjects();
 		this.isPlayerWalkable = false;
+		fixLinks();
 	}
 	
 	/**
@@ -40,8 +40,14 @@ public class Teleporter extends Useable {
 	 */
 	@Override
 	public void fixLinks() {
-		this.linkX = this.linkX - TrainCanvas.getPlayer().getX() + TrainCanvas.getCenter();
-		this.linkY = this.linkY - TrainCanvas.getPlayer().getY() + TrainCanvas.getCenter();
+//		this.linkX = this.linkX - TrainCanvas.getPlayer().getX() + TrainCanvas.getCenter();
+//		this.linkY = this.linkY - TrainCanvas.getPlayer().getY() + TrainCanvas.getCenter();
+		for (int i = 0; i < objectList.size(); i++) {
+			if (objectList.get(i).isTeleporter && objectList.get(i) != this) {
+				this.linkX = objectList.get(i).getX();
+				this.linkY = objectList.get(i).getY();
+			}
+		}
 	}
 	
 	/**
@@ -50,16 +56,16 @@ public class Teleporter extends Useable {
 	 */
 	@Override
 	public void interact() {
-		if (TrainCanvas.getPlayer().moveXM) {
+		String lastKey = TrainCanvas.getPlayer().lastKey;
+		if (lastKey.equals("A") || lastKey.equals("LEFT")) {
 			TrainCanvas.getPlayer().teleportPlayerX(linkX - 1);
-		} else if (TrainCanvas.getPlayer().moveXP) {
+		} else if (lastKey.equals("D") || lastKey.equals("RIGHT")) {
 			TrainCanvas.getPlayer().teleportPlayerX(linkX + 1);
-		} else if (TrainCanvas.getPlayer().moveYM) {
+		} else if (lastKey.equals("W") || lastKey.equals("UP")) {
 			TrainCanvas.getPlayer().teleportPlayerY(linkY - 1);
-		} else if (TrainCanvas.getPlayer().moveYP) {
+		} else if (lastKey.equals("S") || lastKey.equals("DOWN")) {
 			TrainCanvas.getPlayer().teleportPlayerX(linkY + 1);
 		}
-		
 		TrainCanvas.centerPlayer();
 	}
 }

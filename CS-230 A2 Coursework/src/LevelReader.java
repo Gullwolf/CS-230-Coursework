@@ -194,12 +194,13 @@ public class LevelReader {
 	private static void addEnemy(int x, int y, int type) {
 
 		if (type == 1) {
-			if (getExtraInfo() == 1) {
+			int type2 = getExtraInfo();
+			if (type2 == 1) {
 				TrainCanvas.addEnemy(x, y, type, 1);
-			} else if (type == 2) {
+			} else if (type2 == 2) {
 				TrainCanvas.addEnemy(x, y, type, 2);
 			} else { 
-				System.out.print("Error, invalid type");
+				System.out.print("Error, invalid type enemy basic");
 			}
 		} else if (type == 2) {
 			TrainCanvas.addEnemy(x, y, type, 0);
@@ -208,7 +209,7 @@ public class LevelReader {
 		} else if (type == 4) {
 			TrainCanvas.addEnemy(x, y, type, 0);
 		} else { 
-			System.out.print("Error, invalid type");
+			System.out.print("Error, invalid type wrong enemy");
 		}
 	}
 	/**

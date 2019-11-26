@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -25,30 +24,30 @@ public class TrainCanvas extends Application {
 
 	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 
-	//The number of tiles along the screen at once
+	//The number of tiles along the screen at once (default 7)
 	private final static int TILES_ON_SCREEN = 7;
-	
+
 	//The size of the tiles
 	private static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
 
 	//The canvas in the GUI
 	private static Canvas canvas;
-	
+
 	//Creating an empty graphics context
 	public static GraphicsContext gc;
-	
+
 	//The current level the game is on
-	private static int currentLevel = 1;
-	
+	private static int currentLevel = 3;
+
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
 	private static ArrayList<Object> enemyList = new ArrayList<Object>();
-	
+
 	//Creating an empty player object.
 	private static Player player;
-	
+
 	private static Pane root;
-	
+
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
@@ -62,23 +61,23 @@ public class TrainCanvas extends Application {
 
 		//Reading in from the game level file.
 		LevelReader.createLevel(currentLevel, root);
-		
+
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
-		
+
 		//Making a background for the canvas.
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-		
+
 		//Display the scene at the front of the stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
+
 		centerPlayer();
-		
+
 		//This makes sure all objects have been drawn when the game starts.
 		drawGame();
-		
+
 		//When a button is pressed
 		scene.setOnKeyPressed(event -> {
 			player.takeInput(event.getCode().toString());
@@ -86,7 +85,7 @@ public class TrainCanvas extends Application {
 			drawGame();
 		});
 	}
-	
+
 	/**
 	 * Checks if the player is standing on an item.
 	 */
@@ -104,7 +103,7 @@ public class TrainCanvas extends Application {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method returns the player object when called.
 	 * @return player
@@ -112,7 +111,7 @@ public class TrainCanvas extends Application {
 	public static Player getPlayer() {
 		return player;
 	}
-	
+
 	/**
 	 * This method returns the value that allows the game to center the player.
 	 * @return
@@ -120,7 +119,7 @@ public class TrainCanvas extends Application {
 	public static int getCenter() {
 		return (int) TILES_ON_SCREEN / 2;
 	}
-	
+
 	/**
 	 * This method moves all objects so the player is in the 
 	 * center of the screen.
@@ -152,9 +151,6 @@ public class TrainCanvas extends Application {
 		//Iterating through each object in the list.
 		for (int i = 0; i < objectList.size(); i++) {
 			objectList.get(i).drawObject();
-			if (objectList.get(i).isTeleporter) {
-				objectList.get(i).fixLinks();
-			}
 		}
 		//Doing the same for the list of enemies.
 		for (int j = 0; j < enemyList.size(); j++) {
@@ -163,7 +159,7 @@ public class TrainCanvas extends Application {
 		}
 		player.drawObject();
 	}
-	
+
 	/**
 	 * This method allows any class to access the list of objects.
 	 * @return objectList
@@ -171,7 +167,7 @@ public class TrainCanvas extends Application {
 	public static ArrayList<Object> getObjects() {
 		return objectList;
 	}
-	
+
 	/**
 	 * This method allows any class to access the list of objects.
 	 * @return enemyList
@@ -179,7 +175,7 @@ public class TrainCanvas extends Application {
 	public static ArrayList<Object> getEnemies() {
 		return enemyList;
 	}
-	
+
 	/**
 	 * The main method that starts up the program.
 	 * @param args
@@ -202,29 +198,36 @@ public class TrainCanvas extends Application {
 
 		//Accessing the graphic context of the game
 		gc = canvas.getGraphicsContext2D();
-		
+
 		return root;
 	}
-	
+
 	/**
 	 * This method redraws the level when called.
 	 */
 	public static void redrawLevel() {
-		objectList = new ArrayList<Object>();
-		enemyList = new ArrayList<Object>();
+//		objectList = new ArrayList<Object>();
+//		enemyList = new ArrayList<Object>();
 		player = null;
 		
+		for (int i = 0; i < objectList.size(); i++) {
+			objectList.remove(i);
+		}
+		for (int j = 0; j < enemyList.size(); j++) {
+			enemyList.remove(j);
+		}
+
 		//Making a background for the canvas.
-				gc.setFill(Color.BLACK);
-				gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-		
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
 		LevelReader.createLevel(currentLevel, root);
 		root = buildGame();
-		
+
 		centerPlayer();
 		drawGame();
 	}
-	
+
 	/**
 	 * This method starts the next level.
 	 */
@@ -232,7 +235,7 @@ public class TrainCanvas extends Application {
 		currentLevel++;
 		redrawLevel();
 	}
-	
+
 	/**
 	 * A method for adding a wall object to the game.
 	 * @param x
@@ -241,7 +244,7 @@ public class TrainCanvas extends Application {
 	public static void addWall(int x, int y) {
 		objectList.add(new Wall(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding a fire object to the game.
 	 * @param x
@@ -250,7 +253,7 @@ public class TrainCanvas extends Application {
 	public static void addFire(int x, int y) {
 		objectList.add(new Fire(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding a water object to the game.
 	 * @param x
@@ -259,7 +262,7 @@ public class TrainCanvas extends Application {
 	public static void addWater(int x, int y) {
 		objectList.add(new Water(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the goal object to the game.
 	 * @param x
@@ -268,7 +271,7 @@ public class TrainCanvas extends Application {
 	public static void addGoal(int x, int y) {
 		objectList.add(new Goal(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the floor object to the game.
 	 * @param x
@@ -277,7 +280,7 @@ public class TrainCanvas extends Application {
 	public static void addFloor(int x, int y) {
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the player object to the game.
 	 * @param x
@@ -287,7 +290,7 @@ public class TrainCanvas extends Application {
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));
 		player = new Player(x, y, gc, TILE_SIZE);
 	}
-	
+
 	/**
 	 * A method for adding the player object to the game.
 	 * @param x
@@ -297,7 +300,7 @@ public class TrainCanvas extends Application {
 	public static void addKeyDoor(int x, int y, int type) {
 		objectList.add(new KeyDoor(x, y, gc, TILE_SIZE, type));
 	}
-	
+
 	/**
 	 * A method for adding the key object to the game.
 	 * @param x
@@ -307,7 +310,7 @@ public class TrainCanvas extends Application {
 	public static void addKey(int x, int y, int type) {
 		objectList.add(new Key(x, y, gc, TILE_SIZE, type));
 	}
-	
+
 	/**
 	 * A method for adding the token object to the game.
 	 * @param x
@@ -316,7 +319,7 @@ public class TrainCanvas extends Application {
 	public static void addToken(int x, int y) {
 		objectList.add(new Token(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the fire boots object to the game.
 	 * @param x
@@ -325,7 +328,7 @@ public class TrainCanvas extends Application {
 	public static void addFireBoots(int x, int y) {
 		objectList.add(new FireBoots(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the flippers object to the game.
 	 * @param x
@@ -334,7 +337,7 @@ public class TrainCanvas extends Application {
 	public static void addFlippers(int x, int y) {
 		objectList.add(new Flippers(x, y, gc, TILE_SIZE));
 	}
-	
+
 	/**
 	 * A method for adding the flippers object to the game.
 	 * @param x
@@ -344,7 +347,7 @@ public class TrainCanvas extends Application {
 	public static void addTokenDoor(int x, int y, int requirements) {
 		objectList.add(new TokenDoor(x, y, gc, TILE_SIZE, requirements));
 	}
-	
+
 	/**
 	 * A method for adding the teleporter object to the game.
 	 * @param x
@@ -355,7 +358,7 @@ public class TrainCanvas extends Application {
 	public static void addTeleporter(int x, int y, int linkX, int linkY) {
 		objectList.add(new Teleporter(x, y, gc, TILE_SIZE, linkX, linkY));
 	}
-	
+
 	/**
 	 * A method for adding the enemy object to the game.
 	 * @param x
@@ -366,8 +369,19 @@ public class TrainCanvas extends Application {
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));//Adding a floor below the enemy object
 		if (type == 1) {
 			enemyList.add(new BasicEnemy(x, y, gc, TILE_SIZE, extra));
+		} else if (type == 3) {
+			enemyList.add(new DumbEnemy(x, y, gc, TILE_SIZE));
 		} else {
 			enemyList.add(new Enemy(x, y, gc, TILE_SIZE));
+		}
+	}
+
+	public static void removePickedUp() {
+		//Iterating through each object in the list.
+		for (int i = 0; i < objectList.size(); i++) {
+			if (objectList.get(i).pickedUp) {
+				objectList.remove(i);
+			}
 		}
 	}
 }

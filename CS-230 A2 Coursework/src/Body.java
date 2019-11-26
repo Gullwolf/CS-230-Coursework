@@ -23,8 +23,9 @@ public class Body extends Object {
 	/**
 	 * A method that is overwritten in its subclasses.
 	 */
+	@Override
 	public void move() {
-		System.out.println("THIS SHOULD BE OVERWRITTEN");
+		System.out.println("THIS SHOULD BE OVERWRITTEN move body");
 	}
 	
 	/**

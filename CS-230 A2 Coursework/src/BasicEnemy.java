@@ -31,14 +31,6 @@ public class BasicEnemy extends Body {
 	}
 
 	/**
-	 * This method will detect if the enemy interacts with the player.
-	 */
-	@Override
-	public void interact() {
-		TrainCanvas.redrawLevel();
-	}
-	
-	/**
 	 * Making the enemy object move.
 	 */
 	public void move() {
