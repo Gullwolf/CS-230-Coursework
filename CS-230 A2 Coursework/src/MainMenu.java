@@ -47,6 +47,7 @@ import javafx.util.Duration;
 public class MainMenu extends Application {
 	Scene sceneLogin;
 	Scene createAccount;
+	static String[] arguments;
 	
 	/**
 	 * Main method.
@@ -54,6 +55,7 @@ public class MainMenu extends Application {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+		arguments = args;
 	}
 	
 	
@@ -212,10 +214,18 @@ public class MainMenu extends Application {
 				usernameInput.clear();
 				password.clear();
 			} else {
+				String tempPerson = usernameInput.getText();
 				Profile.currentProfileInUse(usernameInput.getText()); //parses profile the profile that just logged in.
 				usernameInput.clear();
 				password.clear();
-				mainStage.setScene(mainScene); //This will launch game, change 'mainScene' to whatever is required
+				Stage load = new Stage();
+				try {
+					mainStage.hide();
+					LoadGameMain.user(tempPerson);
+					new LoadGameMain().start(load);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 			
 		});
