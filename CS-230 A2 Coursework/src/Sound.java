@@ -7,7 +7,7 @@ import java.net.URL;
 /**
  * This class plays all of the game sounds that are needed inside of the game.
  * @author George Cook
- * @version 1.4
+ * @version 1.6
  */
 public class Sound {
 
@@ -34,6 +34,61 @@ public class Sound {
     public static void getSound(String sound){
 
         switch(sound) {
+
+            case "Death":
+                try {
+                    playSound("LoadSound.wav");
+                    playSound("Death1.wav");
+                } catch (Exception ex){
+                    System.out.println("Error with playing sound.");
+                    ex.printStackTrace();
+
+                }
+                break;
+
+            case "HitWall":
+                try {
+                    playSound("LoadSound.wav");
+                    playSound("WalkInToWall.wav");
+                } catch (Exception ex){
+                    System.out.println("Error with playing sound.");
+                    ex.printStackTrace();
+
+                }
+                break;
+
+            case "KeyPickUp":
+                try {
+                    playSound("LoadSound.wav");
+                    playSound("KeyPickUp1.wav");
+                } catch (Exception ex){
+                    System.out.println("Error with playing sound.");
+                    ex.printStackTrace();
+
+                }
+                break;
+
+            case "LevelCompleted":
+                try {
+                    playSound("LoadSound.wav");
+                    playSound("Goal1.wav");
+                } catch (Exception ex){
+                    System.out.println("Error with playing sound.");
+                    ex.printStackTrace();
+
+                }
+                break;
+
+            case "DoorOpen":
+                try {
+                    playSound("LoadSound.wav");
+                    playSound("DoorOpen1.wav");
+                } catch (Exception ex){
+                    System.out.println("Error with playing sound.");
+                    ex.printStackTrace();
+
+                }
+                break;
 
             case "Portal":
                 try {
@@ -67,24 +122,6 @@ public class Sound {
 
                 }
                 break;
-
-            case "Death":
-                try{
-                    playSound("LoadSound.wav");
-                    playSound("Death.wav");
-                }catch (Exception ex){
-                    System.out.println("Error with playing sound.");
-                    ex.printStackTrace();
-                }
-
-            case "OpenDoor":
-                try{
-                    playSound("LoadSound.wav");
-                    playSound("OpenDoor.wav");
-                }catch (Exception ex){
-                    System.out.println("Error with Playing sound.");
-                    ex.printStackTrace();
-                }
 
 
         }
