@@ -38,7 +38,7 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel = 5;
+	private static int currentLevel;
 
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
