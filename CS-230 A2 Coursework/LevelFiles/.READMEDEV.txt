@@ -13,5 +13,5 @@ T | Token Door - extra info is how many tokens required
 F | Fire
 W | Water
 P | Player
-Z | Teleporter - two extra information bits, the linked teleporters x and y
+Z | Teleporter - NO EXTRA INFORMATION, TELEPORTERS LOOK ALONG THE COORDINATE THE PLAYER IS MOVING ALONG FOR ANOTHER TELEPORTER NOW
 I | Item - type 1 = Flippers, type 2 = Fire Boots
