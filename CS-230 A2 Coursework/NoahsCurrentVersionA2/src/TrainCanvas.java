@@ -413,7 +413,7 @@ public class TrainCanvas extends Application {
 		if (type == 1) {
 			enemyList.add(new BasicEnemy(x, y, gc, TILE_SIZE, extra));
 		} else if (type == 2) {
-			enemyList.add(new Enemy(x, y, gc, TILE_SIZE));
+			enemyList.add(new WallHugEnemy(x, y, gc, TILE_SIZE));
 		} else if (type == 3) {
 			enemyList.add(new DumbEnemy(x, y, gc, TILE_SIZE));
 		} else if (type == 4) {
