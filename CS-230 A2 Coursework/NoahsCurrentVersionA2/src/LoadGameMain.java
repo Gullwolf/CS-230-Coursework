@@ -1,0 +1,198 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+/**
+ * This class is the main menu for loading games, where you can select
+ * the level number you want, and play it (depending if you've reached that level).
+ * @author Cai Sidaway
+ * @version 1
+ */
+public class LoadGameMain extends Application {
+
+	public static String currUser;
+	
+	public static void main(String[] args) {
+		launch(args);
+
+	}	
+	
+	/**
+	 * Main method displays the main menu.
+	 */
+	public void start(Stage loadMainStage) throws Exception {
+		
+		Profile player = Profile.currentProfileInUse(currUser); 
+		
+		final int CANVAS_WIDTH = 900;
+		final int CANVAS_HEIGHT = 700;
+	
+		loadMainStage.setTitle("Choose a level!");
+		Group root = new Group();
+		
+		Scene mainScene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
+		loadMainStage.setScene(mainScene);
+	
+		
+		//All labels
+		Label availGames = new Label("All levels:");
+		availGames.setFont(new Font("Times new roman", 30));
+		availGames.setLayoutX(40);
+		availGames.setLayoutY(10);
+		root.getChildren().add(availGames);
+		
+		
+		//Listview allowing selectable games
+		ListView<String> selectGame = new ListView<>();
+		selectGame.getItems().setAll("Level 1                                   Highscore:" + player.getHighestScoreL1(), 
+				"Level 2                                   Highscore: "+ player.getHighestScoreL2(),
+				"Level 3                                   Highscore: "+ player.getHighestScoreL3(),
+				"Level 4                          	      Highscore: " + player.getHighestScoreL4(),
+				"Level 5                          	      Highscore: " + player.getHighestScoreL5(),
+				"Level 6                          	      Highscore: " + player.getHighestScoreL6(),
+				"Level 7                          	      Highscore: " + player.getHighestScoreL7(),
+				"Level 8                           	      Highscore: " + player.getHighestScoreL8(),
+				"Level 9                           	      Highscore: " + player.getHighestScoreL9(),
+				"Level 10                                 Highscore: "+ player.getHighestScoreL10());
+		selectGame.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		selectGame.setPrefSize(820, 420);
+		selectGame.setStyle("-fx-font-size: 2.0em ;");
+		selectGame.setLayoutX(40);
+		selectGame.setLayoutY(50);
+		root.getChildren().add(selectGame);
+		
+		//Buttons
+		Button leaderboardBut = new Button("Leaderboard");
+		leaderboardBut.setLayoutX(350);
+		leaderboardBut.setLayoutY(540);
+		leaderboardBut.setPrefSize(200,100);
+		leaderboardBut.addEventHandler(ActionEvent.ACTION, (e) -> {
+			System.out.println("This will load the leaderboard");
+		});
+		root.getChildren().add(leaderboardBut);
+		
+		Button logout = new Button("Logout");
+		logout.setLayoutX(650);
+		logout.setLayoutY(540);
+		logout.setPrefSize(200, 100);
+		logout.addEventHandler(ActionEvent.ACTION, (e) -> {
+			Stage load = new Stage();
+			try {
+				loadMainStage.hide();
+				new MainMenu().start(load);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+		});
+		root.getChildren().add(logout);
+		
+		ButtonType ok = new ButtonType("Ok");
+		ButtonType cancel = new ButtonType("Cancel");
+		Button play = new Button("Play selected level!");
+		play.setLayoutX(50);
+		play.setLayoutY(540);
+		play.setPrefSize(200, 100);
+		play.addEventHandler(ActionEvent.ACTION, (e) -> {
+		int selected = selectGame.getSelectionModel().getSelectedIndex();
+		if (selected < player.getLevel() - 1) { //If the index selected is less than the level the player is on, then they can play it
+			Alert playedBefore = new Alert(AlertType.CONFIRMATION, "Want to continue?", ok, cancel);
+			playedBefore.setTitle("You've played this before!");
+			playedBefore.setHeaderText("This level has been previously completed");
+			playedBefore.setContentText("If you'd like to retry this level, click ok " +
+					" if you want to leave your current high score, click cancel");
+			playedBefore.showAndWait().ifPresent(response -> {
+				if (response == ok) {
+					if(response == ok) {
+						Stage load = new Stage();
+						try {
+							loadMainStage.hide();
+							TrainCanvas.setCurrentLevel(selected + 1);
+							new TrainCanvas().start(load);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					} else if (response == cancel) {
+						playedBefore.close();
+					}
+					}
+			});
+			
+		} else if (selected == player.getLevel() - 1) { //If this is the current level the player is playing
+			Alert currentlyPlaying = new Alert(AlertType.CONFIRMATION, "Want to play?", ok, cancel);
+			currentlyPlaying.setTitle("You're currently playing this level");
+			currentlyPlaying.setHeaderText("Your current score: " + player.getCurrentScore());
+			currentlyPlaying.setContentText("Goodluck!");
+			currentlyPlaying.showAndWait().ifPresent(response -> {
+				if (response == ok && selected != 0) {
+					int actualLevel = selected - 1;
+					String filepath = System.getProperty("user.dir") + "\\SavedGames\\" + 
+							player.getUser() + "\\" + actualLevel + ".txt";
+					TrainCanvas.setLoadStatus();
+					TrainCanvas.setLoadFilePath(filepath);
+					Stage load = new Stage();
+					try {
+						loadMainStage.hide();
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else if (response == cancel) {
+					currentlyPlaying.close();
+				}
+				
+				if (response == ok && selected == 0) {
+					String filepath = System.getProperty("user.dir") + "\\Levels\\" + 
+							"\\Level1" + ".txt";
+					TrainCanvas.setLoadStatus();
+					TrainCanvas.setLoadFilePath(filepath);
+					Stage load = new Stage();
+					try {
+						loadMainStage.hide();
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else if (response == cancel) {
+					currentlyPlaying.close();
+				}
+				
+			});
+			
+		} else { //User is unable to play levels that they've not worked up to, will receieve error message. 
+			Alert notAble = new Alert(AlertType.ERROR);
+			notAble.setTitle("You can't play this!");
+			notAble.setHeaderText("Sorry!");
+			notAble.setContentText("You have't completed level " + player.getLevel() + 
+					", to continue to this level, beat the levels leading to this one!");
+			notAble.showAndWait();
+		}
+		});
+		root.getChildren().add(play);
+
+		loadMainStage.show();
+		
+	}
+	
+	/**
+	 * Gets parsed the name of the person that's logged into the system,
+	 * so it can load specific levels.
+	 * @param person The name of the person playing
+	 */
+	public static void user(String person) {
+		currUser = person;
+	}
+	
+	
+
+}
