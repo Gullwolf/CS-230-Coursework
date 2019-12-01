@@ -9,10 +9,10 @@ import javafx.scene.image.Image;
  * @version 1.2
  */
 public class TokenDoor extends Door {
-	
+
 	protected int requirements;
 	private ArrayList<Object> objectList;
-	
+
 	/**
 	 * Creating a Key Door object.
 	 * @param x
@@ -34,10 +34,13 @@ public class TokenDoor extends Door {
 	 */
 	@Override
 	public void interact() {
-		if (TrainCanvas.getPlayer().getTokens() >= this.requirements) {
-			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
-			this.pickedUp = true;
-			this.isPlayerWalkable = true;
+		if (!pickedUp) {
+			if (TrainCanvas.getPlayer().getTokens() >= this.requirements) {
+				objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+				Sound.getSound("DoorOpen");
+				this.pickedUp = true;
+				this.isPlayerWalkable = true;
+			}
 		}
 	}
 }

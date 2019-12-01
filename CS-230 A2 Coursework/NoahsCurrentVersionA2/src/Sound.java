@@ -21,10 +21,8 @@ public class Sound {
         File file = new File(soundFile);
         URL url = null;
         if (file.canRead()) {url = file.toURI().toURL();} //Creating the file path to the sound file.
-        System.out.println(url);
         AudioClip clip = Applet.newAudioClip(url);
         clip.play();
-        System.out.println("should've played by now");
     }
 
     /**
@@ -37,7 +35,7 @@ public class Sound {
 
             case "Death":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("Death1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -48,7 +46,7 @@ public class Sound {
 
             case "HitWall":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("WalkInToWall.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -59,7 +57,7 @@ public class Sound {
 
             case "KeyPickUp":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("KeyPickUp1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -70,7 +68,7 @@ public class Sound {
 
             case "LevelCompleted":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("Goal1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -81,7 +79,7 @@ public class Sound {
 
             case "DoorOpen":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("DoorOpen1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -114,7 +112,7 @@ public class Sound {
 
             case "MainMusic":
                 try {
-                    playSound("LoadSound.wav");
+//                    playSound("LoadSound.wav");
                     playSound("MenuMusic.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");

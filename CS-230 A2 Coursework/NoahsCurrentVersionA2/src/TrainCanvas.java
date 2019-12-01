@@ -38,7 +38,7 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel;
+	private static int currentLevel = 4;
 
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
@@ -50,17 +50,20 @@ public class TrainCanvas extends Application {
 	//String is only set to yes if it's coming from a savegame file, else null.
 	private static String load = null;
 	
+	private static Stage primaryStage;
 	
 	//Creating an empty player object.
 	private static Player player;
 
 	private static Pane root;
+	private static String[] arguments;
 
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
 	 */
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
+		primaryStage = stage;
 		//Building the game
 		root = buildGame();
 
@@ -137,7 +140,7 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method returns the player object when called.
-	 * @return player
+	 * @return Player
 	 */
 	public static Player getPlayer() {
 		return player;
@@ -145,7 +148,7 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method returns the value that allows the game to center the player.
-	 * @return
+	 * @return int
 	 */
 	public static int getCenter() {
 		return (int) TILES_ON_SCREEN / 2;
@@ -207,7 +210,7 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method allows any class to access the list of objects.
-	 * @return objectList
+	 * @return ArrayList<Object>
 	 */
 	public static ArrayList<Object> getObjects() {
 		return objectList;
@@ -215,7 +218,7 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method allows any class to access the list of objects.
-	 * @return enemyList
+	 * @return ArrayList<Object>
 	 */
 	public static ArrayList<Object> getEnemies() {
 		return enemyList;
@@ -251,24 +254,47 @@ public class TrainCanvas extends Application {
 	 * This method redraws the level when called.
 	 */
 	public static void redrawLevel() {
+		//Deleting all of the objects in the scene
 		player = null;
 		
-		for (int i = 0; i < objectList.size(); i++) {
-			objectList.remove(i);
+		while (objectList.size() != 0) {
+			objectList.remove(0);
 		}
-		for (int j = 0; j < enemyList.size(); j++) {
-			enemyList.remove(j);
+		while (enemyList.size() != 0) {
+			enemyList.remove(0);
 		}
+		
+		primaryStage.close();
 
-		//Making a background for the canvas.
-		Image background = new Image("file:Art/Background");
-		gc.drawImage(background, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-		LevelReader.createLevel(currentLevel, root);
+		//Remaking the screen
 		root = buildGame();
+ 
+		//Creating a scene
+		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+		//Reading in from the game level file.
+		LevelReader.createLevel(currentLevel, root);
+
+		//Setting the windows title
+		primaryStage.setTitle("Train Game!");
+		
+		//Display the scene at the front of the stage
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
+		//Centering the player to the middle of the screen
 		centerPlayer();
+
+		//This makes sure all objects have been drawn when the game starts.
 		drawGame();
+		
+		//When a button is pressed
+		scene.setOnKeyPressed(event -> {
+			player.takeInput(event.getCode().toString());
+			
+			drawGame();
+			onItem();
+		});
 	}
 
 	/**
@@ -395,8 +421,6 @@ public class TrainCanvas extends Application {
 	 * A method for adding the teleporter object to the game.
 	 * @param x
 	 * @param y
-	 * @param linkX
-	 * @param linkY
 	 */
 	public static void addTeleporter(int x, int y) {
 		objectList.add(new Teleporter(x, y, gc, TILE_SIZE));
@@ -407,6 +431,7 @@ public class TrainCanvas extends Application {
 	 * @param x
 	 * @param y
 	 * @param type
+	 * @param extra
 	 */
 	public static void addEnemy(int x, int y, int type, int extra) {
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));//Adding a floor below the enemy object
@@ -421,6 +446,10 @@ public class TrainCanvas extends Application {
 		}
 	}
 
+	/**
+	 * This method checks to see if an object has been picked up, 
+	 * and if so deletes it.
+	 */
 	public static void removePickedUp() {
 		//Iterating through each object in the list.
 		for (int i = 0; i < objectList.size(); i++) {

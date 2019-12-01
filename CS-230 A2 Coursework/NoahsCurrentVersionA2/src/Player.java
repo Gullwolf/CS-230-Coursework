@@ -161,7 +161,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -205,7 +205,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -227,7 +227,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}

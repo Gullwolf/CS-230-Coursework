@@ -13,9 +13,9 @@ import javafx.scene.paint.Color;
 public class WallHugEnemy extends Body {
 
 	private int direction;
-	
+
 	private ArrayList<Object> objectList;
-	
+
 	/**
 	 * The constructor for the Basic Enemy class.
 	 * @param x
@@ -30,96 +30,137 @@ public class WallHugEnemy extends Body {
 		this.image = new Image("file:Art/MissingTexture.png");
 		drawObject();
 	}
-	
+
+	//	public void move() {
+	//		if (direction == 1) { //UP
+	//			for (int i = 0; i < objectList.size(); i++) {
+	//				//This if looks to see if the object is in the position 
+	//				//the enemy is attempting to move into.
+	//				if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
+	//					//Check if the next spot is next to an object
+	//					if (((objectList.get(i).getX() == this.x - 1) 
+	//							&& objectList.get(i).getY() == this.y - 1)
+	//								|| ((objectList.get(i).getX() == this.x + 1) 
+	//										&& objectList.get(i).getY() == this.y - 1)) {
+	//						//If the spot is walkable, move there.
+	//						if(objectList.get(i).isEnemyWalkable) {
+	//							this.y--;
+	//							//Without this return, the enemy would move as far 
+	//							//in that direction as possible
+	//							return;
+	//						} else {
+	//							direction = 3; //Change the direction so it moves down
+	//						}
+	//					}
+	//				}
+	//			}
+	//		} else if (direction == 2) { //RIGHT
+	//			for (int i = 0; i < objectList.size(); i++) {
+	//				//This if looks to see if the object is in the position 
+	//				//the enemy is attempting to move into.
+	//				if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
+	//					//Check if the next spot is next to an object
+	//					if (((objectList.get(i).getX() == this.x + 1) 
+	//							&& objectList.get(i).getY() == this.y - 1)
+	//								|| ((objectList.get(i).getX() == this.x + 1) 
+	//										&& objectList.get(i).getY() == this.y + 1)) {
+	//						//If the spot is walkable, move there.
+	//						if(objectList.get(i).isEnemyWalkable) {
+	//							this.x++;
+	//							//Without this return, the enemy would move as far 
+	//							//in that direction as possible
+	//							return;
+	//						} else {
+	//							direction = 4; //Change the direction so it moves left
+	//						}
+	//					}
+	//				}
+	//			}
+	//		} else if (direction == 3) { //DOWN
+	//			for (int i = 0; i < objectList.size(); i++) {
+	//				//This if looks to see if the object is in the position 
+	//				//the enemy is attempting to move into.
+	//				if  ((objectList.get(i).getX() == this.x) &&
+	//						objectList.get(i).getY() == this.y + 1) {
+	//					//Check if the next spot is next to an object
+	//					if (((objectList.get(i).getX() == this.x + 1) 
+	//							&& objectList.get(i).getY() == this.y + 1)
+	//								|| ((objectList.get(i).getX() == this.x - 1) 
+	//										&& objectList.get(i).getY() == this.y + 1)) {
+	//						//If the spot is walkable, move there.
+	//						if (objectList.get(i).isEnemyWalkable) {
+	//							this.y++;
+	//							//Without this return, the enemy would move as far 
+	//							//in that direction as possible
+	//							return;
+	//						} else {
+	//							direction = 1; //Change the direction so it moves up
+	//						}
+	//					}
+	//				}
+	//			}
+	//		} else if (direction == 4) { //LEFT
+	//			for (int i = 0; i < objectList.size(); i++) {
+	//				//This if looks to see if the object is in the position 
+	//				//the enemy is attempting to move into.
+	//				if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
+	//					//Check if the next spot is next to an object
+	//					if (((objectList.get(i).getX() == this.x - 1) 
+	//							&& objectList.get(i).getY() == this.y - 1)
+	//								|| ((objectList.get(i).getX() == this.x - 1) 
+	//										&& objectList.get(i).getY() == this.y + 1)) {
+	//						//If the spot is walkable, move there.
+	//						if(objectList.get(i).isEnemyWalkable) {
+	//							this.x--;
+	//							//Without this return, the enemy would move as far 
+	//							//in that direction as possible
+	//							return;
+	//						} else {
+	//							direction = 2; //Change the direction so it moves right
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+
 	public void move() {
-		if (direction == 1) { //UP
-			for (int i = 0; i < objectList.size(); i++) {
-				//This if looks to see if the object is in the position 
-				//the enemy is attempting to move into.
-				if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
-					//Check if the next spot is next to an object
-					if (((objectList.get(i).getX() == this.x - 1) 
-							&& objectList.get(i).getY() == this.y - 1)
-								|| ((objectList.get(i).getX() == this.x + 1) 
-										&& objectList.get(i).getY() == this.y - 1)) {
-						//If the spot is walkable, move there.
-						if(objectList.get(i).isEnemyWalkable) {
+		for (int i = 0; i < objectList.size(); i++) {
+			//Looking at tiles one y level above that are walkable
+			if (objectList.get(i).getY() == this.y - 1) {
+				//If the above tile has a wall next to it (left and right)
+				for (int j = 0; j < objectList.size(); j++) {
+					if (objectList.get(j).getX() == this.x - 1 || objectList.get(j).getX() == this.x + 1 || objectList.get(j).getY() == this.y + 2 && !objectList.get(j).isEnemyWalkable) {
+						//If the tile above is walkable
+						System.out.println("MoveUP");
+						if (objectList.get(i).isEnemyWalkable) {
 							this.y--;
-							//Without this return, the enemy would move as far 
-							//in that direction as possible
 							return;
-						} else {
-							direction = 3; //Change the direction so it moves down
 						}
-					}
-				}
-			}
-		} else if (direction == 2) { //RIGHT
-			for (int i = 0; i < objectList.size(); i++) {
-				//This if looks to see if the object is in the position 
-				//the enemy is attempting to move into.
-				if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
-					//Check if the next spot is next to an object
-					if (((objectList.get(i).getX() == this.x + 1) 
-							&& objectList.get(i).getY() == this.y - 1)
-								|| ((objectList.get(i).getX() == this.x + 1) 
-										&& objectList.get(i).getY() == this.y + 1)) {
-						//If the spot is walkable, move there.
-						if(objectList.get(i).isEnemyWalkable) {
+					} else if (objectList.get(j).getX() == this.x + 2 || objectList.get(j).getY() == this.y + 1 || objectList.get(j).getY() == this.y - 1 && !objectList.get(j).isEnemyWalkable) {
+						//If the tile right is walkable
+						System.out.println("MoveRIGHT");
+						if (objectList.get(i).isEnemyWalkable) {
 							this.x++;
-							//Without this return, the enemy would move as far 
-							//in that direction as possible
 							return;
-						} else {
-							direction = 4; //Change the direction so it moves left
 						}
-					}
-				}
-			}
-		} else if (direction == 3) { //DOWN
-			for (int i = 0; i < objectList.size(); i++) {
-				//This if looks to see if the object is in the position 
-				//the enemy is attempting to move into.
-				if  ((objectList.get(i).getX() == this.x) &&
-						objectList.get(i).getY() == this.y + 1) {
-					//Check if the next spot is next to an object
-					if (((objectList.get(i).getX() == this.x + 1) 
-							&& objectList.get(i).getY() == this.y + 1)
-								|| ((objectList.get(i).getX() == this.x - 1) 
-										&& objectList.get(i).getY() == this.y + 1)) {
-						//If the spot is walkable, move there.
+					} else if (objectList.get(j).getY() == this.y - 2 || objectList.get(j).getX() == this.x + 1 || objectList.get(j).getX() == this.x - 1 && !objectList.get(j).isEnemyWalkable) {
+						//If the tile below is walkable
+						System.out.println("MoveDOWN");
 						if (objectList.get(i).isEnemyWalkable) {
 							this.y++;
-							//Without this return, the enemy would move as far 
-							//in that direction as possible
 							return;
-						} else {
-							direction = 1; //Change the direction so it moves up
 						}
-					}
-				}
-			}
-		} else if (direction == 4) { //LEFT
-			for (int i = 0; i < objectList.size(); i++) {
-				//This if looks to see if the object is in the position 
-				//the enemy is attempting to move into.
-				if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
-					//Check if the next spot is next to an object
-					if (((objectList.get(i).getX() == this.x - 1) 
-							&& objectList.get(i).getY() == this.y - 1)
-								|| ((objectList.get(i).getX() == this.x - 1) 
-										&& objectList.get(i).getY() == this.y + 1)) {
-						//If the spot is walkable, move there.
-						if(objectList.get(i).isEnemyWalkable) {
+					} else if (objectList.get(j).getX() == this.x - 2 || objectList.get(j).getY() == this.y + 1 || objectList.get(j).getY() == this.y - 1 && !objectList.get(j).isEnemyWalkable) {
+						//If the tile left is walkable
+						System.out.println("MoveLEFT");
+						if (objectList.get(i).isEnemyWalkable) {
 							this.x--;
-							//Without this return, the enemy would move as far 
-							//in that direction as possible
 							return;
-						} else {
-							direction = 2; //Change the direction so it moves right
 						}
 					}
-				}
+				} 
+
 			}
 		}
 	}

@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 public class Flippers extends Item {
 
 	private ArrayList<Object> objectList;
-	
+
 	/**
 	 * Creating a Flippers object.
 	 * @param x
@@ -31,8 +31,11 @@ public class Flippers extends Item {
 	 */
 	@Override
 	public void interact() {
-		this.pickedUp = true;
-		objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
-		TrainCanvas.getPlayer().pickupItem(5);		
+		if (!pickedUp) {
+			Sound.getSound("TokenPickUp");
+			this.pickedUp = true;
+			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+			TrainCanvas.getPlayer().pickupItem(5);		
+		}
 	}
 }

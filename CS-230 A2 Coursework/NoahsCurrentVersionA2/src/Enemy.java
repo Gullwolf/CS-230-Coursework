@@ -35,6 +35,7 @@ public class Enemy extends Body {
 	 */
 	@Override
 	public void interact() {
+		Sound.getSound("Death");
 		TrainCanvas.redrawLevel();
 	}
 	

@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 public class FireBoots extends Item {
 
 	private ArrayList<Object> objectList;
-	
+
 	/**
 	 * Creating a fire boots object.
 	 * @param x
@@ -24,16 +24,18 @@ public class FireBoots extends Item {
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/FireBoots.png");
 	}
-	
+
 	/**
 	 * This method makes the object look like a floor tile 
 	 * when it has been interacted.
 	 */
 	@Override
 	public void interact() {
-		this.pickedUp = true;
-		objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
-		TrainCanvas.getPlayer().pickupItem(6);		
+		if (!pickedUp) {
+			Sound.getSound("TokenPickUp");
+			this.pickedUp = true;
+			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+			TrainCanvas.getPlayer().pickupItem(6);		
+		}
 	}
-
 }

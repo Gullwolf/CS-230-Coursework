@@ -31,9 +31,11 @@ public class Token extends Item {
 	 */
 	@Override
 	public void interact() {
-		Sound.getSound("TokenPickUp");
-		this.pickedUp = true;
-		objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
-		TrainCanvas.getPlayer().pickupItem(1);
+		if (!pickedUp) {
+			Sound.getSound("TokenPickUp");
+			this.pickedUp = true;
+			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+			TrainCanvas.getPlayer().pickupItem(1);
+		}
 	}
 }

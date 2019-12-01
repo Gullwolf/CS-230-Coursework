@@ -9,10 +9,10 @@ import javafx.scene.image.Image;
  * @version 1.2
  */
 public class Key extends Item {
-	
+
 	private ArrayList<Object> objectList;
 	protected int keyColour;
-	
+
 	/**
 	 * Creating a Key object.
 	 * @param x
@@ -25,7 +25,7 @@ public class Key extends Item {
 		super(x, y, gc, TILE_SIZE);
 		this.keyColour = keyColour;
 		this.objectList = TrainCanvas.getObjects();
-		
+
 		if (keyColour == 1) {
 			this.image = new Image("file:Art/GreenKey.png");
 		} else if (keyColour == 2) {
@@ -34,22 +34,25 @@ public class Key extends Item {
 			this.image = new Image("file:Art/BlueKey.png");
 		}
 	}
-	
+
 	/**
 	 * This method makes the object look like a floor tile 
 	 * when it has been interacted.
 	 */
 	@Override
 	public void interact() {
-		objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
-		this.pickedUp = true;
-		if (keyColour == 1) {
-			TrainCanvas.getPlayer().pickupItem(4);//Green
-		} else if (keyColour == 2) {
-			TrainCanvas.getPlayer().pickupItem(2);//Red
-		} else if (keyColour == 3) {
-			TrainCanvas.getPlayer().pickupItem(3);//Blue
-		}		
+		if (!pickedUp) {
+			Sound.getSound("KeyPickUp");
+			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+			this.pickedUp = true;
+			if (keyColour == 1) {
+				TrainCanvas.getPlayer().pickupItem(4);//Green
+			} else if (keyColour == 2) {
+				TrainCanvas.getPlayer().pickupItem(2);//Red
+			} else if (keyColour == 3) {
+				TrainCanvas.getPlayer().pickupItem(3);//Blue
+			}		
+		}
 	}
 
 }

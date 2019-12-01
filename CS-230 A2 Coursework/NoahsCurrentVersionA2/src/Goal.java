@@ -16,7 +16,7 @@ public class Goal extends Useable {
 	 */
 	public Goal(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = new Image("file:Art/MissingTexture.png");
+		this.image = new Image("file:Art/Goal.png");
 	}
 
 	/**
@@ -24,6 +24,7 @@ public class Goal extends Useable {
 	 */
 	@Override
 	public void interact() {
+		Sound.getSound("LevelCompleted");
 		TrainCanvas.nextLevel();
 	}
 	
