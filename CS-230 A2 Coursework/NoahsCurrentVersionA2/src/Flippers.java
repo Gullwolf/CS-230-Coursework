@@ -22,7 +22,7 @@ public class Flippers extends Item {
 	public Flippers(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.objectList = TrainCanvas.getObjects();
-		this.image = new Image("file:Art/MissingTexture.png");
+		this.image = new Image("file:Art/Flippers.png");
 	}
 
 	/**
