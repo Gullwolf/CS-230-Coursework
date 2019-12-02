@@ -7,7 +7,7 @@ import java.net.URL;
 /**
  * This class plays all of the game sounds that are needed inside of the game.
  * @author George Cook
- * @version 1.7
+ * @version 1.8
  */
 public class Sound {
 
@@ -21,10 +21,10 @@ public class Sound {
         File file = new File(soundFile);
         URL url = null;
         if (file.canRead()) {url = file.toURI().toURL();} //Creating the file path to the sound file.
-        System.out.println(url);
+        //System.out.println(url);
         AudioClip clip = Applet.newAudioClip(url);
         clip.play();
-        System.out.println("should've played by now");
+        //System.out.println("should've played by now");
     }
 
     /**
