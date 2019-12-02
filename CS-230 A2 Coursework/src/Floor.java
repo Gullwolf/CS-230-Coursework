@@ -1,10 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the floor object.
  * @author Noah Stebbings
- * @version 1.2
+ * @version 1.3
  */
 public class Floor extends Terrain {
 	/**
@@ -18,7 +18,7 @@ public class Floor extends Terrain {
 		super(x, y, gc, TILE_SIZE);
 		isPlayerWalkable = true;
 		isEnemyWalkable = true;
-		this.image = Color.LIGHTGREY;
+		this.image = new Image("file:Art/Floor.png");
 	}
 
 }

@@ -1,5 +1,4 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * A general class for player interactable tiles.
@@ -23,12 +22,10 @@ public class Useable extends Object {
 	}
 	
 	/**
-	 * This method makes the object look like a floor tile 
-	 * when it has been interacted with.
+	 * This method is overwritten in its subclasses.
 	 */
 	@Override
 	public void interact() {
-		System.out.println("interacted!");
-		this.image = Color.LIGHTGREY;
+
 	}
 }

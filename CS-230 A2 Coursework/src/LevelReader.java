@@ -102,9 +102,7 @@ public class LevelReader {
 				break;
 				case "W": addWater(x, y);
 				break;
-				case "Z": int linkX = getExtraInfo();
-				int linkY = getExtraInfo();
-				addTeleporter(x, y, linkX, linkY);
+				case "Z": addTeleporter(x, y);
 				break;
 				case "I": type = getExtraInfo();
 				addItem(x, y, type);
@@ -241,8 +239,8 @@ public class LevelReader {
 	 * This method creates a teleporter tile in the correct location.
 	 */
 	
-	private static void addTeleporter(int x, int y, int linkX, int linkY) {
-		TrainCanvas.addTeleporter(x, y, linkX, linkY);
+	private static void addTeleporter(int x, int y) {
+		TrainCanvas.addTeleporter(x, y);
 	}
 	/**
 	 * @param x y type

@@ -1,10 +1,9 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * A general class for all terain objects.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Terrain extends Object {
 

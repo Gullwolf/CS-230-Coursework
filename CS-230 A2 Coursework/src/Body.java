@@ -3,7 +3,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * A general class for enemies and the player.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Body extends Object {
 

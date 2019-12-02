@@ -1,10 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the goal object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Goal extends Useable {
 	/**
@@ -16,7 +16,7 @@ public class Goal extends Useable {
 	 */
 	public Goal(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = Color.DARKGOLDENROD;
+		this.image = new Image("file:Art/Goal.png");
 	}
 
 	/**
@@ -24,6 +24,7 @@ public class Goal extends Useable {
 	 */
 	@Override
 	public void interact() {
+		Sound.getSound("LevelCompleted");
 		TrainCanvas.nextLevel();
 	}
 	

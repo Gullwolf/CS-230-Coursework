@@ -1,12 +1,16 @@
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the Flippers object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Flippers extends Item {
+
+	private ArrayList<Object> objectList;
 
 	/**
 	 * Creating a Flippers object.
@@ -17,7 +21,8 @@ public class Flippers extends Item {
 	 */
 	public Flippers(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = Color.NAVY;
+		this.objectList = TrainCanvas.getObjects();
+		this.image = new Image("file:Art/Flippers.png");
 	}
 
 	/**
@@ -26,7 +31,11 @@ public class Flippers extends Item {
 	 */
 	@Override
 	public void interact() {
-		this.image = Color.LIGHTGREY;
-		TrainCanvas.getPlayer().pickupItem(5);		
+		if (!pickedUp) {
+			Sound.getSound("TokenPickUp");
+			this.pickedUp = true;
+			objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+			TrainCanvas.getPlayer().pickupItem(5);		
+		}
 	}
 }

@@ -1,10 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the fire object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Fire extends Terrain {
 	/**
@@ -16,7 +16,7 @@ public class Fire extends Terrain {
 	 */
 	public Fire(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = Color.ORANGE;
+		this.image = new Image("file:Art/Fire.png");
 	}
 	
 	/**

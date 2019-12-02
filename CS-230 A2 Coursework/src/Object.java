@@ -1,5 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This is the superclass of all objects.
@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class Object {
 	
 	//Used by items
-	public boolean pickedUp;
+	public boolean pickedUp = false;
 	
 	//Storing the coordinates of the object.
 	protected int x;
@@ -20,8 +20,7 @@ public class Object {
 	protected boolean isPlayerWalkable;
 	protected boolean isEnemyWalkable;
 	
-	//TODO change from COLOR to image, which will be gotten from subclass
-	protected Color image;
+	protected Image image;
 	
 	//Used for teleporter objects only
 	protected boolean isTeleporter = false;
@@ -35,18 +34,16 @@ public class Object {
 	
 	/**
 	 * A blank method that is overwritten only by teleporters.
+	 * If an object isnt a teleporter, this does nothing.
 	 */
 	public void fixLinks() {	}
 	
 	/**
 	 * This method draws the object on the canvas. 
-	 * @param image
 	 */
 	protected void drawObject() {
-		gc.setFill(image);
-		
-		//Draw a square at the set coordinates
-		gc.fillRect((x * TILE_SIZE), (y * TILE_SIZE), TILE_SIZE, TILE_SIZE);
+		//Draw an image at the set coordinates
+		gc.drawImage(this.image, (x * TILE_SIZE), (y * TILE_SIZE), TILE_SIZE, TILE_SIZE);
 	}
 	
 	/**

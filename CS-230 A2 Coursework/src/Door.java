@@ -1,10 +1,9 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * A general class for all doors.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Door extends Object {
 

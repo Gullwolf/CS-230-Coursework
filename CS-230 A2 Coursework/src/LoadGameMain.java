@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -34,7 +32,7 @@ public class LoadGameMain extends Application {
 	 */
 	public void start(Stage loadMainStage) throws Exception {
 		
-		Profile player = Profile.currentProfileInUse("Cai"); 
+		Profile player = Profile.currentProfileInUse(currUser); 
 		
 		final int CANVAS_WIDTH = 900;
 		final int CANVAS_HEIGHT = 700;
@@ -55,17 +53,17 @@ public class LoadGameMain extends Application {
 		
 		
 		//Listview allowing selectable games
-		ListView<Object> selectGame = new ListView<>();
-		selectGame.getItems().addAll("Level 1                                   Highscore: " + player.getHighestScoreL1(), 
-				"Level 2                                   Highscore: " + player.getHighestScoreL2(),
-				"Level 3                                   Highscore: " + player.getHighestScoreL3(),
-				"Level 4                          	      Highscore: " + player.getHighestScoreL4(),
-				"Level 5                          	      Highscore: " + player.getHighestScoreL5(),
-				"Level 6                          	      Highscore: " + player.getHighestScoreL6(),
-				"Level 7                          	      Highscore: " + player.getHighestScoreL7(),
-				"Level 8                           	      Highscore: " + player.getHighestScoreL8(),
-				"Level 9                           	      Highscore: " + player.getHighestScoreL9(),
-				"Level 10                                 Highscore: " + player.getHighestScoreL10());
+		ListView<String> selectGame = new ListView<>();
+		selectGame.getItems().setAll("Level 1                                   Highscore:" + "    "  + player.getHighestScoreL1(), 
+				"Level 2                                   Highscore: " + "    "  + player.getHighestScoreL2(),
+				"Level 3                                   Highscore: " + "    "  + player.getHighestScoreL3(),
+				"Level 4                          	      Highscore: "  + "    "  + player.getHighestScoreL4(),
+				"Level 5                          	      Highscore: "  + "    "  + player.getHighestScoreL5(),
+				"Level 6                          	      Highscore: "  + "    "  + player.getHighestScoreL6(),
+				"Level 7                          	      Highscore: "  + "    "  + player.getHighestScoreL7(),
+				"Level 8                           	      Highscore: "  + "    "  + player.getHighestScoreL8(),
+				"Level 9                           	      Highscore: "  + "    "  + player.getHighestScoreL9(),
+				"Level 10                                 Highscore: " + "    "  + player.getHighestScoreL10());
 		selectGame.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		selectGame.setPrefSize(820, 420);
 		selectGame.setStyle("-fx-font-size: 2.0em ;");
@@ -77,9 +75,15 @@ public class LoadGameMain extends Application {
 		Button leaderboardBut = new Button("Leaderboard");
 		leaderboardBut.setLayoutX(350);
 		leaderboardBut.setLayoutY(540);
-		leaderboardBut.setPrefSize(200,100);
+		leaderboardBut.setPrefSize(200, 100);
 		leaderboardBut.addEventHandler(ActionEvent.ACTION, (e) -> {
-			System.out.println("This will load the leaderboard");
+			Stage load = new Stage();
+			try {
+				loadMainStage.hide();
+				new LeaderBoardMain().start(load);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		});
 		root.getChildren().add(leaderboardBut);
 		
@@ -115,17 +119,19 @@ public class LoadGameMain extends Application {
 					" if you want to leave your current high score, click cancel");
 			playedBefore.showAndWait().ifPresent(response -> {
 				if (response == ok) {
-					Stage load = new Stage();
-					try {
-						loadMainStage.hide();
-						TrainCanvas.setCurrentLevel(selected + 1);
-						new TrainCanvas().start(load);
-					} catch (Exception e1) {
-						e1.printStackTrace();
+					if (response == ok) {
+						Stage load = new Stage();
+						try {
+							loadMainStage.hide();
+							TrainCanvas.setCurrentLevel(selected + 1);
+							new TrainCanvas().start(load);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					} else if (response == cancel) {
+						playedBefore.close();
 					}
-				} else if (response == cancel) {
-					playedBefore.close();
-				}
+					}
 			});
 			
 		} else if (selected == player.getLevel() - 1) { //If this is the current level the player is playing
@@ -134,15 +140,39 @@ public class LoadGameMain extends Application {
 			currentlyPlaying.setHeaderText("Your current score: " + player.getCurrentScore());
 			currentlyPlaying.setContentText("Goodluck!");
 			currentlyPlaying.showAndWait().ifPresent(response -> {
-				if (response == ok) {
+				if (response == ok && selected != 0) {
 					int actualLevel = selected - 1;
 					String filepath = System.getProperty("user.dir") + "\\SavedGames\\" + 
 							player.getUser() + "\\" + actualLevel + ".txt";
 					TrainCanvas.setLoadStatus();
 					TrainCanvas.setLoadFilePath(filepath);
+					Stage load = new Stage();
+					try {
+						loadMainStage.hide();
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				} else if (response == cancel) {
 					currentlyPlaying.close();
 				}
+				
+				if (response == ok && selected == 0) {
+					String filepath = System.getProperty("user.dir") + "\\Levels\\" + 
+							"\\Level1" + ".txt";
+					TrainCanvas.setLoadStatus();
+					TrainCanvas.setLoadFilePath(filepath);
+					Stage load = new Stage();
+					try {
+						loadMainStage.hide();
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else if (response == cancel) {
+					currentlyPlaying.close();
+				}
+				
 			});
 			
 		} else { //User is unable to play levels that they've not worked up to, will receieve error message. 

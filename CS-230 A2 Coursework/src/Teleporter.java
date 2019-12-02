@@ -1,53 +1,30 @@
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the Teleporter object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class Teleporter extends Useable {
 	
 	private ArrayList<Object> objectList;
-	public boolean isTeleporter = true;
-	
-	private int linkX;
-	private int linkY;
-	
+
 	/**
 	 * Creating a Teleporter object.
 	 * @param x
 	 * @param y
 	 * @param gc
 	 * @param TILE_SIZE
-	 * @param linkX
-	 * @param linkY
 	 */
-	public Teleporter(int x, int y, GraphicsContext gc, int TILE_SIZE, int linkX, int linkY) {
+	public Teleporter(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.linkX = linkX;
-		this.linkY = linkY;
-		this.image = Color.CYAN;
+		this.image = new Image("file:Art/Teleporter.png");
 		this.objectList = TrainCanvas.getObjects();
 		this.isPlayerWalkable = false;
-		fixLinks();
-	}
-	
-	/**
-	 * This method fixes the coordinates of the linked teleporter.
-	 */
-	@Override
-	public void fixLinks() {
-//		this.linkX = this.linkX - TrainCanvas.getPlayer().getX() + TrainCanvas.getCenter();
-//		this.linkY = this.linkY - TrainCanvas.getPlayer().getY() + TrainCanvas.getCenter();
-		for (int i = 0; i < objectList.size(); i++) {
-			if (objectList.get(i).isTeleporter && objectList.get(i) != this) {
-				this.linkX = objectList.get(i).getX();
-				this.linkY = objectList.get(i).getY();
-			}
-		}
+		this.isTeleporter = true;
 	}
 	
 	/**
@@ -56,15 +33,40 @@ public class Teleporter extends Useable {
 	 */
 	@Override
 	public void interact() {
+		Sound.getSound("Portal");
 		String lastKey = TrainCanvas.getPlayer().lastKey;
 		if (lastKey.equals("A") || lastKey.equals("LEFT")) {
-			TrainCanvas.getPlayer().teleportPlayerX(linkX - 1);
+			for (int i = 0; i < objectList.size(); i++) {
+				//If the object is on the same y axis, is a teleporter and is not this object.
+				if ((objectList.get(i).getY() == this.y) && (objectList.get(i).isTeleporter) && (objectList.get(i) != this)) {
+					//Teleport the player one space left of the found teleporter
+					TrainCanvas.getPlayer().teleportPlayerX(objectList.get(i).getX() - 1);
+				}
+			}
 		} else if (lastKey.equals("D") || lastKey.equals("RIGHT")) {
-			TrainCanvas.getPlayer().teleportPlayerX(linkX + 1);
+			for (int i = 0; i < objectList.size(); i++) {
+				//If the object is on the same y axis, is a teleporter and is not this object.
+				if ((objectList.get(i).getY() == this.y) && (objectList.get(i).isTeleporter) && (objectList.get(i) != this)) {
+					//Teleport the player one space right of the found teleporter
+					TrainCanvas.getPlayer().teleportPlayerX(objectList.get(i).getX());
+				}
+			}
 		} else if (lastKey.equals("W") || lastKey.equals("UP")) {
-			TrainCanvas.getPlayer().teleportPlayerY(linkY - 1);
+			for (int i = 0; i < objectList.size(); i++) {
+				//If the object is on the same x axis, is a teleporter and is not this object.
+				if (objectList.get(i).getX() == this.x && objectList.get(i).isTeleporter && objectList.get(i) != this) {
+					//Teleport the player one space above of the found teleporter
+					TrainCanvas.getPlayer().teleportPlayerX(objectList.get(i).getY() - 1);
+				}
+			}
 		} else if (lastKey.equals("S") || lastKey.equals("DOWN")) {
-			TrainCanvas.getPlayer().teleportPlayerX(linkY + 1);
+			for (int i = 0; i < objectList.size(); i++) {
+				//If the object is on the same x axis, is a teleporter and is not this object.
+				if (objectList.get(i).getX() == this.x && objectList.get(i).isTeleporter && objectList.get(i) != this) {
+					//Teleport the player one space below of the found teleporter
+					TrainCanvas.getPlayer().teleportPlayerX(objectList.get(i).getY());
+				}
+			}
 		}
 		TrainCanvas.centerPlayer();
 	}

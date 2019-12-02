@@ -1,15 +1,18 @@
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the key door object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class TokenDoor extends Door {
-	
+
 	protected int requirements;
-	
+	private ArrayList<Object> objectList;
+
 	/**
 	 * Creating a Key Door object.
 	 * @param x
@@ -21,7 +24,8 @@ public class TokenDoor extends Door {
 	public TokenDoor(int x, int y, GraphicsContext gc, int TILE_SIZE, int requirements) {
 		super(x, y, gc, TILE_SIZE);
 		this.requirements = requirements;
-		this.image = Color.BROWN;
+		this.objectList = TrainCanvas.getObjects();
+		this.image = new Image("file:Art/TokenDoor.png");
 	}
 
 	/**
@@ -30,9 +34,13 @@ public class TokenDoor extends Door {
 	 */
 	@Override
 	public void interact() {
-		if (TrainCanvas.getPlayer().getTokens() >= this.requirements) {
-			this.image = Color.LIGHTGREY;
-			this.isPlayerWalkable = true;
+		if (!pickedUp) {
+			if (TrainCanvas.getPlayer().getTokens() >= this.requirements) {
+				objectList.add(new Floor(this.x, this.y, gc, TILE_SIZE));
+				Sound.getSound("DoorOpen");
+				this.pickedUp = true;
+				this.isPlayerWalkable = true;
+			}
 		}
 	}
 }

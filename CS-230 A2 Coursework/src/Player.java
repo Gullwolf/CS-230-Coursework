@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the player object.
  * @author Noah Stebbings
- * @version 1.2
+ * @version 1.3
  */
 public class Player extends Body {
 
@@ -32,7 +32,7 @@ public class Player extends Body {
 	 */
 	public Player(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = Color.MAGENTA;
+		this.image = new Image("file:Art/PlayerRight.png");
 		this.objectList = TrainCanvas.getObjects();
 		this.enemyList = TrainCanvas.getEnemies();
 	}
@@ -117,7 +117,7 @@ public class Player extends Body {
 	/**
 	 * This method teleports the player to specified coordinates
 	 * along the Y axis.
-	 * @param newX
+	 * @param newY
 	 */
 	public void teleportPlayerY(int newY) {
 		this.y = newY;
@@ -130,12 +130,16 @@ public class Player extends Body {
 	public void takeInput(String inputKey) {
 		lastKey = inputKey;
 		if (inputKey.equals("UP") || inputKey.equals("W")) {
+//			this.image = new Image("file:Art/PlayerUp.png");
 			moveUp();
 		}  else if (inputKey.equals("DOWN") || inputKey.equals("S")) {
+//			this.image = new Image("file:Art/PlayerDown.png");
 			moveDown();
 		} else if (inputKey.equals("LEFT") || inputKey.equals("A")) {
+			this.image = new Image("file:Art/PlayerLeft.png");
 			moveLeft();
 		} else if (inputKey.equals("RIGHT") || inputKey.equals("D")) {
+			this.image = new Image("file:Art/PlayerRight.png");
 			moveRight();
 		}
 	}
@@ -154,10 +158,10 @@ public class Player extends Body {
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goUp();
 				}
-				return;
+				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -176,10 +180,10 @@ public class Player extends Body {
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goDown();
 				}
-				return;
+				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -198,10 +202,10 @@ public class Player extends Body {
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goLeft();
 				}
-				return;
+				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}
@@ -220,10 +224,10 @@ public class Player extends Body {
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goRight();
 				}
-				return;
+				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
-				//TODO add sound for failing to move into a spot.
+				Sound.getSound("HitWall");
 			}
 		}
 	}

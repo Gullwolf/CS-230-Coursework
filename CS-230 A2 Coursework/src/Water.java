@@ -1,5 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * This class draws the Water object.
@@ -16,7 +16,7 @@ public class Water extends Terrain {
 	 */
 	public Water(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
-		this.image = Color.BLUE;
+		this.image = new Image("file:Art/Water.png");
 	}
 
 	/**

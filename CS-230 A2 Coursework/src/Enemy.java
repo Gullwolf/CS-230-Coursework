@@ -1,10 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * A general class for all enemy objects.
  * @author Noah Stebbings
- * @version 1.0
+ * @version 1.1
  */
 public class Enemy extends Body {
 
@@ -18,7 +18,7 @@ public class Enemy extends Body {
 	public Enemy(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		
-		this.image = Color.RED;
+		this.image = new Image("file:Art/MissingTexture.png");
 		drawObject();
 	}
 
@@ -35,6 +35,7 @@ public class Enemy extends Body {
 	 */
 	@Override
 	public void interact() {
+		Sound.getSound("Death");
 		TrainCanvas.redrawLevel();
 	}
 	

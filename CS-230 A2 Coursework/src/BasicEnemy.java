@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
  /**
  * Making the Basic Enemy Object.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.2
  */
 public class BasicEnemy extends Body {
 
@@ -27,7 +27,7 @@ public class BasicEnemy extends Body {
 		this.direction = direction;
 		//Getting the list of objects in the map
 		this.objectList = TrainCanvas.getObjects();
-		this.image = Color.RED;
+		this.image = new Image("file:Art/Enemy1Right.png");//TODO make it change direction
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class BasicEnemy extends Body {
 						this.y--;
 						//Without this return, the enemy would move as far 
 						//in that direction as possible
-						return;
+						i = objectList.size(); //Exiting the loop;
 					} else {
 						direction = 3; //Change the direction so it moves down
 					}
@@ -60,7 +60,7 @@ public class BasicEnemy extends Body {
 						this.x++;
 						//Without this return, the enemy would move as far 
 						//in that direction as possible
-						return;
+						i = objectList.size(); //Exiting the loop
 					} else {
 						direction = 4; //Change the direction so it moves left
 					}
@@ -77,7 +77,7 @@ public class BasicEnemy extends Body {
 						this.y++;
 						//Without this return, the enemy would move as far 
 						//in that direction as possible
-						return;
+						i = objectList.size(); //Exiting the loop
 					} else {
 						direction = 1; //Change the direction so it moves up
 					}
@@ -93,7 +93,7 @@ public class BasicEnemy extends Body {
 						this.x--;
 						//Without this return, the enemy would move as far 
 						//in that direction as possible
-						return;
+						i = objectList.size(); //Exiting the loop
 					} else {
 						direction = 2; //Change the direction so it moves right
 					}
