@@ -21,6 +21,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -72,24 +73,19 @@ public class MainMenu extends Application {
 		
 		//Creates background image
 		mainStage.setTitle("Trains Challenge");
-		Image background = new Image("file:background.jpg");
+		Image background = new Image("file:Art/Background.png");
 		ImageView screenBackground = new ImageView(background);
 		
 		Group root = new Group();
-		root.getChildren().addAll(screenBackground);
+		root.getChildren().add(screenBackground);
 		
 		//Main page scene
 		Scene mainScene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
 		mainStage.setResizable(false);
 	
 		//Buttons 
-		Button buttonQuitGame = new Button("Quit game!");
-		buttonQuitGame.setPrefSize(300, 100);
-		buttonQuitGame.setStyle("-fx-font-size: 2em; ");
-		buttonQuitGame.setLayoutX(320);
-		buttonQuitGame.setLayoutY(375);
-		root.getChildren().add(buttonQuitGame);
-	
+
+		
 		Button buttonCABack = new Button("Back");
 		buttonCABack.setPrefSize(200, 60);
 		buttonCABack.setTranslateX(150);
@@ -249,6 +245,29 @@ public class MainMenu extends Application {
 		play.setLayoutY(250);
 		play.setOnAction(e -> mainStage.setScene(sceneLogin));
 		root.getChildren().add(play);
+		
+		ButtonType ok = new ButtonType("Ok");
+		ButtonType cancel = new ButtonType("Cancel");
+		Button buttonQuitGame = new Button("Quit game!");
+		buttonQuitGame.setPrefSize(300, 100);
+		buttonQuitGame.setStyle("-fx-font-size: 2em; ");
+		buttonQuitGame.setLayoutX(320);
+		buttonQuitGame.setLayoutY(375);
+		buttonQuitGame.addEventHandler(ActionEvent.ACTION, (e) -> {
+			Alert goodbye = new Alert(AlertType.CONFIRMATION, "Hi", ok, cancel);
+			goodbye.setTitle("Thanks for playing!");
+			goodbye.setHeaderText("Are you sure you wish to quit?");
+			goodbye.setContentText("Press 'ok' to quit the game, or 'cancel' to play some more!");
+			goodbye.showAndWait().ifPresent(response -> {
+					if (response == ok) {
+						System.exit(0);
+					} else {
+						goodbye.close();
+					}	
+				});
+
+			});
+		root.getChildren().add(buttonQuitGame);
 		
 		//Login screen scene
 		StackPane login = new StackPane();
