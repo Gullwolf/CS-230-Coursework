@@ -51,6 +51,7 @@ public class WallHugEnemy extends Body {
 				this.image = new Image("file:Art/Enemy2Right.png");
 			}
 		}
+		this.interact();
 	}
 	
 	/**

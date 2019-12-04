@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /** This class is create a enemy which can find the shortest way to attack the player
-*@author Hao Wu
+*@author Hao Wu, Noah Stebbings
 *@version 1.2
 */
 public class DumbEnemy extends Enemy {
@@ -62,6 +62,7 @@ public class DumbEnemy extends Enemy {
 				}
 			}
 		}
+		this.interact();
 	}
 	
 //	public void move() {

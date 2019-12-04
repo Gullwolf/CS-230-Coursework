@@ -24,12 +24,12 @@ import javafx.stage.Stage;
  */
 public class LeaderBoardMain extends Application {
 	private static int index = 0;
-	
+
 	public static void main(String[] args) {
 		launch(args);
 
 	}	
-	
+
 
 	/**
 	 * Loads canvas and displays inital level 1 highscores.
@@ -38,20 +38,20 @@ public class LeaderBoardMain extends Application {
 	public void start(Stage main) throws Exception {
 		final int CANVAS_HEIGHT = 700;
 		final int CANVAS_WIDTH = 900;
-		
+
 		main.setTitle("Leaderboards");
 		Group root = new Group();
-		
+
 		Scene mainScene = new Scene(root, CANVAS_WIDTH, CANVAS_HEIGHT);
 		main.setResizable(false);
-		
+
 		//Labels
 		Label choose = new Label("Please choose a level you'd like to see highscores for:");
 		choose.setFont(new Font("Times new roman", 30));
 		choose.setLayoutX(40);
 		choose.setLayoutY(50);
 		root.getChildren().add(choose);
-		
+
 		//Button
 		Button back = new Button("Back");
 		back.setPrefSize(500, 60);
@@ -67,7 +67,7 @@ public class LeaderBoardMain extends Application {
 			}
 		});
 		root.getChildren().add(back);
-	
+
 		//ListView
 		ListView<String> players = new ListView<>();
 		players.setPrefSize(820, 420);
@@ -76,7 +76,7 @@ public class LeaderBoardMain extends Application {
 		players.setLayoutY(150);
 		root.getChildren().add(players);
 		players.getItems().add("Position                                            Score                                       Player");
-		
+
 		//Combobox
 		String[] availableLevels = {"Level 1", "Level 2", "Level 3",
 				"Level 4", "Level 5", "Level 6", "Level 7", "Level 8",
@@ -97,7 +97,7 @@ public class LeaderBoardMain extends Application {
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
-			
+
 		});
 		 //This intially loads the listview with highscores from level1
 		int position = 1;
@@ -136,7 +136,7 @@ public class LeaderBoardMain extends Application {
 		main.setScene(mainScene);
 		main.show();	
 	}
-	
+
 	/**
 	 * Translates index selection from combobox to index numbers from profile text files.
 	 * @param indexSelected The initally selected index
@@ -180,7 +180,7 @@ public class LeaderBoardMain extends Application {
 		}
 		return returning;
 	}
-	
+
 	/**
 	 * Sorts arraylist of scores and names into decending order.
 	 * @param list The inital, unsorted arraylist.
@@ -190,7 +190,7 @@ public class LeaderBoardMain extends Application {
 		Collections.sort(list, Collections.reverseOrder());
 		return list;
 	}
-	
+
 	/**
 	 * When user chooses level this will refresh to the selected level.
 	 * @param index The index of the combobox selected by user, which has been translated into index for text file
@@ -350,9 +350,9 @@ public class LeaderBoardMain extends Application {
 				String temp = Integer.toString(score);
 				listOfScores.add(temp + name);
 			}
-			
+
 		}
-		
+
 		ArrayList<String> finalList = LeaderBoardMain.sort(listOfScores);
 		int count = 1;
 		for (int i = 0; i < finalList.size(); i++) {
@@ -370,6 +370,6 @@ public class LeaderBoardMain extends Application {
 				players.getItems().add("Nobody has set a highscore for this level yet, be the first!");
 				count++;
 			}
-	}
+		}
 	}
 }

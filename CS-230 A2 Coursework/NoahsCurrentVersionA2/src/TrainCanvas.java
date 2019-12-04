@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 /**
  * This class creates the game itself.
- * @author Noah Stebbings
+ * @author Noah Stebbings, Cai Sidaway
  * @version 1.5
  */
 public class TrainCanvas extends Application {
@@ -190,7 +190,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * Just sets a string to something, allowing for checking in the main start stage
+	 * Just sets a string to something, allowing for checking in the main start stage.
 	 */
 	public static void setLoadStatus() {
 		load = "Yes";
@@ -219,6 +219,7 @@ public class TrainCanvas extends Application {
 		for (int j = 0; j < enemyList.size(); j++) {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
+				//GEORGE REPLACE THE CONTENTS OF THIS IF WITH YOUR CODE / A METHOD CALL
 				redrawLevel();
 			}
 		}
@@ -390,6 +391,7 @@ public class TrainCanvas extends Application {
 	public static void nextLevel() {
 		currentLevel++;
 		redrawLevel();
+		
 	}
 
 	/**

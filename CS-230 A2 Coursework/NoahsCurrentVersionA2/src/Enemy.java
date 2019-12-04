@@ -37,8 +37,12 @@ public class Enemy extends Body {
 	 */
 	@Override
 	public void interact() {
-		Sound.getSound("Death");
-		TrainCanvas.redrawLevel();
+		if (TrainCanvas.getPlayer().getX() == this.x && TrainCanvas.getPlayer().getY() == this.y) {
+			Sound.getSound("Death");
+			TrainCanvas.redrawLevel();
+		}
+		System.out.println("REACHED HERE");
+		
 	}
 	
 }

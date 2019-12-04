@@ -161,6 +161,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x, this.y - 1);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -183,6 +184,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x, this.y + 1);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -204,7 +206,8 @@ public class Player extends Body {
 				}
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
-				objectList.get(i).interact(); //Attempt to interact with the object
+				objectList.get(i).interact(); //Attempt to interact with the objec
+				enemyInteract(this.x - 1, this.y);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -227,7 +230,16 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x + 1, this.y);
 				Sound.getSound("HitWall");
+			}
+		}
+	}
+	
+	private void enemyInteract(int attemptX, int attemptY) {
+		for (int i = 0; i < enemyList.size(); i++) {
+			if (enemyList.get(i).getX() == attemptX && enemyList.get(i).getY() == attemptY) {
+				enemyList.get(i).interact();
 			}
 		}
 	}
