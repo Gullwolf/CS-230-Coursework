@@ -143,6 +143,7 @@ public class TrainCanvas extends Application {
 	 */
 	public static void updateLeaderboard() {
 		int currHighScore = 0;
+		//Getting the current levels high score for the player.
 		switch (currentLevel) {
 		case 1: currHighScore = Profile.getHighestScoreL1();
 		break;
@@ -165,10 +166,15 @@ public class TrainCanvas extends Application {
 		case 10: currHighScore = Profile.getHighestScoreL10();
 		break;
 		}
+		//If the users new score is lower than their old best, or there is no current best.
 		if (currentLevelScore < currHighScore || currHighScore == 0) {
 			try {
+				//Try and update the high score
 				Profile.setHighscoreToValue(currentLevel, currentLevelScore);
-				Profile.setLevel(Profile.getLevel() + 1);
+				//Only updates the next level if the player is on the furthest level they can reach
+				if (Profile.getLevel() == currentLevel) {
+					Profile.setLevel(Profile.getLevel() + 1);
+				}
 			} catch (FileNotFoundException e) {
 				System.out.println("INVALID PROFILE ERROR");
 			}
