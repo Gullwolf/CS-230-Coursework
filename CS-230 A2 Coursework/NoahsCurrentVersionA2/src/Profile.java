@@ -11,7 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 /**
  * This class represents a profile of a player that has already created an account.
  * @author Cai Sidaway
- *@version 1.0
+ *@version 1.1
  */
 public class Profile {
 	private static String username;
@@ -306,35 +306,35 @@ public class Profile {
 		return currentScore;
 	}
 	
-	public int getHighestScoreL1() {
+	public static int getHighestScoreL1() {
 		return highestScoreL1;
 	}
 	
-	public int getHighestScoreL2() {
+	public static int getHighestScoreL2() {
 		return highestScoreL2;
 	}
-	public int getHighestScoreL3() {
+	public static int getHighestScoreL3() {
 		return highestScoreL3;
 	}
-	public int getHighestScoreL4() {
+	public static int getHighestScoreL4() {
 		return highestScoreL4;
 	}
-	public int getHighestScoreL5() {
+	public static int getHighestScoreL5() {
 		return highestScoreL5;
 	}
-	public int getHighestScoreL6() {
+	public static int getHighestScoreL6() {
 		return highestScoreL6;
 	}
-	public int getHighestScoreL7() {
+	public static int getHighestScoreL7() {
 		return highestScoreL7;
 	}
-	public int getHighestScoreL8() {
+	public static int getHighestScoreL8() {
 		return highestScoreL8;
 	}
-	public int getHighestScoreL9() {
+	public static int getHighestScoreL9() {
 		return highestScoreL9;
 	}
-	public int getHighestScoreL10() {
+	public static int getHighestScoreL10() {
 		return highestScoreL10;
 	}
 	

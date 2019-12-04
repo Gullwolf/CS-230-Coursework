@@ -28,7 +28,7 @@ public class WallHugEnemy extends Body {
 		super(x, y, gc, TILE_SIZE);
 		//Getting the list of objects in the map
 		this.objectList = TrainCanvas.getObjects();
-		this.image = new Image("file:Art/MissingTexture.png");
+		this.image = new Image("file:Art/Enemy2Right.png");
 		drawObject();
 	}
 
@@ -41,12 +41,14 @@ public class WallHugEnemy extends Body {
 			} else if (canMoveLeft() && direction == 2) {
 				this.x--;
 				hasMoved = true;
+				this.image = new Image("file:Art/Enemy2Left.png");
 			} else if (canMoveDown() && direction == 3) {
 				this.y++;
 				hasMoved = true;
 			} else if (canMoveRight() && direction == 4) {
 				this.x++;
 				hasMoved = true;
+				this.image = new Image("file:Art/Enemy2Right.png");
 			}
 		}
 	}
