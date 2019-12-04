@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 /**
  * A general class for all enemy objects.
- * @author Noah Stebbings
+ * @author Noah Stebbings, George Cook
  * @version 1.4
  */
 public class Enemy extends Body {
