@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 /**
  * This class creates the game itself.
- * @author Noah Stebbings, Cai Sidaway
- * @version 1.5
+ * @author Noah Stebbings, Cai Sidaway, George Cook
+ * @version 1.7
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
@@ -42,7 +42,7 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel = 1;
+	private static int currentLevel;
 	private static int currentLevelScore = 0;
 
 	//A list of all objects in the game
@@ -63,9 +63,11 @@ public class TrainCanvas extends Application {
 	private static Pane root;
 	private static String[] arguments;
 
+
+
 	/**
 	 * The startup method for the game.
-	 * @param primaryStage
+	 * @param stage
 	 */
 	public void start(Stage stage) {
 		primaryStage = stage;
@@ -99,44 +101,42 @@ public class TrainCanvas extends Application {
 			drawGame();
 			onItem();
 		});
-		
+
 		//When close button is clicked this will trigger
-				stage.setOnCloseRequest(event -> {
-					Stage loader = new Stage();
-					ButtonType ok = new ButtonType("Ok");
-					ButtonType cancel = new ButtonType("Cancel");
-					Alert quit = new Alert(AlertType.CONFIRMATION, "Quit", ok,cancel);
-					quit.setTitle("You've quit!");
-					quit.setHeaderText("You've been sent back to the load game menu");
-					quit.setContentText("If you'd like to save your previous game, click ok " +
-								" if you want to disgard it click cancel");
-					quit.showAndWait().ifPresent(response -> {
-						if (response == ok) { //If they've chosen okay, it'll run savegame
-//							try {
-//								SaveGame.saveGame();
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-							try {
-								new LoadGameMain().start(loader);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-						} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
-							try {
-								Profile.setCurScore(0);
-								try {
-									new LoadGameMain().start(loader);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
+		stage.setOnCloseRequest(event -> {
+			Stage loader = new Stage();
+			ButtonType ok = new ButtonType("Ok");
+			ButtonType cancel = new ButtonType("Cancel");
+			Alert quit = new Alert(AlertType.CONFIRMATION, "Quit", ok,cancel);
+			quit.setTitle("You've quit!");
+			quit.setHeaderText("You've been sent back to the load game menu");
+			quit.setContentText("If you'd like to save your previous game, click ok " +
+					" if you want to disgard it click cancel");
+			quit.showAndWait().ifPresent(response -> {
+				if (response == ok) { //If they've chosen okay, it'll run savegame
+					SaveGame.setCurrentLevel(currentLevel);
+					SaveGame.readOriginal();
+					try {
+						new LoadGameMain().start(loader);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
+					try {
+						Profile.setCurScore(0);
+						try {
+							new LoadGameMain().start(loader);
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-					});
-				});
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		});
 	}
+
 
 	/**
 	 * This method updates the leadboard on the players death.
@@ -145,26 +145,26 @@ public class TrainCanvas extends Application {
 		int currHighScore = 0;
 		//Getting the current levels high score for the player.
 		switch (currentLevel) {
-		case 1: currHighScore = Profile.getHighestScoreL1();
-		break;
-		case 2: currHighScore = Profile.getHighestScoreL2();
-		break;
-		case 3: currHighScore = Profile.getHighestScoreL3();
-		break;
-		case 4: currHighScore = Profile.getHighestScoreL4();
-		break;
-		case 5: currHighScore = Profile.getHighestScoreL5();
-		break;
-		case 6: currHighScore = Profile.getHighestScoreL6();
-		break;
-		case 7: currHighScore = Profile.getHighestScoreL7();
-		break;
-		case 8: currHighScore = Profile.getHighestScoreL8();
-		break;
-		case 9: currHighScore = Profile.getHighestScoreL9();
-		break;
-		case 10: currHighScore = Profile.getHighestScoreL10();
-		break;
+			case 1: currHighScore = Profile.getHighestScoreL1();
+				break;
+			case 2: currHighScore = Profile.getHighestScoreL2();
+				break;
+			case 3: currHighScore = Profile.getHighestScoreL3();
+				break;
+			case 4: currHighScore = Profile.getHighestScoreL4();
+				break;
+			case 5: currHighScore = Profile.getHighestScoreL5();
+				break;
+			case 6: currHighScore = Profile.getHighestScoreL6();
+				break;
+			case 7: currHighScore = Profile.getHighestScoreL7();
+				break;
+			case 8: currHighScore = Profile.getHighestScoreL8();
+				break;
+			case 9: currHighScore = Profile.getHighestScoreL9();
+				break;
+			case 10: currHighScore = Profile.getHighestScoreL10();
+				break;
 		}
 		//If the users new score is lower than their old best, or there is no current best.
 		if (currentLevelScore < currHighScore || currHighScore == 0) {
@@ -210,7 +210,7 @@ public class TrainCanvas extends Application {
 	public static void onItem() {
 		//Checking if the player is interacting with an object.
 		for (int i = 0; i < objectList.size(); i++) {
-			if ((objectList.get(i).getX() == player.getX()) && 
+			if ((objectList.get(i).getX() == player.getX()) &&
 					(objectList.get(i).getY() == player.getY())) {
 				objectList.get(i).interact();
 			}
@@ -219,8 +219,7 @@ public class TrainCanvas extends Application {
 		for (int j = 0; j < enemyList.size(); j++) {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
-				//GEORGE REPLACE THE CONTENTS OF THIS IF WITH YOUR CODE / A METHOD CALL
-				redrawLevel();
+				player.onDeath(primaryStage);
 			}
 		}
 	}
@@ -242,7 +241,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * This method moves all objects so the player is in the 
+	 * This method moves all objects so the player is in the
 	 * center of the screen.
 	 */
 	public static void centerPlayer() {
@@ -391,7 +390,7 @@ public class TrainCanvas extends Application {
 	public static void nextLevel() {
 		currentLevel++;
 		redrawLevel();
-		
+
 	}
 
 	/**
@@ -536,7 +535,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * This method checks to see if an object has been picked up, 
+	 * This method checks to see if an object has been picked up,
 	 * and if so deletes it.
 	 */
 	public static void removePickedUp() {
