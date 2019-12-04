@@ -22,6 +22,7 @@ public class SaveGame {
 	private static Scanner in2 = null;	
 	private static int mapHeight;
 	private static int mapWidth;
+	private static String extra;
 	
 	private static ArrayList<Object> objectList = TrainCanvas.getObjects();
 	private static ArrayList<Object> enemyList = TrainCanvas.getEnemies();
@@ -38,11 +39,27 @@ public class SaveGame {
 //	private static String detailedInformation = "";
 //	private static String user = "Test"; //This has been brute forced - CHANGE
 //	private static int currentLevel = 1; //This has been brute forced - CHANGE
-//	private static String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
-//			"Level" + currentLevel + "_" + user + ".txt";
+ private static String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
+		"Level" + currentLevel + "_" + user + ".txt";
 //	private static Player player;
 //	private static int heightOfarray;
 //	private static int widthOfArray;
+ 
+	/**
+	 * This method takes a level number and opens the text file for 
+	 * that level.
+	 * @param LevelNumber
+	 */
+	private static void setFile(int LevelNumber) {
+		File fileLocation = new File("Levels/Level" + LevelNumber + 
+				".txt");
+		try { //Catching a FileNotFoundException
+			in = new Scanner(fileLocation);
+			in2 = new Scanner(fileLocation);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+		}
+	}
 	
 	/**
 	 * This method builds a 2d array version of the map.
@@ -50,13 +67,14 @@ public class SaveGame {
 	public static void SaveGame() {
 		currentLevel = TrainCanvas.getCurrentLevel();
 		setFile(currentLevel);
+
+
+		mapHeight = in.nextInt();
 		in.useDelimiter("");
 		in2.useDelimiter("");
 
-		mapHeight = in.nextInt();
-
 		in.nextLine(); //Goes to the next line
-		String extra = in.nextLine();
+		extra = in.nextLine();
 		String mapLine = in.nextLine();
 
 		mapWidth = mapLine.length();
@@ -124,6 +142,14 @@ public class SaveGame {
 //		}
 //		//Adding the player to the 2d array
 //		map[player.getX()][player.getY()] = 'P';
+		
+		try {
+			printToFile();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -164,22 +190,7 @@ public class SaveGame {
 			}
 		}
 	}
-	
-	/**
-	 * This method takes a level number and opens the text file for 
-	 * that level.
-	 * @param LevelNumber
-	 */
-	private static void setFile(int LevelNumber) {
-		File fileLocation = new File("Levels/Level" + LevelNumber + 
-				".txt");
-		try { //Catching a FileNotFoundException
-			in = new Scanner(fileLocation);
-			in2 = new Scanner(fileLocation);
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
-		}
-	}
+
 	
 	/**
 	 * This method prints out the save game state to a text file.
@@ -190,11 +201,16 @@ public class SaveGame {
 		String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
 				"Level" + currentLevel + "_" + user + ".txt";
 		PrintWriter writer = new PrintWriter(filename,"UTF-8");
-		writer.println(mapHeight);
-		writer.println(extraInformationLine);
 		
+		System.out.println(Arrays.deepToString(map)); //For testing
+		writer.println(mapHeight);
+		System.out.println(mapHeight); //for testing
+		writer.println(extra);
+		System.out.println(extra); //for testing
+		System.out.println(mapWidth); //for testing
 		for(int i = 0;i<mapHeight;i++) {
 			for(int j = 0; j < mapWidth; j++) {
+				System.out.print(map[i][j]);
 				writer.print(map[i][j]);
 			}
 			writer.println();
