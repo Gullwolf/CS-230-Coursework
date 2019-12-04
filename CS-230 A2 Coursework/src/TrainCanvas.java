@@ -1,8 +1,13 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,8 +15,8 @@ import javafx.stage.Stage;
 
 /**
  * This class creates the game itself.
- * @author Noah Stebbings
- * @version 1.4
+ * @author Noah Stebbings, Cai Sidaway
+ * @version 1.5
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
@@ -37,25 +42,28 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel = 1;
+	private static int currentLevel;
+	private static int currentLevelScore = 0;
 
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
 	private static ArrayList<Object> enemyList = new ArrayList<Object>();
-	
+
 	//If current game's getting loaded, then this filepath will be used (also parsed)
 	private static String loadFilePath = null;
-			
+
 	//String is only set to yes if it's coming from a savegame file, else null.
 	private static String load = null;
-	
+
 	private static Stage primaryStage;
-	
+
 	//Creating an empty player object.
 	private static Player player;
 
 	private static Pane root;
 	private static String[] arguments;
+	
+
 
 	/**
 	 * The startup method for the game.
@@ -74,7 +82,7 @@ public class TrainCanvas extends Application {
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
-		
+
 		//Display the scene at the front of the stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -88,10 +96,89 @@ public class TrainCanvas extends Application {
 		//When a button is pressed
 		scene.setOnKeyPressed(event -> {
 			player.takeInput(event.getCode().toString());
-			
+
+			currentLevelScore++;
 			drawGame();
 			onItem();
 		});
+		
+		//When close button is clicked this will trigger
+				stage.setOnCloseRequest(event -> {
+					Stage loader = new Stage();
+					ButtonType ok = new ButtonType("Ok");
+					ButtonType cancel = new ButtonType("Cancel");
+					Alert quit = new Alert(AlertType.CONFIRMATION, "Quit", ok,cancel);
+					quit.setTitle("You've quit!");
+					quit.setHeaderText("You've been sent back to the load game menu");
+					quit.setContentText("If you'd like to save your previous game, click ok " +
+								" if you want to disgard it click cancel");
+					quit.showAndWait().ifPresent(response -> {
+						if (response == ok) { //If they've chosen okay, it'll run savegame
+							SaveGame.setCurrentLevel(currentLevel);
+							SaveGame.readOriginal();
+							try {
+								new LoadGameMain().start(loader);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
+							try {
+								Profile.setCurScore(0);
+								try {
+									new LoadGameMain().start(loader);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				});
+	}
+
+
+	/**
+	 * This method updates the leadboard on the players death.
+	 */
+	public static void updateLeaderboard() {
+		int currHighScore = 0;
+		//Getting the current levels high score for the player.
+		switch (currentLevel) {
+		case 1: currHighScore = Profile.getHighestScoreL1();
+		break;
+		case 2: currHighScore = Profile.getHighestScoreL2();
+		break;
+		case 3: currHighScore = Profile.getHighestScoreL3();
+		break;
+		case 4: currHighScore = Profile.getHighestScoreL4();
+		break;
+		case 5: currHighScore = Profile.getHighestScoreL5();
+		break;
+		case 6: currHighScore = Profile.getHighestScoreL6();
+		break;
+		case 7: currHighScore = Profile.getHighestScoreL7();
+		break;
+		case 8: currHighScore = Profile.getHighestScoreL8();
+		break;
+		case 9: currHighScore = Profile.getHighestScoreL9();
+		break;
+		case 10: currHighScore = Profile.getHighestScoreL10();
+		break;
+		}
+		//If the users new score is lower than their old best, or there is no current best.
+		if (currentLevelScore < currHighScore || currHighScore == 0) {
+			try {
+				//Try and update the high score
+				Profile.setHighscoreToValue(currentLevel, currentLevelScore);
+				//Only updates the next level if the player is on the furthest level they can reach
+				if (Profile.getLevel() == currentLevel) {
+					Profile.setLevel(Profile.getLevel() + 1);
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("INVALID PROFILE ERROR");
+			}
+		}
 	}
 
 	/**
@@ -101,14 +188,14 @@ public class TrainCanvas extends Application {
 	public static void setCurrentLevel(int level) {
 		currentLevel = level;
 	}
-	
+
 	/**
-	 * Just sets a string to something, allowing for checking in the main start stage
+	 * Just sets a string to something, allowing for checking in the main start stage.
 	 */
 	public static void setLoadStatus() {
 		load = "Yes";
 	}
-	
+
 	/**
 	 * Sets the file path to the one players specifically saved game
 	 * @param path Is the location of the file on the system
@@ -116,7 +203,7 @@ public class TrainCanvas extends Application {
 	public static void setLoadFilePath(String path) {
 		loadFilePath = path;
 	}
-	
+
 	/**
 	 * Checks if the player is standing on an item.
 	 */
@@ -132,6 +219,7 @@ public class TrainCanvas extends Application {
 		for (int j = 0; j < enemyList.size(); j++) {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
+				//GEORGE REPLACE THE CONTENTS OF THIS IF WITH YOUR CODE / A METHOD CALL
 				redrawLevel();
 			}
 		}
@@ -174,7 +262,7 @@ public class TrainCanvas extends Application {
 		//Setting the player to be at the center of the screen
 		player.setX(center);
 		player.setY(center);
-		
+
 		//Fixing the teleporter objects.
 		for (int j = 0; j < objectList.size(); j++) {
 			if (objectList.get(j).isTeleporter) {
@@ -192,7 +280,7 @@ public class TrainCanvas extends Application {
 		//Making a background for the canvas.
 		gc.setFill(Color.DARKGREEN);
 		gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-		
+
 		removePickedUp();
 		//Iterating through each object in the list.
 		for (int i = 0; i < objectList.size(); i++) {
@@ -254,20 +342,21 @@ public class TrainCanvas extends Application {
 	 */
 	public static void redrawLevel() {
 		//Deleting all of the objects in the scene
+		currentLevelScore = 0;
 		player = null;
-		
+
 		while (objectList.size() != 0) {
 			objectList.remove(0);
 		}
 		while (enemyList.size() != 0) {
 			enemyList.remove(0);
 		}
-		
+
 		primaryStage.close();
 
 		//Remaking the screen
 		root = buildGame();
- 
+
 		//Creating a scene
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -276,7 +365,7 @@ public class TrainCanvas extends Application {
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
-		
+
 		//Display the scene at the front of the stage
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -286,11 +375,11 @@ public class TrainCanvas extends Application {
 
 		//This makes sure all objects have been drawn when the game starts.
 		drawGame();
-		
+
 		//When a button is pressed
 		scene.setOnKeyPressed(event -> {
 			player.takeInput(event.getCode().toString());
-			
+
 			drawGame();
 			onItem();
 		});
@@ -302,6 +391,7 @@ public class TrainCanvas extends Application {
 	public static void nextLevel() {
 		currentLevel++;
 		redrawLevel();
+		
 	}
 
 	/**

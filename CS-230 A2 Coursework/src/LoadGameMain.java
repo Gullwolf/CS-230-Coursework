@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 public class LoadGameMain extends Application {
 
 	public static String currUser;
+	private static Pane root;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -105,14 +107,17 @@ public class LoadGameMain extends Application {
 		
 		ButtonType ok = new ButtonType("Ok");
 		ButtonType cancel = new ButtonType("Cancel");
+		ButtonType restart = new ButtonType("Restart");
+		ButtonType cont = new ButtonType("Continue");
 		Button play = new Button("Play selected level!");
 		play.setLayoutX(50);
 		play.setLayoutY(540);
 		play.setPrefSize(200, 100);
 		play.addEventHandler(ActionEvent.ACTION, (e) -> {
 		int selected = selectGame.getSelectionModel().getSelectedIndex();
+		SaveGame.setCurrentLevel(selected-1);
 		if (selected < player.getLevel() - 1) { //If the index selected is less than the level the player is on, then they can play it
-			Alert playedBefore = new Alert(AlertType.CONFIRMATION, "Want to continue?", ok, cancel);
+			Alert playedBefore = new Alert(AlertType.CONFIRMATION, "Want to continue?", ok,cancel);
 			playedBefore.setTitle("You've played this before!");
 			playedBefore.setHeaderText("This level has been previously completed");
 			playedBefore.setContentText("If you'd like to retry this level, click ok " +
@@ -135,47 +140,51 @@ public class LoadGameMain extends Application {
 			});
 			
 		} else if (selected == player.getLevel() - 1) { //If this is the current level the player is playing
-			Alert currentlyPlaying = new Alert(AlertType.CONFIRMATION, "Want to play?", ok, cancel);
+			if(player.getCurrentScore() != 0) {
+			Alert currentlyPlaying = new Alert(AlertType.CONFIRMATION, "Want to play?", cont, restart, cancel);
 			currentlyPlaying.setTitle("You're currently playing this level");
 			currentlyPlaying.setHeaderText("Your current score: " + player.getCurrentScore());
-			currentlyPlaying.setContentText("Goodluck!");
+			currentlyPlaying.setContentText("Would you like to continue with your previous game, or restart the level?");
 			currentlyPlaying.showAndWait().ifPresent(response -> {
-				if (response == ok && selected != 0) {
-					int actualLevel = selected - 1;
-					String filepath = System.getProperty("user.dir") + "\\SavedGames\\" + 
-							player.getUser() + "\\" + actualLevel + ".txt";
-					TrainCanvas.setLoadStatus();
-					TrainCanvas.setLoadFilePath(filepath);
+				if (response == cont) { //Instance where you need to load saved game file. 
+					
+					
+				} else if (response == cancel) { //Instance of cancellation
+					currentlyPlaying.close();
+				} else { //Instance of restart (loading a game like normal)
 					Stage load = new Stage();
 					try {
 						loadMainStage.hide();
+						TrainCanvas.setCurrentLevel(selected + 1);
 						new TrainCanvas().start(load);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-				} else if (response == cancel) {
-					currentlyPlaying.close();
-				}
-				
-				if (response == ok && selected == 0) {
-					String filepath = System.getProperty("user.dir") + "\\Levels\\" + 
-							"\\Level1" + ".txt";
-					TrainCanvas.setLoadStatus();
-					TrainCanvas.setLoadFilePath(filepath);
-					Stage load = new Stage();
-					try {
-						loadMainStage.hide();
-						new TrainCanvas().start(load);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				} else if (response == cancel) {
-					currentlyPlaying.close();
-				}
-				
+				} 
+					
 			});
-			
+		} else {
+			Alert currentlyPlaying = new Alert(AlertType.CONFIRMATION, "Goodluck!", ok, cancel);
+			currentlyPlaying.setTitle("This is your first attempt at this round, goodluck!");
+			currentlyPlaying.setHeaderText("Your current score: " + player.getCurrentScore());
+			currentlyPlaying.setContentText("Press 'ok' to play and 'cancel' to go back");
+			currentlyPlaying.showAndWait().ifPresent(response -> {
+				if (response == ok) { //Instance where it's players first time playing this level
+					Stage load = new Stage();
+					try {
+						loadMainStage.hide();
+						TrainCanvas.setCurrentLevel(selected + 1);
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}	
+				} else if (response == cancel) { //Instance of cancellation
+					currentlyPlaying.close();
+				}
+			});
+		}
 		} else { //User is unable to play levels that they've not worked up to, will receieve error message. 
+
 			Alert notAble = new Alert(AlertType.ERROR);
 			notAble.setTitle("You can't play this!");
 			notAble.setHeaderText("Sorry!");
@@ -183,6 +192,7 @@ public class LoadGameMain extends Application {
 					", to continue to this level, beat the levels leading to this one!");
 			notAble.showAndWait();
 		}
+		
 		});
 		root.getChildren().add(play);
 
@@ -198,7 +208,6 @@ public class LoadGameMain extends Application {
 	public static void user(String person) {
 		currUser = person;
 	}
-	
 	
 
 }
