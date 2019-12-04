@@ -102,7 +102,7 @@ public class TrainCanvas extends Application {
 		});
 		
 		//When close button is clicked this will trigger
-				stage.setOnCloseRequest(event -> {
+		stage.setOnCloseRequest(event -> {
 					Stage loader = new Stage();
 					ButtonType ok = new ButtonType("Ok");
 					ButtonType cancel = new ButtonType("Cancel");
@@ -113,7 +113,12 @@ public class TrainCanvas extends Application {
 								" if you want to disgard it click cancel");
 					quit.showAndWait().ifPresent(response -> {
 						if (response == ok) { //If they've chosen okay, it'll run savegame
-							SaveGame.SaveGame();
+							try {
+								Profile.setCurScore(currentLevelScore);
+								SaveGame.SaveGame();
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
 							try {
 								new LoadGameMain().start(loader);
 							} catch (Exception e1) {
