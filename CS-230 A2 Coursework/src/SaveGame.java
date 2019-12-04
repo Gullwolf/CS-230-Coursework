@@ -20,9 +20,9 @@ public class SaveGame {
 	static char[][] map;
 	private static Scanner in = null;
 	private static Scanner in2 = null;	
-	private static int mapHeight;
-	private static int mapWidth;
-	private static String extra;
+	private static int mapHeight = 0;
+	private static int mapWidth = 0;
+	private static String extra = "";
 	
 	private static ArrayList<Object> objectList = TrainCanvas.getObjects();
 	private static ArrayList<Object> enemyList = TrainCanvas.getEnemies();
@@ -210,10 +210,11 @@ public class SaveGame {
 		System.out.println(mapWidth); //for testing
 		for(int i = 0;i<mapHeight;i++) {
 			for(int j = 0; j < mapWidth; j++) {
-				System.out.print(map[i][j]);
-				writer.print(map[i][j]);
+				System.out.print(map[j][i]);
+				writer.print(map[j][i]);
 			}
-			writer.println();
+			writer.print("\n");
+			System.out.print("\n");
 		}
 		
 		writer.close();
