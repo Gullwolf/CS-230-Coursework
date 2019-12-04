@@ -21,6 +21,7 @@ public class LevelReader {
 	private static String detailedInformation = "";
 
 	private  static Pane root;
+	
 	/**
 	 * This method takes a level number and opens the text file for 
 	 * that level.

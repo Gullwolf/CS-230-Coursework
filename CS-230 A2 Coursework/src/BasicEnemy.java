@@ -100,5 +100,6 @@ public class BasicEnemy extends Body {
 				}
 			}
 		}
+	this.interact();
 	}
 }

@@ -19,6 +19,7 @@ public class Floor extends Terrain {
 		isPlayerWalkable = true;
 		isEnemyWalkable = true;
 		this.image = new Image("file:Art/Floor.png");
+		this.tileType = "Floor";
 	}
 
 }

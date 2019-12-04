@@ -22,6 +22,8 @@ public class Object {
 	
 	protected Image image;
 	
+	protected String tileType = "null";
+	
 	//Used for teleporter objects only
 	protected boolean isTeleporter = false;
 	
@@ -33,10 +35,12 @@ public class Object {
 	}
 	
 	/**
-	 * A blank method that is overwritten only by teleporters.
-	 * If an object isnt a teleporter, this does nothing.
+	 * This method returns the tile type.
+	 * @return 
 	 */
-	public void fixLinks() {	}
+	public String getTileType() {
+		return this.tileType;
+	}
 	
 	/**
 	 * This method draws the object on the canvas. 
@@ -118,5 +122,19 @@ public class Object {
 	 */
 	public void setY(int newY) {
 		this.y = newY;
+	}
+
+	/**
+	 * This method returns the requirements of the token door.
+	 * Only used by tokendoor for savegame
+	 * @return int
+	 */
+	public int getRequirements() {
+		return 0;
+	}
+
+	public int getRequirments() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

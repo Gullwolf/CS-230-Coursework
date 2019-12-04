@@ -8,7 +8,7 @@ import java.net.URL;
  * This class gets the coded string from the intended website,
  * Decodes it and then gets the message of the day from this.
  * @author George Cook
- * @version 1.0
+ * @version 1.2
  */
 
 public class DailyMessage {

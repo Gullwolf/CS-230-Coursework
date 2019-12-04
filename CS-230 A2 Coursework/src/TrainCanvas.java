@@ -42,7 +42,7 @@ public class TrainCanvas extends Application {
 	public static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel;
+	private static int currentLevel = 1;
 	private static int currentLevelScore = 0;
 
 	//A list of all objects in the game
@@ -62,14 +62,12 @@ public class TrainCanvas extends Application {
 
 	private static Pane root;
 	private static String[] arguments;
-	
-
 
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
 	 */
-	public void start(Stage stage) {
+	public void start(Stage stage) throws IOException {
 		primaryStage = stage;
 		//Building the game
 		root = buildGame();
@@ -100,6 +98,7 @@ public class TrainCanvas extends Application {
 			currentLevelScore++;
 			drawGame();
 			onItem();
+			System.out.println(player.getX() + "," + player.getY());
 		});
 		
 		//When close button is clicked this will trigger
@@ -114,8 +113,7 @@ public class TrainCanvas extends Application {
 								" if you want to disgard it click cancel");
 					quit.showAndWait().ifPresent(response -> {
 						if (response == ok) { //If they've chosen okay, it'll run savegame
-							SaveGame.setCurrentLevel(currentLevel);
-							SaveGame.readOriginal();
+							SaveGame.SaveGame();
 							try {
 								new LoadGameMain().start(loader);
 							} catch (Exception e1) {
@@ -137,7 +135,14 @@ public class TrainCanvas extends Application {
 				});
 	}
 
-
+	/**
+	 * This method returns the current level.
+	 * @return int
+	 */
+	public static int getCurrentLevel() {
+		return currentLevel;
+	}
+	
 	/**
 	 * This method updates the leadboard on the players death.
 	 */
@@ -219,8 +224,8 @@ public class TrainCanvas extends Application {
 		for (int j = 0; j < enemyList.size(); j++) {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
-				//GEORGE REPLACE THE CONTENTS OF THIS IF WITH YOUR CODE / A METHOD CALL
-				redrawLevel();
+				player.onDeath(primaryStage);
+//				redrawLevel();
 			}
 		}
 	}
@@ -262,13 +267,6 @@ public class TrainCanvas extends Application {
 		//Setting the player to be at the center of the screen
 		player.setX(center);
 		player.setY(center);
-
-		//Fixing the teleporter objects.
-		for (int j = 0; j < objectList.size(); j++) {
-			if (objectList.get(j).isTeleporter) {
-				objectList.get(j).fixLinks();
-			}
-		}
 	}
 
 	/**

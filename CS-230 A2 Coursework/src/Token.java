@@ -23,6 +23,7 @@ public class Token extends Item {
 		super(x, y, gc, TILE_SIZE);
 		this.image = new Image("file:Art/Token.png");
 		this.objectList = TrainCanvas.getObjects();
+		this.tileType = "Token";
 	}
 
 	/**

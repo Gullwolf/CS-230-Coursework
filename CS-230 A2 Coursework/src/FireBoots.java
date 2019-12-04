@@ -23,6 +23,7 @@ public class FireBoots extends Item {
 		super(x, y, gc, TILE_SIZE);
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/FireBoots.png");
+		this.tileType = "FireBoots";
 	}
 
 	/**

@@ -23,6 +23,7 @@ public class Flippers extends Item {
 		super(x, y, gc, TILE_SIZE);
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/Flippers.png");
+		this.tileType = "Flippers";
 	}
 
 	/**

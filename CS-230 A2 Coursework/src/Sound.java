@@ -37,7 +37,7 @@ public class Sound {
 
             case "Death":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\Death1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -48,7 +48,7 @@ public class Sound {
 
             case "HitWall":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\WalkInToWall.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -59,7 +59,7 @@ public class Sound {
 
             case "KeyPickUp":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\KeyPickUp1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -70,7 +70,7 @@ public class Sound {
 
             case "LevelCompleted":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\Goal1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -81,7 +81,7 @@ public class Sound {
 
             case "DoorOpen":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\DoorOpen1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -92,7 +92,7 @@ public class Sound {
 
             case "Portal":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\Teleporter1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -103,7 +103,7 @@ public class Sound {
 
             case "TokenPickUp":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\PickUp1.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -114,7 +114,7 @@ public class Sound {
 
             case "MainMusic":
                 try {
-                    playSound("Sounds\\LoadSound.wav");
+//                    playSound("Sounds\\LoadSound.wav");
                     playSound("Sounds\\MenuMusic.wav");
                 } catch (Exception ex){
                     System.out.println("Error with playing sound.");
@@ -127,5 +127,3 @@ public class Sound {
         }
     }
 }
-
-

@@ -26,8 +26,19 @@ public class TokenDoor extends Door {
 		this.requirements = requirements;
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/TokenDoor.png");
+		this.tileType = "TokenDoor";
 	}
 
+	/**
+	 * This returns the number of tokens the door requires to opens.
+	 * @return int
+	 */
+	@Override
+	public int getRequirments() {
+		return this.requirements;
+	}
+	
+	
 	/**
 	 * This method makes the object look like a floor tile 
 	 * when it has been interacted.

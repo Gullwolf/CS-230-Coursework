@@ -28,10 +28,13 @@ public class Key extends Item {
 
 		if (keyColour == 1) {
 			this.image = new Image("file:Art/GreenKey.png");
+			this.tileType = "Key Green";
 		} else if (keyColour == 2) {
 			this.image = new Image("file:Art/RedKey.png");
+			this.tileType = "Key Red";
 		} else if (keyColour == 3) {
 			this.image = new Image("file:Art/BlueKey.png");
+			this.tileType = "Key Blue";
 		}
 	}
 

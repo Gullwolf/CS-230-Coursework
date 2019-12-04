@@ -25,6 +25,7 @@ public class Goal extends Useable {
 	@Override
 	public void interact() {
 		Sound.getSound("LevelCompleted");
+		TrainCanvas.updateLeaderboard();
 		TrainCanvas.nextLevel();
 	}
 	

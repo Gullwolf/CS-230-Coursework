@@ -1,10 +1,11 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+
 /**
  * A general class for all enemy objects.
  * @author Noah Stebbings
- * @version 1.1
+ * @version 1.4
  */
 public class Enemy extends Body {
 
@@ -34,9 +35,9 @@ public class Enemy extends Body {
 	 * This method will detect if the enemy interacts with the player.
 	 */
 	@Override
-	public void interact() {
-		Sound.getSound("Death");
-		TrainCanvas.redrawLevel();
-	}
-	
+	public void interact() {}
+
+
+
+
 }

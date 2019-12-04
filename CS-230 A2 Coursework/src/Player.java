@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * This class draws the player object.
- * @author Noah Stebbings
- * @version 1.3
+ * @author Noah Stebbings, George Cook
+ * @version 1.5
  */
 public class Player extends Body {
 
@@ -161,6 +164,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y - 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x, this.y - 1);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -183,6 +187,7 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x) && objectList.get(i).getY() == this.y + 1) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x, this.y + 1);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -204,7 +209,8 @@ public class Player extends Body {
 				}
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x - 1) && objectList.get(i).getY() == this.y) {
-				objectList.get(i).interact(); //Attempt to interact with the object
+				objectList.get(i).interact(); //Attempt to interact with the objec
+				enemyInteract(this.x - 1, this.y);
 				Sound.getSound("HitWall");
 			}
 		}
@@ -227,8 +233,41 @@ public class Player extends Body {
 				i = objectList.size(); //Exiting the loop
 			} else if ((objectList.get(i).getX() == this.x + 1) && objectList.get(i).getY() == this.y) {
 				objectList.get(i).interact(); //Attempt to interact with the object
+				enemyInteract(this.x + 1, this.y);
 				Sound.getSound("HitWall");
 			}
 		}
+	}
+	
+	private void enemyInteract(int attemptX, int attemptY) {
+		for (int i = 0; i < enemyList.size(); i++) {
+			if (enemyList.get(i).getX() == attemptX && enemyList.get(i).getY() == attemptY) {
+				enemyList.get(i).interact();
+			}
+		}
+	}
+
+	public void onDeath(Stage primaryStage){
+		Sound.getSound("Death");
+
+		Stage loader = new Stage();
+		ButtonType restartButton = new ButtonType("Restart Level");
+		ButtonType quitButton = new ButtonType("Quit Level");
+		Alert quit = new Alert(Alert.AlertType.CONFIRMATION, "You have Died!", restartButton, quitButton);
+		quit.setTitle("GAME OVER");
+		quit.showAndWait().ifPresent(response -> {
+			if (response == restartButton) { //
+				TrainCanvas.redrawLevel();
+			}
+			else if (response == quitButton) {
+				try {
+					primaryStage.close();
+					new LoadGameMain().start(loader);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
 	}
 }
