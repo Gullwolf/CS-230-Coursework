@@ -23,6 +23,14 @@ public class Door extends Object {
 	/**
 	 * A blank method that is overwritten by subclasses.
 	 */
-	public void interact() { };
+	public void interact() { }
+
+	/**
+	 * This returns the requirements for the tokendoor.
+	 * @return int
+	 */
+	public int getRequirments() {
+		return 0;
+	}
 	
 }

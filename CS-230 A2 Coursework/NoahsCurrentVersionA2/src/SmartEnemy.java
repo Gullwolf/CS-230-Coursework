@@ -71,7 +71,7 @@ public class SmartEnemy extends Body {
 	 */
 	@Override
 	public void move() {
-		System.out.println(findPlayer());
+//		System.out.println(findPlayer());
 		switch (findPlayer()) {
 		case "NW": moveNW();
 		break;

@@ -115,6 +115,7 @@ public class LoadGameMain extends Application {
 		play.setPrefSize(200, 100);
 		play.addEventHandler(ActionEvent.ACTION, (e) -> {
 		int selected = selectGame.getSelectionModel().getSelectedIndex();
+		SaveGame.setCurrentLevel(selected-1);
 		if (selected < player.getLevel() - 1) { //If the index selected is less than the level the player is on, then they can play it
 			Alert playedBefore = new Alert(AlertType.CONFIRMATION, "Want to continue?", ok,cancel);
 			playedBefore.setTitle("You've played this before!");
@@ -207,7 +208,6 @@ public class LoadGameMain extends Application {
 	public static void user(String person) {
 		currUser = person;
 	}
-	
 	
 
 }

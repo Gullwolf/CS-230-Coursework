@@ -28,10 +28,13 @@ public class KeyDoor extends Door {
 
 		if (doorColour == 1) {
 			this.image = new Image("file:Art/GreenKeyDoor.png");
+			this.tileType = "KeyDoor Green";
 		} else if (doorColour == 2) {
 			this.image = new Image("file:Art/RedKeyDoor.png");
+			this.tileType = "KeyDoor Red";
 		} else if (doorColour == 3) {
 			this.image = new Image("file:Art/BlueKeyDoor.png");
+			this.tileType = "KeyDoor Blue";
 		}
 	}
 
