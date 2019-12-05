@@ -18,6 +18,10 @@ public class LoadGame {
 	private static Scanner info = null;
 	
 	private static String detailedInformation = "";
+	private static String detailedInformationEnemy = "";
+	private static String playerInventory = "";
+	
+	private static Player player = null;
 
 	private static Pane root;
 	
@@ -43,8 +47,44 @@ public class LoadGame {
 		int type = info.nextInt();
 		detailedInformation = detailedInformation.substring(0, 1);
 		return type;
-
 	}
+	
+	/**
+	 * Reading in the next piece of enemy information when called.
+	 * @return int
+	 */
+	private static int getExtraInfoEnemy() {
+		int type = info.nextInt();
+		detailedInformationEnemy = detailedInformationEnemy.substring(0, 1);
+		return type;
+	}
+	
+	/**
+	 * This method updates the players inventory.
+	 */
+	private static void updateInventory() {
+		Scanner scan = new Scanner(playerInventory);
+		int tokens = scan.nextInt();
+		for (int i = 0; i < tokens; i++) {
+			player.pickupItem(1);
+		}
+		if (in.nextBoolean()) { //If the player has a green key
+			player.pickupItem(4);
+		}
+		if (in.nextBoolean()) { //If the player has a red key
+			player.pickupItem(2);
+		}
+		if (in.nextBoolean()) { //If the player has a blue key
+			player.pickupItem(3);
+		}
+		if (in.nextBoolean()) { //If the player has flippers
+			player.pickupItem(5);
+		}
+		if (in.nextBoolean()) { //If the player has fire boots
+			player.pickupItem(6);
+		}
+	}
+	
 	/**
 	 * This method reads through the level file and generates the level.
 	 * @param path - This is the path of the saved game
@@ -60,6 +100,8 @@ public class LoadGame {
 		in.nextLine();
 		//Saving the extra information as a string then making a scanner for it
 		detailedInformation = in.nextLine();
+		detailedInformationEnemy = in.nextLine();
+		playerInventory = in.nextLine();
 		info = new Scanner(detailedInformation);
 		//Going through each line of the file
 		for (int y = 0; y < mapHeight; y++) { 
@@ -90,7 +132,7 @@ public class LoadGame {
 				case "k": type = getExtraInfo();
 				addKey(x, y, type);
 				break;
-				case "H": type = getExtraInfo();
+				case "H": type = getExtraInfoEnemy();
 				addEnemy(x, y, type);
 				break;
 				case "T": type = getExtraInfo();
@@ -193,7 +235,7 @@ public class LoadGame {
 	private static void addEnemy(int x, int y, int type) {
 
 		if (type == 1) {
-			int type2 = getExtraInfo();
+			int type2 = getExtraInfoEnemy();
 			if (type2 == 1) {
 				TrainCanvas.addEnemy(x, y, type, 1);
 			} else if (type2 == 2) {
@@ -218,6 +260,7 @@ public class LoadGame {
 	
 	private static void addPlayer(int x, int y) {
 		TrainCanvas.addPlayer(x, y);
+		player = TrainCanvas.getPlayer();
 	}
 	/**
 	 * @param x y

@@ -213,6 +213,7 @@ public class TrainCanvas extends Application {
 	 * @param t
 	 */
 	public static void setIsSavedGame(boolean t) {
+		currentLevel = currentLevel + 2;
 		isSavedGame = t;
 	}
 
