@@ -29,4 +29,3 @@ public class Terrain extends Object {
 		//Does nothing, just here to override the method.
 	}
 }
-

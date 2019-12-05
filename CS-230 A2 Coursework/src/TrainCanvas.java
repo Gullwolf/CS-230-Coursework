@@ -86,6 +86,7 @@ public class TrainCanvas extends Application {
 					isSavedGame = false;
 					LoadGame.createLevel(loadFilePath, root);
 				} else {
+					System.out.println(currentLevel);
 					LevelReader.createLevel(currentLevel, root);
 				}
 
@@ -213,6 +214,7 @@ public class TrainCanvas extends Application {
 	 * @param t
 	 */
 	public static void setIsSavedGame(boolean t) {
+		currentLevel = currentLevel + 2;
 		isSavedGame = t;
 	}
 

@@ -10,8 +10,9 @@ import java.util.Scanner;
 
 /**
  * This class saves the current state of the game.
+ * Im sorry to whoever has to read this code.
  * @author Cai Sidaway, Noah Stebbings
- * @version 1.3
+ * @version 1.4
  *
  */
 public class SaveGame {
@@ -92,27 +93,36 @@ public class SaveGame {
 			//Using a switch statement to determine the current object.
 			switch (currObj.tileType) {
 			case "Key Green": map[currX][currY] = 'k';
-			extraInformationLine = extraInformationLine + "1 ";
+			extraInformationLine = "1 " + extraInformationLine ;
 			break;
 			case "Key Red": map[currX][currY] = 'k';
-			extraInformationLine = extraInformationLine + "2 ";
+			extraInformationLine = "2 " + extraInformationLine;
 			break;
 			case "Key Blue": map[currX][currY] = 'k';
-			extraInformationLine = extraInformationLine + "3 ";
+			extraInformationLine = "3 " + extraInformationLine ;
 			break;
 			case "KeyDoor Green": map[currX][currY] = 'K';
-			extraInformationLine = extraInformationLine + "1 ";
+			extraInformationLine = "1 " + extraInformationLine ;
 			break;
 			case "KeyDoor Red": map[currX][currY] = 'K';
-			extraInformationLine = extraInformationLine + "2 ";
+			extraInformationLine = "2 " + extraInformationLine;
 			break;
 			case "KeyDoor Blue": map[currX][currY] = 'K';
-			extraInformationLine = extraInformationLine + "3 ";
+			extraInformationLine = "3 " + extraInformationLine;
 			break;
 			case "Token": map[currX][currY] = 't';
 			break;
-			case "TokenDoor": map[currX][currY] = 'T';
-			extraInformationLine = extraInformationLine + " " + objectList.get(i).getRequirements();
+			case "TokenDoor 1": map[currX][currY] = 'T';
+			extraInformationLine = "1 " + extraInformationLine ;
+			System.out.println("T1");
+			break;
+			case "TokenDoor 2": map[currX][currY] = 'T';
+			extraInformationLine = extraInformationLine + "2 ";
+			System.out.println("T2");
+			break;
+			case "TokenDoor 3": map[currX][currY] = 'T';
+			extraInformationLine = extraInformationLine + "3 ";
+			System.out.println("T3");
 			break;
 			case "FireBoots": map[currX][currY] = 'I';
 			extraInformationLine = extraInformationLine + "2 ";
@@ -189,8 +199,8 @@ public class SaveGame {
 		playerInventory = playerInventory + player.hasFlippers() + " ";
 		playerInventory = playerInventory + player.hasFireBoots() + " ";
 		
+		//Attempting to print to the file. Catching errors if it fails.
 		try {
-			System.out.println("IM PRINTING");
 			printToFile();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -229,25 +239,55 @@ public class SaveGame {
 	public static void printToFile() throws FileNotFoundException, UnsupportedEncodingException {
 		String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
 				"Level" + currentLevel + "_" + user + ".txt";
-		PrintWriter writer = new PrintWriter(filename,"UTF-8");
-		System.out.println("HERE");
 		
-//		System.out.println(Arrays.deepToString(map)); //For testing
-		writer.println(mapHeight);
-//		System.out.println(mapHeight); //for testing
-		writer.println(extraInformationLine);
-//		System.out.println(extraInformationLine); //for testing
-//		System.out.println(mapWidth); //for testing
-		for(int i = 0; i < mapHeight; i++) {
-			for(int j = 0; j < mapWidth; j++) {
-//				System.out.print(map[j][i]);//For testing
-				writer.print(map[j][i]);
+		File existance = new File(filename);
+		if(existance.exists()) {
+			//existance.delete();
+			PrintWriter writer = new PrintWriter(filename,"UTF-8");			
+//			System.out.println(Arrays.deepToString(map)); //For testing
+			writer.println(mapHeight);
+//			System.out.println(mapHeight); //for testing
+			writer.println(extraInformationLine);
+			
+			writer.println(enemyExtraInfo);
+			writer.println(playerInventory);
+//			System.out.println(extraInformationLine); //for testing
+//			System.out.println(mapWidth); //for testing
+			for(int i = 0; i < mapHeight; i++) {
+				for(int j = 0; j < mapWidth; j++) {
+//					System.out.print(map[j][i]);//For testing
+					writer.print(map[j][i]);
+				}
+				writer.print("\n");
+//				System.out.print("\n");
 			}
-			writer.print("\n");
-//			System.out.print("\n");
+			
+			writer.close();
+		} else {
+			
+			PrintWriter writer = new PrintWriter(filename,"UTF-8");
+			
+//			System.out.println(Arrays.deepToString(map)); //For testing
+			writer.println(mapHeight);
+//			System.out.println(mapHeight); //for testing
+			writer.println(extraInformationLine);
+			
+			writer.println(enemyExtraInfo);
+			writer.println(playerInventory);
+//			System.out.println(extraInformationLine); //for testing
+//			System.out.println(mapWidth); //for testing
+			for(int i = 0; i < mapHeight; i++) {
+				for(int j = 0; j < mapWidth; j++) {
+//					System.out.print(map[j][i]);//For testing
+					writer.print(map[j][i]);
+				}
+				writer.print("\n");
+//				System.out.print("\n");
+			}
+			
+			writer.close();
 		}
 		
-		writer.close();
 		
 	}	
 	

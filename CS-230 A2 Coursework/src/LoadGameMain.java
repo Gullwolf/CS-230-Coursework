@@ -129,7 +129,7 @@ public class LoadGameMain extends Application {
 						Stage load = new Stage();
 						try {
 							loadMainStage.hide();
-							TrainCanvas.setCurrentLevel(selected - 1);
+							TrainCanvas.setCurrentLevel(selected + 1);
 							new TrainCanvas().start(load);
 						} catch (Exception e1) {
 							e1.printStackTrace();
