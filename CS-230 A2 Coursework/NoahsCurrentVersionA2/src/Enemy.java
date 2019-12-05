@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 /**
  * A general class for all enemy objects.
- * @author Noah Stebbings
+ * @author Noah Stebbings, George Cook
  * @version 1.4
  */
 public class Enemy extends Body {
@@ -20,7 +20,7 @@ public class Enemy extends Body {
 		super(x, y, gc, TILE_SIZE);
 		
 		this.image = new Image("file:Art/MissingTexture.png");
-		this.tileType = "Enemy"; //Overwritten in subclasses.
+		drawObject();
 	}
 
 	/**
