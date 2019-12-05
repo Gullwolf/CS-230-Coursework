@@ -20,7 +20,7 @@ public class Enemy extends Body {
 		super(x, y, gc, TILE_SIZE);
 		
 		this.image = new Image("file:Art/MissingTexture.png");
-		drawObject();
+		this.tileType = "Enemy"; //Overwritten in subclasses.
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class Enemy extends Body {
 	 * This method will detect if the enemy interacts with the player.
 	 */
 	@Override
-	public void interact() {}
+	public void interact() {	}
 
 
 

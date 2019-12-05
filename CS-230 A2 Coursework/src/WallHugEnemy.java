@@ -29,7 +29,7 @@ public class WallHugEnemy extends Body {
 		//Getting the list of objects in the map
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/Enemy2Right.png");
-		drawObject();
+		this.tileType = "Enemy 2";
 	}
 
 	public void move() {

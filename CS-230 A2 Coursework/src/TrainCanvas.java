@@ -25,21 +25,21 @@ public class TrainCanvas extends Application {
 	private static final int WINDOW_HEIGHT = 800;
 
 	//Dimensions of the canvas
-	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
+	public static final int CANVAS_WIDTH = WINDOW_WIDTH;
 
-	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
+	public static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 
 	//The number of tiles along the screen at once
-	private final static int TILES_ON_SCREEN = 7;
+	public final static int TILES_ON_SCREEN = 7;
 
 	//The size of the tiles
-	private static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
+	public static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
 
 	//The canvas in the GUI
 	private static Canvas canvas;
 
 	//Creating an empty graphics context
-	public static GraphicsContext gc;
+	private static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
 	private static int currentLevel = 1;
@@ -62,6 +62,12 @@ public class TrainCanvas extends Application {
 
 	private static Pane root;
 	private static String[] arguments;
+	
+	public static int playerOriginalX;
+	public static int playerOriginalY;
+	
+	public static int playerOffsetX = 0;
+	public static int playerOffsetY = 0;
 
 	/**
 	 * The startup method for the game.
@@ -76,12 +82,12 @@ public class TrainCanvas extends Application {
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		//Reading in from the game level file or a saved game file if isSavedGame is true
-		if(isSavedGame) {
-			isSavedGame = false;
-			LoadGame.createLevel(loadFilePath, root);
-		} else {
-			LevelReader.createLevel(currentLevel, root);
-		}
+				if(isSavedGame) {
+					isSavedGame = false;
+					LoadGame.createLevel(loadFilePath, root);
+				} else {
+					LevelReader.createLevel(currentLevel, root);
+				}
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
@@ -102,47 +108,45 @@ public class TrainCanvas extends Application {
 
 			currentLevelScore++;
 			drawGame();
-			onItem();
-			System.out.println(player.getX() + "," + player.getY());
 		});
-		
+
 		//When close button is clicked this will trigger
 		stage.setOnCloseRequest(event -> {
-					Stage loader = new Stage();
-					ButtonType ok = new ButtonType("Ok");
-					ButtonType cancel = new ButtonType("Cancel");
-					Alert quit = new Alert(AlertType.CONFIRMATION, "Quit", ok,cancel);
-					quit.setTitle("You've quit!");
-					quit.setHeaderText("You've been sent back to the load game menu");
-					quit.setContentText("If you'd like to save your previous game, click ok " +
-								" if you want to disgard it click cancel");
-					quit.showAndWait().ifPresent(response -> {
-						if (response == ok) { //If they've chosen okay, it'll run savegame
-							try {
-								Profile.setCurScore(currentLevelScore);
-								SaveGame.SaveGame();
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-							try {
-								new LoadGameMain().start(loader);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-						} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
-							try {
-								Profile.setCurScore(0);
-								try {
-									new LoadGameMain().start(loader);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
+			Stage loader = new Stage();
+			ButtonType ok = new ButtonType("Ok");
+			ButtonType cancel = new ButtonType("Cancel");
+			Alert quit = new Alert(AlertType.CONFIRMATION, "Quit", ok,cancel);
+			quit.setTitle("You've quit!");
+			quit.setHeaderText("You've been sent back to the load game menu");
+			quit.setContentText("If you'd like to save your previous game, click ok " +
+					" if you want to disgard it click cancel");
+			quit.showAndWait().ifPresent(response -> {
+				if (response == ok) { //If they've chosen okay, it'll run savegame
+					try {
+						Profile.setCurScore(currentLevelScore);
+						SaveGame.SaveGame();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+					try {
+						new LoadGameMain().start(loader);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
+					try {
+						Profile.setCurScore(0);
+						try {
+							new LoadGameMain().start(loader);
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-					});
-				});
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		});
 	}
 
 	/**
@@ -152,7 +156,7 @@ public class TrainCanvas extends Application {
 	public static int getCurrentLevel() {
 		return currentLevel;
 	}
-	
+
 	/**
 	 * This method updates the leadboard on the players death.
 	 */
@@ -205,7 +209,8 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * Just sets a string to something, allowing for checking in the main start stage.
+	 * This method sets if the game is from a saved game or not.
+	 * @param t
 	 */
 	public static void setIsSavedGame(boolean t) {
 		isSavedGame = t;
@@ -235,7 +240,7 @@ public class TrainCanvas extends Application {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
 				player.onDeath(primaryStage);
-//				redrawLevel();
+				//				redrawLevel();
 			}
 		}
 	}
@@ -294,6 +299,7 @@ public class TrainCanvas extends Application {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectList.get(i).drawObject();
 		}
+		onItem();
 		//Doing the same for the list of enemies.
 		for (int j = 0; j < enemyList.size(); j++) {
 			enemyList.get(j).move();
@@ -399,7 +405,7 @@ public class TrainCanvas extends Application {
 	public static void nextLevel() {
 		currentLevel++;
 		redrawLevel();
-		
+
 	}
 
 	/**
@@ -453,6 +459,8 @@ public class TrainCanvas extends Application {
 	 * @param y
 	 */
 	public static void addPlayer(int x, int y) {
+		playerOriginalX = x;
+		playerOriginalY = y;
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));
 		player = new Player(x, y, gc, TILE_SIZE);
 	}

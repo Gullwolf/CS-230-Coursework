@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 /**
  * Implements leaderboard which can be updated via combobox.
- * @author Cai Sidaway
+ * @author Cai Sidaway, Sindiso Sibanda
  * @version 1.0
  */
 public class LeaderBoardMain extends Application {

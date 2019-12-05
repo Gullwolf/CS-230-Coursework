@@ -125,7 +125,7 @@ public class LoadGameMain extends Application {
 			playedBefore.showAndWait().ifPresent(response -> {
 				if (response == ok) {
 					if (response == ok) {
-						SaveGame.setCurrentLevel(selected-1);
+						SaveGame.setCurrentLevel(selected - 1);
 						Stage load = new Stage();
 						try {
 							loadMainStage.hide();

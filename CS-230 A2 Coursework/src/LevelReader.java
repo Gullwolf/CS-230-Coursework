@@ -56,6 +56,7 @@ public class LevelReader {
 	public static void createLevel(int levelNumber, Pane inRoot) {
 		root = inRoot;
 		setFile(levelNumber);
+//		System.out.println(levelNumber);
 		//Reading in the number of lines to read
 		int mapHeight = in.nextInt();
 		in.nextLine();
