@@ -120,15 +120,15 @@ public class LeaderBoardMain extends Application {
 		for (int i = 0; i < finalList.size(); i++) {
 			String pos = Integer.toString(position);
 			String score = finalList.get(i);
-			char first = score.charAt(0);
-			int scoreNum = Character.getNumericValue(first);
-			String name = score.substring(1); 
-			if (scoreNum != 0) {
+			String name  = score.replaceAll("([^A-Za-z])", "");
+			String scoreNum = score.replaceAll("\\D+","");
+			int check = Integer.valueOf(scoreNum); 
+			if (check != 0) {
 				players.getItems().add(pos + "                                                           " + 
-						Integer.toString(scoreNum) + "                                           " + name);
+						scoreNum + "                                           " + name);
 						position++;
 						count++;
-			} else if (scoreNum == 0 && count == 1) {
+			} else if (check == 0 && count == 1) {
 				players.getItems().add("Nobody has set a highscore for this level yet, be the first!");
 				count++;
 			}
@@ -358,15 +358,15 @@ public class LeaderBoardMain extends Application {
 		for (int i = 0; i < finalList.size(); i++) {
 			String pos = Integer.toString(position);
 			String score = finalList.get(i);
-			char first = score.charAt(0);
-			int scoreNum = Character.getNumericValue(first);
-			String name = score.substring(1); 
-			if (scoreNum != 0) {
+			String name  = score.replaceAll("([^A-Za-z])", "");
+			String scoreNum = score.replaceAll("\\D+","");
+			int check = Integer.valueOf(scoreNum);
+			if (check != 0) {
 				players.getItems().add(pos + "                                                           " + 
-						Integer.toString(scoreNum) + "                                           " + name);
+						scoreNum + "                                           " + name);
 						position++;
 						count++;
-			} else if (scoreNum == 0 && count == 1) {
+			} else if (check == 0 && count == 1) {
 				players.getItems().add("Nobody has set a highscore for this level yet, be the first!");
 				count++;
 			}

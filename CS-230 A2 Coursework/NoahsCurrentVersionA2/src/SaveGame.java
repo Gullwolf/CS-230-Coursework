@@ -239,27 +239,55 @@ public class SaveGame {
 	public static void printToFile() throws FileNotFoundException, UnsupportedEncodingException {
 		String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
 				"Level" + currentLevel + "_" + user + ".txt";
-		PrintWriter writer = new PrintWriter(filename,"UTF-8");
 		
-//		System.out.println(Arrays.deepToString(map)); //For testing
-		writer.println(mapHeight);
-//		System.out.println(mapHeight); //for testing
-		writer.println(extraInformationLine);
-		
-		writer.println(enemyExtraInfo);
-		writer.println(playerInventory);
-//		System.out.println(extraInformationLine); //for testing
-//		System.out.println(mapWidth); //for testing
-		for(int i = 0; i < mapHeight; i++) {
-			for(int j = 0; j < mapWidth; j++) {
-//				System.out.print(map[j][i]);//For testing
-				writer.print(map[j][i]);
+		File existance = new File(filename);
+		if(existance.exists()) {
+			//existance.delete();
+			PrintWriter writer = new PrintWriter(filename,"UTF-8");			
+//			System.out.println(Arrays.deepToString(map)); //For testing
+			writer.println(mapHeight);
+//			System.out.println(mapHeight); //for testing
+			writer.println(extraInformationLine);
+			
+			writer.println(enemyExtraInfo);
+			writer.println(playerInventory);
+//			System.out.println(extraInformationLine); //for testing
+//			System.out.println(mapWidth); //for testing
+			for(int i = 0; i < mapHeight; i++) {
+				for(int j = 0; j < mapWidth; j++) {
+//					System.out.print(map[j][i]);//For testing
+					writer.print(map[j][i]);
+				}
+				writer.print("\n");
+//				System.out.print("\n");
 			}
-			writer.print("\n");
-//			System.out.print("\n");
+			
+			writer.close();
+		} else {
+			
+			PrintWriter writer = new PrintWriter(filename,"UTF-8");
+			
+//			System.out.println(Arrays.deepToString(map)); //For testing
+			writer.println(mapHeight);
+//			System.out.println(mapHeight); //for testing
+			writer.println(extraInformationLine);
+			
+			writer.println(enemyExtraInfo);
+			writer.println(playerInventory);
+//			System.out.println(extraInformationLine); //for testing
+//			System.out.println(mapWidth); //for testing
+			for(int i = 0; i < mapHeight; i++) {
+				for(int j = 0; j < mapWidth; j++) {
+//					System.out.print(map[j][i]);//For testing
+					writer.print(map[j][i]);
+				}
+				writer.print("\n");
+//				System.out.print("\n");
+			}
+			
+			writer.close();
 		}
 		
-		writer.close();
 		
 	}	
 	
