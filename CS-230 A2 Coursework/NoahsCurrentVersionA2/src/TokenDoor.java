@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 /**
  * This class draws the key door object.
  * @author Noah Stebbings
- * @version 1.2
+ * @version 1.3
  */
 public class TokenDoor extends Door {
 
@@ -26,7 +26,7 @@ public class TokenDoor extends Door {
 		this.requirements = requirements;
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/TokenDoor.png");
-		this.tileType = "TokenDoor";
+		this.tileType = "TokenDoor " + this.requirements;
 	}
 
 	/**

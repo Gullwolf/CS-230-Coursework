@@ -53,6 +53,7 @@ public class LoadGame {
 	
 	public static void createLevel(String path, Pane inRoot) {
 		root = inRoot;
+//		System.out.println(path);
 		setFile(path);
 		//Reading in the number of lines to read
 		int mapHeight = in.nextInt();

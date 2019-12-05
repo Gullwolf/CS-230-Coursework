@@ -10,8 +10,9 @@ import java.util.Scanner;
 
 /**
  * This class saves the current state of the game.
+ * Im sorry to whoever has to read this code.
  * @author Cai Sidaway, Noah Stebbings
- * @version 1.3
+ * @version 1.4
  *
  */
 public class SaveGame {
@@ -33,7 +34,7 @@ public class SaveGame {
 	private static String playerInventory = "";
 	
 	private static int currentLevel = 1;
-	private static String user = "Noah";//TODO change this
+	private static String user = Profile.getUser();
 	
  private static String filename = System.getProperty("user.dir") + "\\SaveGame\\" + 
 		"Level" + currentLevel + "_" + user + ".txt";
@@ -111,8 +112,14 @@ public class SaveGame {
 			break;
 			case "Token": map[currX][currY] = 't';
 			break;
-			case "TokenDoor": map[currX][currY] = 'T';
-			extraInformationLine = extraInformationLine + " " + objectList.get(i).getRequirements();
+			case "TokenDoor 1": map[currX][currY] = 'T';
+			extraInformationLine = extraInformationLine + "1 ";
+			break;
+			case "TokenDoor 2": map[currX][currY] = 'T';
+			extraInformationLine = extraInformationLine + "2 ";
+			break;
+			case "TokenDoor 3": map[currX][currY] = 'T';
+			extraInformationLine = extraInformationLine + "3 ";
 			break;
 			case "FireBoots": map[currX][currY] = 'I';
 			extraInformationLine = extraInformationLine + "2 ";
@@ -151,6 +158,7 @@ public class SaveGame {
 			Object currEnemy = enemyList.get(j);
 			int currX = fixX(currEnemy.getX());
 			int currY = fixY(currEnemy.getY());
+			
 			switch (currEnemy.tileType) {
 			case "Enemy 1 1": map[currX][currY] = 'H';
 			enemyExtraInfo = enemyExtraInfo + "1 1"; 
@@ -187,7 +195,16 @@ public class SaveGame {
 		playerInventory = playerInventory + player.hasBlueKey() + " ";
 		playerInventory = playerInventory + player.hasFlippers() + " ";
 		playerInventory = playerInventory + player.hasFireBoots() + " ";
-
+		
+		try {
+			printToFile();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Not found!");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.out.println("Unsupportied encoding");
+		}
 	}
 
 	/**
@@ -220,25 +237,32 @@ public class SaveGame {
 				"Level" + currentLevel + "_" + user + ".txt";
 		PrintWriter writer = new PrintWriter(filename,"UTF-8");
 		
-		System.out.println(Arrays.deepToString(map)); //For testing
+//		System.out.println(Arrays.deepToString(map)); //For testing
 		writer.println(mapHeight);
-		System.out.println(mapHeight); //for testing
+//		System.out.println(mapHeight); //for testing
 		writer.println(extraInformationLine);
-		System.out.println(extraInformationLine); //for testing
-		System.out.println(mapWidth); //for testing
+//		System.out.println(extraInformationLine); //for testing
+//		System.out.println(mapWidth); //for testing
 		for(int i = 0; i < mapHeight; i++) {
 			for(int j = 0; j < mapWidth; j++) {
-				System.out.print(map[j][i]);
+//				System.out.print(map[j][i]);//For testing
 				writer.print(map[j][i]);
 			}
 			writer.print("\n");
-			System.out.print("\n");
+//			System.out.print("\n");
 		}
+		
+		writer.println(enemyExtraInfo);
+		writer.println(playerInventory);
 		
 		writer.close();
 		
 	}	
 	
+	/**
+	 * This method sets the current level.
+	 * @param level
+	 */
 	public static void setCurrentLevel(int level) {
 		currentLevel = level;
 	}
