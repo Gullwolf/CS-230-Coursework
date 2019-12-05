@@ -52,8 +52,8 @@ public class TrainCanvas extends Application {
 	//If current game's getting loaded, then this filepath will be used (also parsed)
 	private static String loadFilePath = null;
 
-	//String is only set to yes if it's coming from a savegame file, else null.
-	private static String load = null;
+	//True if we're loading a saved game and false if it's not
+	private static boolean isSavedGame = false;
 
 	private static Stage primaryStage;
 
@@ -75,8 +75,13 @@ public class TrainCanvas extends Application {
 		//Creating a scene
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		//Reading in from the game level file.
-		LevelReader.createLevel(currentLevel, root);
+		//Reading in from the game level file or a saved game file if isSavedGame is true
+		if(isSavedGame) {
+			isSavedGame = false;
+			LoadGame.createLevel(loadFilePath, root);
+		} else {
+			LevelReader.createLevel(currentLevel, root);
+		}
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
@@ -202,8 +207,8 @@ public class TrainCanvas extends Application {
 	/**
 	 * Just sets a string to something, allowing for checking in the main start stage.
 	 */
-	public static void setLoadStatus() {
-		load = "Yes";
+	public static void setIsSavedGame(boolean t) {
+		isSavedGame = t;
 	}
 
 	/**
