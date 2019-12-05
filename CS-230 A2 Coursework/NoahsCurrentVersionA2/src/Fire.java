@@ -17,6 +17,7 @@ public class Fire extends Terrain {
 	public Fire(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = new Image("file:Art/Fire.png");
+		this.tileType = "Fire";
 	}
 	
 	/**

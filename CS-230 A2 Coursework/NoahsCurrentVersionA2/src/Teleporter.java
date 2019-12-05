@@ -25,6 +25,7 @@ public class Teleporter extends Useable {
 		this.objectList = TrainCanvas.getObjects();
 		this.isPlayerWalkable = false;
 		this.isTeleporter = true;
+		this.tileType = "Teleporter";
 	}
 	
 	/**

@@ -109,6 +109,7 @@ public class LoadGame {
 				}
 			}
 		}
+		//Code regarding player data goes here
 	}
 	/**
 	 * This method creates a wall tile in the correct location.

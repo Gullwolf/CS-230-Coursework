@@ -125,10 +125,11 @@ public class LoadGameMain extends Application {
 			playedBefore.showAndWait().ifPresent(response -> {
 				if (response == ok) {
 					if (response == ok) {
+						SaveGame.setCurrentLevel(selected - 1);
 						Stage load = new Stage();
 						try {
 							loadMainStage.hide();
-							TrainCanvas.setCurrentLevel(selected + 1);
+							TrainCanvas.setCurrentLevel(selected - 1);
 							new TrainCanvas().start(load);
 						} catch (Exception e1) {
 							e1.printStackTrace();
@@ -147,8 +148,19 @@ public class LoadGameMain extends Application {
 			currentlyPlaying.setContentText("Would you like to continue with your previous game, or restart the level?");
 			currentlyPlaying.showAndWait().ifPresent(response -> {
 				if (response == cont) { //Instance where you need to load saved game file. 
-					
-					
+					SaveGame.setCurrentLevel(selected-1);
+					Stage load = new Stage();
+					int forPath = selected + 1;
+					String path = System.getProperty("user.dir") + "\\SaveGame\\" + 
+							"Level" + forPath + "_" + currUser +  ".txt";
+					try {
+						loadMainStage.hide();
+						TrainCanvas.setIsSavedGame(true);
+						TrainCanvas.setLoadFilePath(path);
+						new TrainCanvas().start(load);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				} else if (response == cancel) { //Instance of cancellation
 					currentlyPlaying.close();
 				} else { //Instance of restart (loading a game like normal)
@@ -170,6 +182,7 @@ public class LoadGameMain extends Application {
 			currentlyPlaying.setContentText("Press 'ok' to play and 'cancel' to go back");
 			currentlyPlaying.showAndWait().ifPresent(response -> {
 				if (response == ok) { //Instance where it's players first time playing this level
+					SaveGame.setCurrentLevel(selected-1);
 					Stage load = new Stage();
 					try {
 						loadMainStage.hide();

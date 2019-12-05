@@ -16,13 +16,6 @@ public class SmartEnemy extends Body {
 	private int playX;
 	private int playY;
 	
-//	private int swap = 0;
-//	private int upcounter = 0;//count of the topside of the enemy unwalkable object
-//	private int downcounter = 0;//count of the down of the enemy unwalkable object
-//	private int leftcounter = 0;//count of the leftside of the enemy unwalkable object
-//	private int rightcounter = 0;//count of the right of the enemy unwalkable object
-//	private int c ;//to state the unwalkable object is on the left or the right side of the enemy when in same y
-//	private int d ;//to state the unwalkable object is on the up or the down side of the enemy when in same x
 	
 	/**
 	 * The constructor for the smart enemy object.
@@ -37,7 +30,7 @@ public class SmartEnemy extends Body {
 		player = TrainCanvas.getPlayer();
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/MissingTexture.png");	
-		drawObject();
+		this.tileType = "Enemy 4";
 	}
 	
 	/*

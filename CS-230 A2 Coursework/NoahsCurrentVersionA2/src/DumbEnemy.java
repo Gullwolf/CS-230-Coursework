@@ -20,7 +20,7 @@ public class DumbEnemy extends Enemy {
 		this.player = TrainCanvas.getPlayer();
 		this.objectList = TrainCanvas.getObjects();
 		this.image = new Image("file:Art/Enemy3Right.png");
-		drawObject();
+		this.tileType = "Enemy 3";
 	}
 	/**
 	* A method to find the shortest way to the player.
@@ -64,12 +64,4 @@ public class DumbEnemy extends Enemy {
 		}
 		this.interact();
 	}
-	
-//	public void move() {
-//		if (this.x < player.getX()) {
-//			for (int i = 0; i < objectList.size(); i++) {
-//				if (objectList.get(i).getX() ==
-//			}
-//		}
-//	}
 }

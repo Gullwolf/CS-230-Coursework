@@ -15,17 +15,17 @@ public class Player extends Body {
 
 	private ArrayList<Object> objectList;
 	private ArrayList<Object> enemyList;
-	
+
 	private int tokens = 0;
 	private boolean blueKey = false;
 	private boolean redKey = false;
 	private boolean greenKey = false;
 	private boolean fireBoots = false;
 	private boolean flippers = false;
-	
+
 	//Holding a record of the last key pressed by the player
 	protected String lastKey;
-	
+
 	/**
 	 * Creating a player object.
 	 * @param x
@@ -47,7 +47,7 @@ public class Player extends Body {
 	public boolean hasFireBoots() {
 		return this.fireBoots;
 	}
-	
+
 	/**
 	 * A getter for if the player has flippers
 	 * @return flippers
@@ -55,7 +55,7 @@ public class Player extends Body {
 	public boolean hasFlippers() {
 		return this.flippers;
 	}
-	
+
 	/**
 	 * A getter for the number of tokens the player has.
 	 * @return tokens
@@ -63,7 +63,7 @@ public class Player extends Body {
 	public int getTokens() {
 		return this.tokens;
 	}
-	
+
 	/**
 	 * A getter for if the player has the red key.
 	 * @return redKey
@@ -71,7 +71,7 @@ public class Player extends Body {
 	public boolean hasRedKey() {
 		return this.redKey;
 	}
-	
+
 	/**
 	 * A getter for if the player has the blue key.
 	 * @return blueKey
@@ -79,7 +79,7 @@ public class Player extends Body {
 	public boolean hasBlueKey() {
 		return this.blueKey;
 	}
-	
+
 	/**
 	 * A getter for if the player has the green key.
 	 * @return greenKey
@@ -87,7 +87,7 @@ public class Player extends Body {
 	public boolean hasGreenKey() {
 		return this.greenKey;
 	}
-	
+
 	/**
 	 * A method that takes in an item type integer and adds the item to the player.
 	 * @param itemType
@@ -107,7 +107,7 @@ public class Player extends Body {
 			this.fireBoots = true;
 		}
 	}
-	
+
 	/**
 	 * This method teleports the player to specified coordinates
 	 * along the X axis.
@@ -116,7 +116,7 @@ public class Player extends Body {
 	public void teleportPlayerX(int newX) {
 		this.x = newX;
 	}
-	
+
 	/**
 	 * This method teleports the player to specified coordinates
 	 * along the Y axis.
@@ -125,7 +125,7 @@ public class Player extends Body {
 	public void teleportPlayerY(int newY) {
 		this.y = newY;
 	}
-	
+
 	/**
 	 * A method that takes the key inputted by the user.
 	 * @param inputKey
@@ -133,10 +133,10 @@ public class Player extends Body {
 	public void takeInput(String inputKey) {
 		lastKey = inputKey;
 		if (inputKey.equals("UP") || inputKey.equals("W")) {
-//			this.image = new Image("file:Art/PlayerUp.png");
+			//			this.image = new Image("file:Art/PlayerUp.png");
 			moveUp();
 		}  else if (inputKey.equals("DOWN") || inputKey.equals("S")) {
-//			this.image = new Image("file:Art/PlayerDown.png");
+			//			this.image = new Image("file:Art/PlayerDown.png");
 			moveDown();
 		} else if (inputKey.equals("LEFT") || inputKey.equals("A")) {
 			this.image = new Image("file:Art/PlayerLeft.png");
@@ -158,6 +158,7 @@ public class Player extends Body {
 				for (int j = 0; j < objectList.size(); j++) {
 					objectList.get(j).goUp();
 				}
+				TrainCanvas.playerOffsetY--;
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goUp();
 				}
@@ -181,6 +182,7 @@ public class Player extends Body {
 				for (int j = 0; j < objectList.size(); j++) {
 					objectList.get(j).goDown();
 				}
+				TrainCanvas.playerOffsetY++;
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goDown();
 				}
@@ -192,7 +194,7 @@ public class Player extends Body {
 			}
 		}
 	}
-	
+
 	/**
 	 * A method that attempts to move the player Left.
 	 */
@@ -204,6 +206,7 @@ public class Player extends Body {
 				for (int j = 0; j < objectList.size(); j++) {
 					objectList.get(j).goLeft();
 				}
+				TrainCanvas.playerOffsetX--;
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goLeft();
 				}
@@ -215,7 +218,7 @@ public class Player extends Body {
 			}
 		}
 	}
-	
+
 	/**
 	 * A method that attempts to move the player Right.
 	 */
@@ -227,6 +230,7 @@ public class Player extends Body {
 				for (int j = 0; j < objectList.size(); j++) {
 					objectList.get(j).goRight();
 				}
+				TrainCanvas.playerOffsetX++;
 				for (int n = 0; n < enemyList.size(); n++) {
 					enemyList.get(n).goRight();
 				}
@@ -238,7 +242,7 @@ public class Player extends Body {
 			}
 		}
 	}
-	
+
 	private void enemyInteract(int attemptX, int attemptY) {
 		for (int i = 0; i < enemyList.size(); i++) {
 			if (enemyList.get(i).getX() == attemptX && enemyList.get(i).getY() == attemptY) {

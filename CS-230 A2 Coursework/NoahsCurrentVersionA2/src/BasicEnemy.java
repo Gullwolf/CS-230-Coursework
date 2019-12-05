@@ -12,8 +12,7 @@ public class BasicEnemy extends Body {
 
 	//Storing the direction the basic enemy moves.
 	//1 = up, 2 = right, 3 = down, 4 = left
-	private int direction;
-	
+	public int direction;
 	private ArrayList<Object> objectList;
 	/**
 	 * The constructor for the Basic Enemy class.
@@ -27,7 +26,8 @@ public class BasicEnemy extends Body {
 		this.direction = direction;
 		//Getting the list of objects in the map
 		this.objectList = TrainCanvas.getObjects();
-		this.image = new Image("file:Art/Enemy1Right.png");//TODO make it change direction
+		this.image = new Image("file:Art/Enemy1Right.png");
+		this.tileType = "Enemy 1 1";
 	}
 
 	/**

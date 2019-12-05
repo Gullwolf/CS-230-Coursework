@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,11 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-
 /**
  * This class creates the game itself.
- * @author Noah Stebbings, Cai Sidaway, George Cook
- * @version 1.7
+ * @author Noah Stebbings, Cai Sidaway
+ * @version 1.5
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
@@ -25,24 +25,24 @@ public class TrainCanvas extends Application {
 	private static final int WINDOW_HEIGHT = 800;
 
 	//Dimensions of the canvas
-	private static final int CANVAS_WIDTH = WINDOW_WIDTH;
+	public static final int CANVAS_WIDTH = WINDOW_WIDTH;
 
-	private static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
+	public static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 
 	//The number of tiles along the screen at once
-	private final static int TILES_ON_SCREEN = 7;
+	public final static int TILES_ON_SCREEN = 7;
 
 	//The size of the tiles
-	private static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
+	public static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
 
 	//The canvas in the GUI
 	private static Canvas canvas;
 
 	//Creating an empty graphics context
-	public static GraphicsContext gc;
+	private static GraphicsContext gc;
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
-	private static int currentLevel;
+	private static int currentLevel = 1;
 	private static int currentLevelScore = 0;
 
 	//A list of all objects in the game
@@ -52,8 +52,8 @@ public class TrainCanvas extends Application {
 	//If current game's getting loaded, then this filepath will be used (also parsed)
 	private static String loadFilePath = null;
 
-	//String is only set to yes if it's coming from a savegame file, else null.
-	private static String load = null;
+	//True if we're loading a saved game and false if it's not
+	private static boolean isSavedGame = false;
 
 	private static Stage primaryStage;
 
@@ -62,14 +62,18 @@ public class TrainCanvas extends Application {
 
 	private static Pane root;
 	private static String[] arguments;
-
-
+	
+	public static int playerOriginalX;
+	public static int playerOriginalY;
+	
+	public static int playerOffsetX = 0;
+	public static int playerOffsetY = 0;
 
 	/**
 	 * The startup method for the game.
-	 * @param stage
+	 * @param primaryStage
 	 */
-	public void start(Stage stage) {
+	public void start(Stage stage) throws IOException {
 		primaryStage = stage;
 		//Building the game
 		root = buildGame();
@@ -77,8 +81,13 @@ public class TrainCanvas extends Application {
 		//Creating a scene
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		//Reading in from the game level file.
-		LevelReader.createLevel(currentLevel, root);
+		//Reading in from the game level file or a saved game file if isSavedGame is true
+				if(isSavedGame) {
+					isSavedGame = false;
+					LoadGame.createLevel(loadFilePath, root);
+				} else {
+					LevelReader.createLevel(currentLevel, root);
+				}
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
@@ -99,7 +108,6 @@ public class TrainCanvas extends Application {
 
 			currentLevelScore++;
 			drawGame();
-			onItem();
 		});
 
 		//When close button is clicked this will trigger
@@ -114,8 +122,12 @@ public class TrainCanvas extends Application {
 					" if you want to disgard it click cancel");
 			quit.showAndWait().ifPresent(response -> {
 				if (response == ok) { //If they've chosen okay, it'll run savegame
-					SaveGame.setCurrentLevel(currentLevel);
-					SaveGame.readOriginal();
+					try {
+						Profile.setCurScore(currentLevelScore);
+						SaveGame.SaveGame();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
 					try {
 						new LoadGameMain().start(loader);
 					} catch (Exception e1) {
@@ -137,6 +149,13 @@ public class TrainCanvas extends Application {
 		});
 	}
 
+	/**
+	 * This method returns the current level.
+	 * @return int
+	 */
+	public static int getCurrentLevel() {
+		return currentLevel;
+	}
 
 	/**
 	 * This method updates the leadboard on the players death.
@@ -145,26 +164,26 @@ public class TrainCanvas extends Application {
 		int currHighScore = 0;
 		//Getting the current levels high score for the player.
 		switch (currentLevel) {
-			case 1: currHighScore = Profile.getHighestScoreL1();
-				break;
-			case 2: currHighScore = Profile.getHighestScoreL2();
-				break;
-			case 3: currHighScore = Profile.getHighestScoreL3();
-				break;
-			case 4: currHighScore = Profile.getHighestScoreL4();
-				break;
-			case 5: currHighScore = Profile.getHighestScoreL5();
-				break;
-			case 6: currHighScore = Profile.getHighestScoreL6();
-				break;
-			case 7: currHighScore = Profile.getHighestScoreL7();
-				break;
-			case 8: currHighScore = Profile.getHighestScoreL8();
-				break;
-			case 9: currHighScore = Profile.getHighestScoreL9();
-				break;
-			case 10: currHighScore = Profile.getHighestScoreL10();
-				break;
+		case 1: currHighScore = Profile.getHighestScoreL1();
+		break;
+		case 2: currHighScore = Profile.getHighestScoreL2();
+		break;
+		case 3: currHighScore = Profile.getHighestScoreL3();
+		break;
+		case 4: currHighScore = Profile.getHighestScoreL4();
+		break;
+		case 5: currHighScore = Profile.getHighestScoreL5();
+		break;
+		case 6: currHighScore = Profile.getHighestScoreL6();
+		break;
+		case 7: currHighScore = Profile.getHighestScoreL7();
+		break;
+		case 8: currHighScore = Profile.getHighestScoreL8();
+		break;
+		case 9: currHighScore = Profile.getHighestScoreL9();
+		break;
+		case 10: currHighScore = Profile.getHighestScoreL10();
+		break;
 		}
 		//If the users new score is lower than their old best, or there is no current best.
 		if (currentLevelScore < currHighScore || currHighScore == 0) {
@@ -190,10 +209,11 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * Just sets a string to something, allowing for checking in the main start stage.
+	 * This method sets if the game is from a saved game or not.
+	 * @param t
 	 */
-	public static void setLoadStatus() {
-		load = "Yes";
+	public static void setIsSavedGame(boolean t) {
+		isSavedGame = t;
 	}
 
 	/**
@@ -210,7 +230,7 @@ public class TrainCanvas extends Application {
 	public static void onItem() {
 		//Checking if the player is interacting with an object.
 		for (int i = 0; i < objectList.size(); i++) {
-			if ((objectList.get(i).getX() == player.getX()) &&
+			if ((objectList.get(i).getX() == player.getX()) && 
 					(objectList.get(i).getY() == player.getY())) {
 				objectList.get(i).interact();
 			}
@@ -220,6 +240,7 @@ public class TrainCanvas extends Application {
 			if ((enemyList.get(j).getX() == player.getX()) &&
 					(enemyList.get(j).getY() == player.getY())) {
 				player.onDeath(primaryStage);
+				//				redrawLevel();
 			}
 		}
 	}
@@ -241,7 +262,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * This method moves all objects so the player is in the
+	 * This method moves all objects so the player is in the 
 	 * center of the screen.
 	 */
 	public static void centerPlayer() {
@@ -261,13 +282,6 @@ public class TrainCanvas extends Application {
 		//Setting the player to be at the center of the screen
 		player.setX(center);
 		player.setY(center);
-
-		//Fixing the teleporter objects.
-		for (int j = 0; j < objectList.size(); j++) {
-			if (objectList.get(j).isTeleporter) {
-				objectList.get(j).fixLinks();
-			}
-		}
 	}
 
 	/**
@@ -285,6 +299,7 @@ public class TrainCanvas extends Application {
 		for (int i = 0; i < objectList.size(); i++) {
 			objectList.get(i).drawObject();
 		}
+		onItem();
 		//Doing the same for the list of enemies.
 		for (int j = 0; j < enemyList.size(); j++) {
 			enemyList.get(j).move();
@@ -444,6 +459,8 @@ public class TrainCanvas extends Application {
 	 * @param y
 	 */
 	public static void addPlayer(int x, int y) {
+		playerOriginalX = x;
+		playerOriginalY = y;
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));
 		player = new Player(x, y, gc, TILE_SIZE);
 	}
@@ -535,7 +552,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * This method checks to see if an object has been picked up,
+	 * This method checks to see if an object has been picked up, 
 	 * and if so deletes it.
 	 */
 	public static void removePickedUp() {

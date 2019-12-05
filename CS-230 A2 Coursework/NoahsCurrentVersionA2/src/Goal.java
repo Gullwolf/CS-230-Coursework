@@ -17,6 +17,7 @@ public class Goal extends Useable {
 	public Goal(int x, int y, GraphicsContext gc, int TILE_SIZE) {
 		super(x, y, gc, TILE_SIZE);
 		this.image = new Image("file:Art/Goal.png");
+		this.tileType = "Goal";
 	}
 
 	/**
