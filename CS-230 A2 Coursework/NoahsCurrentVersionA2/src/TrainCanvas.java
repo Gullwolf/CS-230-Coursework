@@ -1,5 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,8 +17,8 @@ import javafx.stage.Stage;
 
 /**
  * This class creates the game itself.
- * @author Noah Stebbings, Cai Sidaway
- * @version 1.5
+ * @author Noah Stebbings, Cai Sidaway, George Cook
+ * @version 1.6
  */
 public class TrainCanvas extends Application {
 	//Dimensions of the window
@@ -69,6 +71,8 @@ public class TrainCanvas extends Application {
 	public static int playerOffsetX = 0;
 	public static int playerOffsetY = 0;
 
+	public static LocalDateTime start;
+	
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
@@ -86,7 +90,7 @@ public class TrainCanvas extends Application {
 					isSavedGame = false;
 					LoadGame.createLevel(loadFilePath, root);
 				} else {
-					System.out.println(currentLevel);
+//					System.out.println(currentLevel);
 					LevelReader.createLevel(currentLevel, root);
 				}
 
@@ -102,6 +106,7 @@ public class TrainCanvas extends Application {
 
 		//This makes sure all objects have been drawn when the game starts.
 		drawGame();
+		start = LocalDateTime.now();
 
 		//When a button is pressed
 		scene.setOnKeyPressed(event -> {
@@ -161,7 +166,7 @@ public class TrainCanvas extends Application {
 	/**
 	 * This method updates the leadboard on the players death.
 	 */
-	public static void updateLeaderboard() {
+	public static void updateLeaderboard(int levelTime) {
 		int currHighScore = 0;
 		//Getting the current levels high score for the player.
 		switch (currentLevel) {
@@ -187,18 +192,18 @@ public class TrainCanvas extends Application {
 		break;
 		}
 		//If the users new score is lower than their old best, or there is no current best.
-		if (currentLevelScore < currHighScore || currHighScore == 0) {
-			try {
-				//Try and update the high score
-				Profile.setHighscoreToValue(currentLevel, currentLevelScore);
-				//Only updates the next level if the player is on the furthest level they can reach
-				if (Profile.getLevel() == currentLevel) {
-					Profile.setLevel(Profile.getLevel() + 1);
-				}
-			} catch (FileNotFoundException e) {
-				System.out.println("INVALID PROFILE ERROR");
-			}
-		}
+		if (levelTime < currHighScore || currHighScore == 0) {
+            try {
+                //Try and update the high score
+                Profile.setHighscoreToValue(currentLevel, levelTime);
+                //Only updates the next level if the player is on the furthest level they can reach
+                if (Profile.getLevel() == currentLevel) {
+                    Profile.setLevel(Profile.getLevel() + 1);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("INVALID PROFILE ERROR");
+            }
+        }
 	}
 
 	/**
@@ -358,7 +363,7 @@ public class TrainCanvas extends Application {
 	 */
 	public static void redrawLevel() {
 		//Deleting all of the objects in the scene
-		currentLevelScore = 0;
+//		currentLevelScore = 0;
 		player = null;
 
 		while (objectList.size() != 0) {
@@ -378,7 +383,8 @@ public class TrainCanvas extends Application {
 
 		//Reading in from the game level file.
 		LevelReader.createLevel(currentLevel, root);
-
+		start = LocalDateTime.now();
+		
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
 
@@ -565,4 +571,12 @@ public class TrainCanvas extends Application {
 			}
 		}
 	}
+	
+	/**
+	 * This method returns the time the timer started.
+	 * @return LocalDateTime
+	 */
+	public static LocalDateTime getStart(){
+        return start;
+    }
 }

@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -26,8 +28,15 @@ public class Goal extends Useable {
 	@Override
 	public void interact() {
 		Sound.getSound("LevelCompleted");
-		TrainCanvas.updateLeaderboard();
-		TrainCanvas.nextLevel();
+		
+		LocalDateTime finish = LocalDateTime.now();
+
+        long levelTime = SECONDS.between(TrainCanvas.getStart(), finish);
+
+        int levelTimeInt =  (int)(long)levelTime;
+//        System.out.println(levelTime);
+        TrainCanvas.updateLeaderboard(levelTimeInt);
+        TrainCanvas.nextLevel();
 	}
 	
 }

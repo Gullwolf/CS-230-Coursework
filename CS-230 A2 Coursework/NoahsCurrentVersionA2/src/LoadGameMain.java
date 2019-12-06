@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 /**
  * This class is the main menu for loading games, where you can select
  * the level number you want, and play it (depending if you've reached that level).
- * @author Cai Sidaway
+ * @author Cai Sidaway, George Cook
  * @version 1
  */
 public class LoadGameMain extends Application {
@@ -56,16 +56,17 @@ public class LoadGameMain extends Application {
 		
 		//Listview allowing selectable games
 		ListView<String> selectGame = new ListView<>();
-		selectGame.getItems().setAll("Level 1                                   Highscore:" + "    "  + player.getHighestScoreL1(), 
-				"Level 2                                   Highscore: " + "    "  + player.getHighestScoreL2(),
-				"Level 3                                   Highscore: " + "    "  + player.getHighestScoreL3(),
-				"Level 4                          	      Highscore: "  + "    "  + player.getHighestScoreL4(),
-				"Level 5                          	      Highscore: "  + "    "  + player.getHighestScoreL5(),
-				"Level 6                          	      Highscore: "  + "    "  + player.getHighestScoreL6(),
-				"Level 7                          	      Highscore: "  + "    "  + player.getHighestScoreL7(),
-				"Level 8                           	      Highscore: "  + "    "  + player.getHighestScoreL8(),
-				"Level 9                           	      Highscore: "  + "    "  + player.getHighestScoreL9(),
-				"Level 10                                 Highscore: " + "    "  + player.getHighestScoreL10());
+		selectGame.getItems().setAll("Level 1                                   Highscore:" + "    "  + player.getHighestScoreL1() + " seconds",
+                "Level 2                                   Highscore: " + "    "  + player.getHighestScoreL2() + " seconds",
+                "Level 3                                   Highscore: " + "    "  + player.getHighestScoreL3() + " seconds",
+                "Level 4                                    Highscore: "  + "    "  + player.getHighestScoreL4() + " seconds",
+                "Level 5                                    Highscore: "  + "    "  + player.getHighestScoreL5() + " seconds",
+                "Level 6                                    Highscore: "  + "    "  + player.getHighestScoreL6() + " seconds",
+                "Level 7                                    Highscore: "  + "    "  + player.getHighestScoreL7() + " seconds",
+                "Level 8                                     Highscore: "  + "    "  + player.getHighestScoreL8() + " seconds",
+                "Level 9                                     Highscore: "  + "    "  + player.getHighestScoreL9() + " seconds",
+                "Level 10                                 Highscore: " + "    "  + player.getHighestScoreL10() + " seconds");
+
 		selectGame.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		selectGame.setPrefSize(820, 420);
 		selectGame.setStyle("-fx-font-size: 2.0em ;");
