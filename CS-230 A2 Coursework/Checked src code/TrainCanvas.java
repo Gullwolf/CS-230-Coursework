@@ -32,17 +32,7 @@ public class TrainCanvas extends Application {
 	public static final int CANVAS_HEIGHT = WINDOW_HEIGHT;
 
 	//The number of tiles along the screen at once
-	public static final int TILES_ON_SCREEN = 7;
-
-	public static int playerOriginalX;
-
-	public static int playerOriginalY;
-
-	public static int playerOffsetX = 0;
-
-	public static int playerOffsetY = 0;
-
-	public static LocalDateTime start;
+	public static final  int TILES_ON_SCREEN = 7;
 
 	//The size of the tiles
 	public static final int TILE_SIZE = WINDOW_WIDTH / TILES_ON_SCREEN;
@@ -55,15 +45,13 @@ public class TrainCanvas extends Application {
 
 	//The current level the game is on (gets parsed from Cai's LoadMainGame)
 	private static int currentLevel = 1;
-
 	private static int currentLevelScore = 0;
 
 	//A list of all objects in the game
 	private static ArrayList<Object> objectList = new ArrayList<Object>();
-
 	private static ArrayList<Object> enemyList = new ArrayList<Object>();
 
-	//If current game's getting loaded, then this filepath will be used
+	//If current game's getting loaded, then this filepath will be used (also parsed)
 	private static String loadFilePath = null;
 
 	//True if we're loading a saved game and false if it's not
@@ -75,9 +63,16 @@ public class TrainCanvas extends Application {
 	private static Player player;
 
 	private static Pane root;
-
 	private static String[] arguments;
+	
+	public static int playerOriginalX;
+	public static int playerOriginalY;
+	
+	public static int playerOffsetX = 0;
+	public static int playerOffsetY = 0;
 
+	public static LocalDateTime start;
+	
 	/**
 	 * The startup method for the game.
 	 * @param primaryStage
@@ -91,13 +86,13 @@ public class TrainCanvas extends Application {
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		//Reading in from the game level file or a saved game file if isSavedGame is true
-		if(isSavedGame) {
-			isSavedGame = false;
-			LoadGame.createLevel(loadFilePath, root);
-		} else {
-			//					System.out.println(currentLevel);
-			LevelReader.createLevel(currentLevel, root);
-		}
+				if (isSavedGame) {
+					isSavedGame = false;
+					LoadGame.createLevel(loadFilePath, root);
+				} else {
+//					System.out.println(currentLevel);
+					LevelReader.createLevel(currentLevel, root);
+				}
 
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
@@ -132,8 +127,7 @@ public class TrainCanvas extends Application {
 			quit.setContentText("If you'd like to save your previous game, click ok " +
 					" if you want to disgard it click cancel");
 			quit.showAndWait().ifPresent(response -> {
-				//If they've chosen okay, it'll run savegame
-				if (response == ok) { 
+				if (response == ok) { //If they've chosen okay, it'll run savegame
 					try {
 						Profile.setCurScore(currentLevelScore);
 						SaveGame.SaveGame();
@@ -145,8 +139,7 @@ public class TrainCanvas extends Application {
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-				} else if (response == cancel) { 
-					//If they choose cancel, the game  is not saved and curscore it set = 0
+				} else if (response == cancel) { //If they choose cancel, the game  is not saved and curscore it set = 0
 					try {
 						Profile.setCurScore(0);
 						try {
@@ -172,7 +165,6 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method updates the leadboard on the players death.
-	 * @param levelTime The current level time.
 	 */
 	public static void updateLeaderboard(int levelTime) {
 		int currHighScore = 0;
@@ -201,17 +193,17 @@ public class TrainCanvas extends Application {
 		}
 		//If the users new score is lower than their old best, or there is no current best.
 		if (levelTime < currHighScore || currHighScore == 0) {
-			try {
-				//Try and update the high score
-				Profile.setHighscoreToValue(currentLevel, levelTime);
-				//Only updates the next level if the player is on the furthest level they can reach
-				if (Profile.getLevel() == currentLevel) {
-					Profile.setLevel(Profile.getLevel() + 1);
-				}
-			} catch (FileNotFoundException e) {
-				System.out.println("INVALID PROFILE ERROR");
-			}
-		}
+            try {
+                //Try and update the high score
+                Profile.setHighscoreToValue(currentLevel, levelTime);
+                //Only updates the next level if the player is on the furthest level they can reach
+                if (Profile.getLevel() == currentLevel) {
+                    Profile.setLevel(Profile.getLevel() + 1);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("INVALID PROFILE ERROR");
+            }
+        }
 	}
 
 	/**
@@ -224,7 +216,7 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * This method sets if the game is from a saved game or not.
-	 * @param t A boolean for setting the save game file.
+	 * @param t
 	 */
 	public static void setIsSavedGame(boolean t) {
 		currentLevel = currentLevel + 2;
@@ -232,7 +224,7 @@ public class TrainCanvas extends Application {
 	}
 
 	/**
-	 * Sets the file path to the one players specifically saved game.
+	 * Sets the file path to the one players specifically saved game
 	 * @param path Is the location of the file on the system.
 	 */
 	public static void setLoadFilePath(String path) {
@@ -370,7 +362,7 @@ public class TrainCanvas extends Application {
 	 */
 	public static void redrawLevel() {
 		//Deleting all of the objects in the scene
-		//		currentLevelScore = 0;
+//		currentLevelScore = 0;
 		player = null;
 
 		while (objectList.size() != 0) {
@@ -391,7 +383,7 @@ public class TrainCanvas extends Application {
 		//Reading in from the game level file.
 		LevelReader.createLevel(currentLevel, root);
 		start = LocalDateTime.now();
-
+		
 		//Setting the windows title
 		primaryStage.setTitle("Train Game!");
 
@@ -425,8 +417,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding a wall object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addWall(int x, int y) {
 		objectList.add(new Wall(x, y, gc, TILE_SIZE));
@@ -434,8 +426,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding a fire object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addFire(int x, int y) {
 		objectList.add(new Fire(x, y, gc, TILE_SIZE));
@@ -443,8 +435,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding a water object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addWater(int x, int y) {
 		objectList.add(new Water(x, y, gc, TILE_SIZE));
@@ -452,8 +444,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the goal object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addGoal(int x, int y) {
 		objectList.add(new Goal(x, y, gc, TILE_SIZE));
@@ -461,8 +453,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the floor object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addFloor(int x, int y) {
 		objectList.add(new Floor(x, y, gc, TILE_SIZE));
@@ -470,8 +462,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the player object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addPlayer(int x, int y) {
 		playerOriginalX = x;
@@ -482,9 +474,9 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the player object to the game.
-	 * @param x
-	 * @param y
-	 * @param type
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
+	 * @param type The colour of the door that needs to be created.
 	 */
 	public static void addKeyDoor(int x, int y, int type) {
 		objectList.add(new KeyDoor(x, y, gc, TILE_SIZE, type));
@@ -492,9 +484,9 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the key object to the game.
-	 * @param x
-	 * @param y
-	 * @param type
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
+	 * @param type The colour of the key that needs to be created.
 	 */
 	public static void addKey(int x, int y, int type) {
 		objectList.add(new Key(x, y, gc, TILE_SIZE, type));
@@ -502,8 +494,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the token object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addToken(int x, int y) {
 		objectList.add(new Token(x, y, gc, TILE_SIZE));
@@ -511,8 +503,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the fire boots object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addFireBoots(int x, int y) {
 		objectList.add(new FireBoots(x, y, gc, TILE_SIZE));
@@ -520,8 +512,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the flippers object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 */
 	public static void addFlippers(int x, int y) {
 		objectList.add(new Flippers(x, y, gc, TILE_SIZE));
@@ -529,9 +521,9 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the flippers object to the game.
-	 * @param x
-	 * @param y
-	 * @param requirements
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
+	 * @param requirements The number of tokens that are needed to open the door.
 	 */
 	public static void addTokenDoor(int x, int y, int requirements) {
 		objectList.add(new TokenDoor(x, y, gc, TILE_SIZE, requirements));
@@ -539,8 +531,8 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the teleporter object to the game.
-	 * @param x
-	 * @param y
+	 * @param x The x position that the teleporter needs to be created at.
+	 * @param y The y position that the teleporter needs to be created at.
 	 */
 	public static void addTeleporter(int x, int y) {
 		objectList.add(new Teleporter(x, y, gc, TILE_SIZE));
@@ -548,14 +540,13 @@ public class TrainCanvas extends Application {
 
 	/**
 	 * A method for adding the enemy object to the game.
-	 * @param x
-	 * @param y
-	 * @param type
+	 * @param x The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
+	 * @param type The type of enemy that needs to be created.
 	 * @param extra
 	 */
 	public static void addEnemy(int x, int y, int type, int extra) {
-		objectList.add(new Floor(x, y, gc, TILE_SIZE));
-		//Adding a floor below the enemy object
+		objectList.add(new Floor(x, y, gc, TILE_SIZE)); //Adding a floor below the enemy object
 		if (type == 1) {
 			enemyList.add(new BasicEnemy(x, y, gc, TILE_SIZE, extra));
 		} else if (type == 2) {
@@ -579,12 +570,12 @@ public class TrainCanvas extends Application {
 			}
 		}
 	}
-
+	
 	/**
 	 * This method returns the time the timer started.
-	 * @return LocalDateTime
+	 * @return LocalDateTime the time that the level was started at.
 	 */
-	public static LocalDateTime getStart(){
-		return start;
-	}
+	public static LocalDateTime getStart() {
+        return start;
+    }
 }
