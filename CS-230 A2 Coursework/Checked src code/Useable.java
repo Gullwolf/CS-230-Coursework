@@ -11,7 +11,7 @@ public class Useable extends Object {
 	/**
 	 * The constructor for this class.
 	 * @param x The x position that the object needs to be created at.
-	 * @param y The x position that the object needs to be created at.
+	 * @param y The y position that the object needs to be created at.
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile.
 	 */
