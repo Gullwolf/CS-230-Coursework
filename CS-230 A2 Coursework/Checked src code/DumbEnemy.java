@@ -3,19 +3,20 @@ import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-/** This class is create a enemy which can find the shortest way to attack the player
+/** This class is create a enemy which can find the shortest way to attack the player.
 *@author Hao Wu, Noah Stebbings
 *@version 1.2
 */
 public class DumbEnemy extends Enemy {
 
 	private ArrayList<Object> objectList;
+
 	private Player player;
 
 	/**
-	 * The constructor for the Basic Enemy class.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * The constructor for the Dumb Enemy class.
+	 * @param x The x Position of the Dumb enemy on the map
+	 * @param y The y Position of the Dumb enemy on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */

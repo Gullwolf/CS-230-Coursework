@@ -11,8 +11,8 @@ public class Enemy extends Body {
 
 	/**
 	 * The constructor for the Enemy class.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the enemy on the map
+	 * @param y The y Position of the enemy on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */

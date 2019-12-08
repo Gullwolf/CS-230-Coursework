@@ -21,8 +21,8 @@ public class SmartEnemy extends Body {
 
 	/**
 	 * The constructor for the Smart Enemy object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the Smart enemy on the map
+	 * @param y The y Position of the Smart enemy on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */
