@@ -9,8 +9,8 @@ import javafx.scene.image.Image;
 public class Fire extends Terrain {
 	/**
 	 * The constructor for the Fire Object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the Fire on the map
+	 * @param y The y Position of the Fire on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */

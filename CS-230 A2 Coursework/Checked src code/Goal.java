@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 public class Goal extends Useable {
 	/**
 	 * The constructor for the Goal object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the Goal on the map
+	 * @param y The y Position of the Goal on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */

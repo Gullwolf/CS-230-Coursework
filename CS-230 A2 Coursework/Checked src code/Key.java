@@ -16,8 +16,8 @@ public class Key extends Item {
 
 	/**
 	 * The constructor for the Key object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the Key on the map
+	 * @param y The y Position of the Key on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile.
 	 * @param keyColour The colour of the key and the corresponding door that it will open.

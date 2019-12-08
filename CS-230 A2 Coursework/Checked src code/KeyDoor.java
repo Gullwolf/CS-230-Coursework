@@ -17,8 +17,8 @@ public class KeyDoor extends Door {
 
 	/**
 	 * The constructor for the Key Door object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position of the Key Door on the map
+	 * @param y The y Position of the Key Door on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile.
 	 * @param doorColour The colour of the door.

@@ -14,8 +14,8 @@ public class Flippers extends Item {
 
 	/**
 	 * The constructor for the Flippers object.
-	 * @param x The x Position of the basic enemy on the map
-	 * @param y The y Position of the basic enemy on the map
+	 * @param x The x Position on the map
+	 * @param y The y Position on the map
 	 * @param gc
 	 * @param TILE_SIZE Sets the size of the tile
 	 */
